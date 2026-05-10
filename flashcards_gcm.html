@@ -1,0 +1,953 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FlashGCM · São José de Ribamar</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy: #0a1628;
+    --navy-2: #111e35;
+    --navy-3: #172543;
+    --navy-4: #1e2f52;
+    --gold: #c9a84c;
+    --gold-light: #e2c06a;
+    --gold-pale: #f5e9c0;
+    --text: #e8eaf0;
+    --text-muted: #8a95b0;
+    --text-dim: #4d5a78;
+    --border: rgba(201,168,76,0.15);
+    --border-bright: rgba(201,168,76,0.4);
+    --correct: #2ecc71;
+    --wrong: #e74c3c;
+    --radius: 16px;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--navy);
+    color: var(--text);
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* Fundo com textura sutil */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background:
+      radial-gradient(ellipse 80% 60% at 50% -20%, rgba(201,168,76,0.07) 0%, transparent 70%),
+      radial-gradient(ellipse 40% 40% at 90% 80%, rgba(30,47,82,0.8) 0%, transparent 60%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* ── LAYOUT ── */
+  .app { position: relative; z-index: 1; display: flex; flex-direction: column; min-height: 100vh; }
+
+  /* ── HEADER ── */
+  header {
+    padding: 1.2rem 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 1px solid var(--border);
+    background: rgba(10,22,40,0.7);
+    backdrop-filter: blur(12px);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+  .brand {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .brand-badge {
+    width: 40px; height: 40px;
+    background: linear-gradient(135deg, var(--gold) 0%, #9a7030 100%);
+    border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Syne', sans-serif;
+    font-weight: 800;
+    font-size: 14px;
+    color: var(--navy);
+    letter-spacing: -0.5px;
+  }
+  .brand-name {
+    font-family: 'Syne', sans-serif;
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--text);
+  }
+  .brand-name span { color: var(--gold); }
+  .header-stats {
+    display: flex;
+    gap: 1.5rem;
+    align-items: center;
+  }
+  .stat-chip {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.82rem;
+    color: var(--text-muted);
+  }
+  .stat-chip strong { color: var(--text); font-weight: 500; }
+  .dot { width: 8px; height: 8px; border-radius: 50%; }
+  .dot-correct { background: var(--correct); }
+  .dot-wrong { background: var(--wrong); }
+
+  /* ── MAIN GRID ── */
+  .main { display: flex; flex: 1; }
+
+  /* ── SIDEBAR ── */
+  aside {
+    width: 240px;
+    min-width: 240px;
+    border-right: 1px solid var(--border);
+    padding: 1.5rem 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    background: rgba(10,22,40,0.4);
+  }
+  .aside-title {
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--text-dim);
+    padding: 0 0.5rem;
+    margin-bottom: 0.3rem;
+  }
+  .cat-btn {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.6rem 0.75rem;
+    border-radius: 10px;
+    cursor: pointer;
+    font-size: 0.88rem;
+    color: var(--text-muted);
+    background: transparent;
+    border: none;
+    text-align: left;
+    transition: all 0.18s;
+    gap: 8px;
+  }
+  .cat-btn:hover { background: rgba(201,168,76,0.08); color: var(--text); }
+  .cat-btn.active {
+    background: rgba(201,168,76,0.12);
+    color: var(--gold-light);
+    font-weight: 500;
+  }
+  .cat-btn .cat-icon { font-size: 1rem; }
+  .cat-count {
+    background: var(--navy-4);
+    border-radius: 20px;
+    padding: 1px 8px;
+    font-size: 0.72rem;
+    color: var(--text-dim);
+    min-width: 24px;
+    text-align: center;
+  }
+  .cat-btn.active .cat-count { background: rgba(201,168,76,0.2); color: var(--gold); }
+
+  .sidebar-sep { height: 1px; background: var(--border); margin: 0.5rem 0; }
+
+  /* ── CONTENT AREA ── */
+  .content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 2rem 1.5rem;
+    gap: 1.5rem;
+    max-width: 780px;
+    margin: 0 auto;
+    width: 100%;
+  }
+
+  /* ── TOOLBAR ── */
+  .toolbar {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+  }
+  .toolbar-left { display: flex; align-items: center; gap: 0.75rem; }
+  .toolbar-right { display: flex; gap: 0.5rem; }
+  .topic-badge {
+    font-size: 0.78rem;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--gold);
+    background: rgba(201,168,76,0.1);
+    border: 1px solid rgba(201,168,76,0.25);
+    padding: 4px 12px;
+    border-radius: 20px;
+  }
+  .card-count { font-size: 0.88rem; color: var(--text-muted); }
+  .icon-btn {
+    width: 36px; height: 36px;
+    display: flex; align-items: center; justify-content: center;
+    border-radius: 9px;
+    border: 1px solid var(--border);
+    background: var(--navy-2);
+    cursor: pointer;
+    color: var(--text-muted);
+    font-size: 1rem;
+    transition: all 0.15s;
+  }
+  .icon-btn:hover { border-color: var(--border-bright); color: var(--gold); }
+  .icon-btn.active { background: rgba(201,168,76,0.12); border-color: var(--border-bright); color: var(--gold); }
+
+  /* ── PROGRESS BAR ── */
+  .progress-wrap { width: 100%; }
+  .progress-info { display: flex; justify-content: space-between; margin-bottom: 6px; }
+  .progress-label { font-size: 0.78rem; color: var(--text-muted); }
+  .progress-pct { font-size: 0.78rem; color: var(--gold); font-weight: 500; }
+  .progress-track {
+    width: 100%; height: 4px;
+    background: var(--navy-4);
+    border-radius: 99px;
+    overflow: hidden;
+  }
+  .progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--gold) 0%, var(--gold-light) 100%);
+    border-radius: 99px;
+    transition: width 0.4s ease;
+  }
+
+  /* ── CARD STAGE ── */
+  .card-stage {
+    width: 100%;
+    perspective: 1200px;
+  }
+  .card-inner {
+    position: relative;
+    width: 100%;
+    height: 340px;
+    transform-style: preserve-3d;
+    transition: transform 0.55s cubic-bezier(0.4, 0.2, 0.2, 1);
+    cursor: pointer;
+  }
+  .card-inner.flipped { transform: rotateY(180deg); }
+
+  .card-face {
+    position: absolute;
+    inset: 0;
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+    border-radius: var(--radius);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 2.5rem;
+    text-align: center;
+  }
+
+  .card-front {
+    background: var(--navy-2);
+    border: 1px solid var(--border);
+  }
+  .card-front::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: var(--radius);
+    background: linear-gradient(135deg, rgba(201,168,76,0.04) 0%, transparent 60%);
+    pointer-events: none;
+  }
+  .card-back {
+    background: var(--navy-3);
+    border: 1px solid var(--border-bright);
+    transform: rotateY(180deg);
+  }
+  .card-back::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: var(--radius);
+    background: linear-gradient(135deg, rgba(201,168,76,0.06) 0%, transparent 60%);
+    pointer-events: none;
+  }
+
+  .card-label {
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--text-dim);
+    margin-bottom: 1.2rem;
+  }
+  .card-back .card-label { color: rgba(201,168,76,0.5); }
+
+  .card-text {
+    font-family: 'Syne', sans-serif;
+    font-size: 1.35rem;
+    font-weight: 600;
+    line-height: 1.45;
+    color: var(--text);
+    max-width: 520px;
+  }
+  .card-back .card-text {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 1.1rem;
+    font-weight: 400;
+    color: var(--gold-pale);
+    line-height: 1.6;
+  }
+
+  .flip-hint {
+    position: absolute;
+    bottom: 1.2rem;
+    font-size: 0.72rem;
+    color: var(--text-dim);
+    display: flex;
+    align-items: center;
+    gap: 5px;
+  }
+  .flip-hint::before { content: '↕'; font-size: 0.8rem; }
+
+  /* ── ACTIONS ── */
+  .actions { width: 100%; display: flex; gap: 0.75rem; }
+  .btn {
+    flex: 1;
+    padding: 0.9rem 1rem;
+    border-radius: 12px;
+    border: none;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.92rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.18s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 7px;
+  }
+  .btn-wrong {
+    background: rgba(231,76,60,0.12);
+    border: 1px solid rgba(231,76,60,0.3);
+    color: #f08080;
+  }
+  .btn-wrong:hover { background: rgba(231,76,60,0.2); border-color: rgba(231,76,60,0.5); }
+
+  .btn-skip {
+    flex: 0.4;
+    background: var(--navy-3);
+    border: 1px solid var(--border);
+    color: var(--text-muted);
+  }
+  .btn-skip:hover { background: var(--navy-4); color: var(--text); }
+
+  .btn-correct {
+    background: rgba(46,204,113,0.12);
+    border: 1px solid rgba(46,204,113,0.3);
+    color: #6de8a0;
+  }
+  .btn-correct:hover { background: rgba(46,204,113,0.2); border-color: rgba(46,204,113,0.5); }
+
+  .btn:active { transform: scale(0.97); }
+
+  /* ── SCORE BAR ── */
+  .score-bar {
+    width: 100%;
+    background: var(--navy-2);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 0.9rem 1.2rem;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+  }
+  .score-item { text-align: center; }
+  .score-item .val {
+    font-family: 'Syne', sans-serif;
+    font-size: 1.5rem;
+    font-weight: 700;
+    display: block;
+  }
+  .score-item .lbl { font-size: 0.75rem; color: var(--text-muted); display: block; margin-top: 2px; }
+  .s-correct .val { color: var(--correct); }
+  .s-wrong .val { color: var(--wrong); }
+  .s-remain .val { color: var(--gold); }
+  .score-divider { width: 1px; height: 36px; background: var(--border); }
+
+  /* ── EMPTY STATE ── */
+  .empty { text-align: center; padding: 3rem; color: var(--text-muted); }
+  .empty h3 { font-size: 1.1rem; margin-bottom: 0.5rem; color: var(--text); }
+
+  /* ── COMPLETE STATE ── */
+  .complete-card {
+    width: 100%;
+    background: var(--navy-2);
+    border: 1px solid var(--border-bright);
+    border-radius: var(--radius);
+    padding: 3rem 2rem;
+    text-align: center;
+    display: none;
+  }
+  .complete-card.show { display: block; }
+  .complete-icon { font-size: 3rem; margin-bottom: 1rem; }
+  .complete-title {
+    font-family: 'Syne', sans-serif;
+    font-size: 1.6rem;
+    font-weight: 700;
+    color: var(--gold);
+    margin-bottom: 0.5rem;
+  }
+  .complete-subtitle { color: var(--text-muted); margin-bottom: 1.5rem; font-size: 0.95rem; }
+  .complete-stats {
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+    margin-bottom: 2rem;
+  }
+  .complete-stat-val {
+    font-family: 'Syne', sans-serif;
+    font-size: 2rem;
+    font-weight: 700;
+    display: block;
+  }
+  .complete-stat-lbl { font-size: 0.8rem; color: var(--text-muted); }
+  .btn-restart {
+    background: var(--gold);
+    color: var(--navy);
+    padding: 0.85rem 2rem;
+    border-radius: 10px;
+    border: none;
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    font-size: 0.95rem;
+    cursor: pointer;
+    transition: all 0.18s;
+  }
+  .btn-restart:hover { background: var(--gold-light); }
+
+  /* ── KEYBOARD HINT ── */
+  .kbd-hints {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    padding-bottom: 1rem;
+  }
+  .kbd { font-size: 0.72rem; color: var(--text-dim); display: flex; align-items: center; gap: 4px; }
+  kbd {
+    background: var(--navy-4);
+    border: 1px solid var(--border);
+    border-radius: 5px;
+    padding: 1px 6px;
+    font-size: 0.68rem;
+    font-family: 'DM Sans', sans-serif;
+    color: var(--text-muted);
+  }
+
+  @media (max-width: 680px) {
+    aside { display: none; }
+    .content { padding: 1.2rem 1rem; }
+    .card-text { font-size: 1.1rem; }
+    .card-inner { height: 280px; }
+    header { padding: 1rem; }
+    .header-stats { gap: 0.75rem; }
+    .stat-chip span { display: none; }
+  }
+</style>
+</head>
+<body>
+<div class="app">
+  <!-- HEADER -->
+  <header>
+    <div class="brand">
+      <div class="brand-badge">GCM</div>
+      <div>
+        <div class="brand-name">Flash<span>GCM</span></div>
+      </div>
+    </div>
+    <div class="header-stats">
+      <div class="stat-chip"><span class="dot dot-correct"></span><strong id="hCorrect">0</strong> <span>acertos</span></div>
+      <div class="stat-chip"><span class="dot dot-wrong"></span><strong id="hWrong">0</strong> <span>erros</span></div>
+    </div>
+  </header>
+
+  <div class="main">
+    <!-- SIDEBAR -->
+    <aside>
+      <div class="aside-title">Categorias</div>
+      <button class="cat-btn active" data-cat="todos" onclick="setCategory(this)">
+        <span>📚 Todos os Temas</span>
+        <span class="cat-count" id="cnt-todos">0</span>
+      </button>
+      <div class="sidebar-sep"></div>
+      <button class="cat-btn" data-cat="Legislação" onclick="setCategory(this)">
+        <span>⚖️ Legislação GCM</span>
+        <span class="cat-count" id="cnt-Legislação">0</span>
+      </button>
+      <button class="cat-btn" data-cat="Constitucional" onclick="setCategory(this)">
+        <span>📜 Dir. Constitucional</span>
+        <span class="cat-count" id="cnt-Constitucional">0</span>
+      </button>
+      <button class="cat-btn" data-cat="Penal" onclick="setCategory(this)">
+        <span>🔒 Dir. Penal</span>
+        <span class="cat-count" id="cnt-Penal">0</span>
+      </button>
+      <button class="cat-btn" data-cat="Administrativo" onclick="setCategory(this)">
+        <span>🏛️ Dir. Administrativo</span>
+        <span class="cat-count" id="cnt-Administrativo">0</span>
+      </button>
+      <button class="cat-btn" data-cat="Processual" onclick="setCategory(this)">
+        <span>📋 Dir. Processual</span>
+        <span class="cat-count" id="cnt-Processual">0</span>
+      </button>
+      <div class="sidebar-sep"></div>
+      <button class="cat-btn" data-cat="Português" onclick="setCategory(this)">
+        <span>🗣️ Língua Portuguesa</span>
+        <span class="cat-count" id="cnt-Português">0</span>
+      </button>
+      <button class="cat-btn" data-cat="Matemática" onclick="setCategory(this)">
+        <span>🔢 Matemática / RL</span>
+        <span class="cat-count" id="cnt-Matemática">0</span>
+      </button>
+      <button class="cat-btn" data-cat="Informática" onclick="setCategory(this)">
+        <span>💻 Informática</span>
+        <span class="cat-count" id="cnt-Informática">0</span>
+      </button>
+      <div class="sidebar-sep"></div>
+      <button class="cat-btn" data-cat="Maranhão" onclick="setCategory(this)">
+        <span>🌴 Maranhão / SJR</span>
+        <span class="cat-count" id="cnt-Maranhão">0</span>
+      </button>
+      <button class="cat-btn" data-cat="Atualidades" onclick="setCategory(this)">
+        <span>🌐 Atualidades</span>
+        <span class="cat-count" id="cnt-Atualidades">0</span>
+      </button>
+      <button class="cat-btn" data-cat="ECA" onclick="setCategory(this)">
+        <span>👶 ECA</span>
+        <span class="cat-count" id="cnt-ECA">0</span>
+      </button>
+    </aside>
+
+    <!-- CONTENT -->
+    <div style="flex:1; overflow-y:auto;">
+    <div class="content">
+      <!-- TOOLBAR -->
+      <div class="toolbar">
+        <div class="toolbar-left">
+          <span class="topic-badge" id="topicBadge">Todos</span>
+          <span class="card-count" id="cardCount"></span>
+        </div>
+        <div class="toolbar-right">
+          <button class="icon-btn" id="shuffleBtn" title="Embaralhar" onclick="toggleShuffle()">🔀</button>
+          <button class="icon-btn" id="restartBtn" title="Reiniciar" onclick="restartDeck()">↺</button>
+        </div>
+      </div>
+
+      <!-- PROGRESS -->
+      <div class="progress-wrap">
+        <div class="progress-info">
+          <span class="progress-label">Progresso do baralho</span>
+          <span class="progress-pct" id="progPct">0%</span>
+        </div>
+        <div class="progress-track">
+          <div class="progress-fill" id="progFill" style="width:0%"></div>
+        </div>
+      </div>
+
+      <!-- CARD STAGE -->
+      <div class="card-stage" id="cardStage">
+        <div class="card-inner" id="cardInner" onclick="flipCard()">
+          <div class="card-face card-front">
+            <div class="card-label">Pergunta</div>
+            <div class="card-text" id="cardFront">Carregando...</div>
+            <div class="flip-hint">clique para revelar</div>
+          </div>
+          <div class="card-face card-back">
+            <div class="card-label">Resposta</div>
+            <div class="card-text" id="cardBack">Resposta</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- COMPLETE STATE -->
+      <div class="complete-card" id="completeCard">
+        <div class="complete-icon">🏅</div>
+        <div class="complete-title">Baralho Concluído!</div>
+        <div class="complete-subtitle">Você finalizou todas as cartas desta sessão.</div>
+        <div class="complete-stats">
+          <div>
+            <span class="complete-stat-val" id="finalCorrect" style="color:var(--correct)">0</span>
+            <span class="complete-stat-lbl">Acertos</span>
+          </div>
+          <div>
+            <span class="complete-stat-val" id="finalWrong" style="color:var(--wrong)">0</span>
+            <span class="complete-stat-lbl">Erros</span>
+          </div>
+          <div>
+            <span class="complete-stat-val" id="finalPct" style="color:var(--gold)">0%</span>
+            <span class="complete-stat-lbl">Aproveitamento</span>
+          </div>
+        </div>
+        <button class="btn-restart" onclick="restartDeck()">Estudar Novamente</button>
+      </div>
+
+      <!-- ACTIONS -->
+      <div class="actions" id="actionArea">
+        <button class="btn btn-wrong" onclick="answer(false)">✗ Não Sabia</button>
+        <button class="btn btn-skip" onclick="nextCard()">→</button>
+        <button class="btn btn-correct" onclick="answer(true)">✓ Sabia!</button>
+      </div>
+
+      <!-- SCORE BAR -->
+      <div class="score-bar">
+        <div class="score-item s-correct">
+          <span class="val" id="scoreCorrect">0</span>
+          <span class="lbl">Acertos</span>
+        </div>
+        <div class="score-divider"></div>
+        <div class="score-item s-wrong">
+          <span class="val" id="scoreWrong">0</span>
+          <span class="lbl">Erros</span>
+        </div>
+        <div class="score-divider"></div>
+        <div class="score-item s-remain">
+          <span class="val" id="scoreRemain">0</span>
+          <span class="lbl">Restantes</span>
+        </div>
+      </div>
+
+      <!-- KEYBOARD HINTS -->
+      <div class="kbd-hints">
+        <div class="kbd"><kbd>Espaço</kbd> Virar carta</div>
+        <div class="kbd"><kbd>→</kbd> Próxima</div>
+        <div class="kbd"><kbd>←</kbd> Anterior</div>
+        <div class="kbd"><kbd>S</kbd> Sabia</div>
+        <div class="kbd"><kbd>N</kbd> Não sabia</div>
+      </div>
+    </div>
+    </div>
+  </div>
+</div>
+
+<script>
+const ALL_CARDS = [
+
+  // ════════════════════════════════════════
+  //  LEGISLAÇÃO GCM
+  // ════════════════════════════════════════
+  { cat:"Legislação", f:"Qual a natureza jurídica da GCM segundo a Lei 13.022/14?", v:"Instituição de caráter CIVIL, uniformizada e armada, preordenada à proteção dos bens, serviços e instalações do Município." },
+  { cat:"Legislação", f:"Quais os princípios mínimos de atuação da GCM (Art. 3º – Lei 13.022/14)?", v:"I. Proteção dos direitos fundamentais; II. Preservação da vida; III. Patrulhamento preventivo; IV. Compromisso com a evolução social; V. Uso progressivo da força." },
+  { cat:"Legislação", f:"A GCM pode fazer policiamento ostensivo ou investigações criminais?", v:"NÃO. A GCM tem caráter preventivo e de proteção municipal. Policiamento ostensivo e investigações são atribuições das Polícias Militares e Civis." },
+  { cat:"Legislação", f:"Quais as competências gerais da GCM (Art. 5º – Lei 13.022/14)?", v:"Proteger bens, equipamentos e prédios públicos municipais; colaborar com a segurança pública; atuar na fiscalização de posturas municipais; e proteger o meio ambiente, o patrimônio histórico, artístico e cultural do Município." },
+  { cat:"Legislação", f:"O uso da força pela GCM deve seguir qual princípio?", v:"Uso PROGRESSIVO E PROPORCIONAL da força: a GCM deve usar a força somente quando necessário, na medida adequada ao nível de resistência encontrado." },
+  { cat:"Legislação", f:"Qual a vedação expressa para o guarda municipal em serviço?", v:"Afastar-se da área de jurisdição sem autorização; descumprir legislação de trânsito; receber vantagens indevidas; praticar violência física ou psicológica; entre outras vedações do Estatuto." },
+  { cat:"Legislação", f:"A GCM pode usar armamento de fogo?", v:"SIM, desde que autorizado por lei específica e após formação adequada. A Lei 13.022/14 permite o porte de arma de fogo, respeitando critérios de proporcionalidade." },
+  { cat:"Legislação", f:"Qual o papel da GCM em relação ao Estatuto da Criança e Adolescente?", v:"Colaborar na proteção integral de crianças e adolescentes, podendo atuar em rondas escolares, prevenção de atos infracionais e encaminhamento ao Conselho Tutelar." },
+  { cat:"Legislação", f:"O que é o PRONASCI e qual sua relação com as GCMs?", v:"Programa Nacional de Segurança Pública com Cidadania. Integra ações das GCMs com políticas sociais, culturais e educativas visando prevenir a violência com foco na cidadania." },
+  { cat:"Legislação", f:"Qual a diferença entre GCM e Polícia Militar?", v:"A GCM é civil, municipal e preventiva, ligada ao Executivo municipal. A PM é estadual, militarizada e tem funções de policiamento ostensivo e preservação da ordem pública." },
+
+  // ════════════════════════════════════════
+  //  DIREITO CONSTITUCIONAL
+  // ════════════════════════════════════════
+  { cat:"Constitucional", f:"Quais são os fundamentos da República Federativa do Brasil (Art. 1º CF)?", v:"SO-CI-DI-VA-PLU: Soberania, Cidadania, Dignidade da pessoa humana, Valores sociais do trabalho e da livre iniciativa, Pluralismo político." },
+  { cat:"Constitucional", f:"Quais são os objetivos fundamentais da República (Art. 3º CF)?", v:"I. Construir uma sociedade livre, justa e solidária; II. Garantir o desenvolvimento nacional; III. Erradicar a pobreza e a marginalização; IV. Promover o bem de todos, sem preconceitos." },
+  { cat:"Constitucional", f:"O que é o princípio da LEGALIDADE para o particular (Art. 5º, II)?", v:"O particular pode fazer tudo aquilo que a lei NÃO proíbe. 'Ninguém será obrigado a fazer ou deixar de fazer alguma coisa senão em virtude de lei.'" },
+  { cat:"Constitucional", f:"O que significa o princípio da IMPESSOALIDADE (LIMPE)?", v:"A Administração não pode privilegiar nem prejudicar pessoas específicas. Os atos são imputados ao órgão, não ao agente que os pratica." },
+  { cat:"Constitucional", f:"O que é habeas corpus?", v:"Remédio constitucional que protege a liberdade de locomoção. Cabe quando alguém sofre ou ameaça sofrer violência ou coação em sua liberdade de ir e vir." },
+  { cat:"Constitucional", f:"O que é o mandado de segurança?", v:"Remédio constitucional que protege direito líquido e certo, não amparado por habeas corpus, contra ato ilegal ou abusivo de autoridade pública ou agente de pessoa jurídica no exercício de atribuições públicas." },
+  { cat:"Constitucional", f:"O que é direito líquido e certo?", v:"É o direito demonstrado de plano, sem necessidade de dilação probatória, comprovado por documentos, na fase de impetração do mandado de segurança." },
+  { cat:"Constitucional", f:"Qual o prazo para impetrar mandado de segurança?", v:"120 dias contados da ciência do ato impugnado (Lei 12.016/2009)." },
+  { cat:"Constitucional", f:"O que é a inviolabilidade domiciliar (Art. 5º, XI)?", v:"A casa é asilo inviolável. Somente pode ser penetrada por determinação judicial ou, durante o dia, em flagrante delito, desastre, socorro ou com consentimento do morador." },
+  { cat:"Constitucional", f:"O que é a presunção de inocência (Art. 5º, LVII)?", v:"Ninguém será considerado culpado até o trânsito em julgado de sentença penal condenatória. É um dos princípios basilares do Estado Democrático de Direito." },
+  { cat:"Constitucional", f:"Quais os princípios que regem a Administração Pública (Art. 37)?", v:"LIMPE: Legalidade, Impessoalidade, Moralidade, Publicidade e Eficiência." },
+  { cat:"Constitucional", f:"O que diz o Art. 144 CF sobre a segurança pública?", v:"É dever do Estado, direito e responsabilidade de todos. É exercida pela Polícia Federal, Polícia Rodoviária Federal, Polícias Civis, Polícias Militares, Corpos de Bombeiros Militares e Guardas Municipais." },
+  { cat:"Constitucional", f:"O que prevê o Art. 144, §8º CF sobre as Guardas Municipais?", v:"Os Municípios podem constituir guardas municipais destinadas à proteção de seus bens, serviços e instalações, conforme dispuser a lei." },
+
+  // ════════════════════════════════════════
+  //  DIREITO PENAL
+  // ════════════════════════════════════════
+  { cat:"Penal", f:"O que é o Crime Tentado (Art. 14, II CP)?", v:"Quando, iniciada a execução, o crime não se consuma por circunstâncias alheias à vontade do agente. A pena é reduzida de 1 a 2/3." },
+  { cat:"Penal", f:"Qual a diferença entre Concussão e Corrupção Passiva?", v:"Concussão (Art. 316): EXIGIR vantagem indevida. Corrupção Passiva (Art. 317): SOLICITAR ou RECEBER vantagem indevida ou aceitar promessa de tal vantagem." },
+  { cat:"Penal", f:"O que é o Arrependimento Eficaz (Art. 15 CP)?", v:"O agente já terminou a execução, mas atua para impedir que o resultado ocorra. Responde apenas pelos atos já praticados, não pelo crime que foi impedido." },
+  { cat:"Penal", f:"O que é Desistência Voluntária (Art. 15 CP)?", v:"O agente interrompe voluntariamente a execução antes de completá-la, impedindo a consumação. Responde pelos atos até então praticados." },
+  { cat:"Penal", f:"Qual a diferença entre crime doloso e culposo?", v:"Doloso: agente quis o resultado OU assumiu o risco. Culposo: agente não quis o resultado, mas agiu com imprudência, negligência ou imperícia." },
+  { cat:"Penal", f:"O que é legítima defesa (Art. 25 CP)?", v:"Usar moderadamente os meios necessários para repelir injusta agressão, atual ou iminente, a direito seu ou de outrem. É causa excludente de ilicitude." },
+  { cat:"Penal", f:"O que é estado de necessidade (Art. 24 CP)?", v:"Prática de fato para salvar de perigo atual, que não provocou, direito próprio ou alheio, quando não podia agir de outra forma. É excludente de ilicitude." },
+  { cat:"Penal", f:"O que são crimes contra a administração pública mais cobrados em concurso?", v:"Peculato (Art. 312), Corrupção Passiva (317), Concussão (316), Prevaricação (319), Abandono de Função (323), Resistência (329), Desacato (331)." },
+  { cat:"Penal", f:"O que é peculato (Art. 312 CP)?", v:"Apropriar-se o funcionário público de dinheiro, valor ou qualquer outro bem móvel, público ou particular, de que tem a posse em razão do cargo. Pena: reclusão 2 a 12 anos." },
+  { cat:"Penal", f:"O que é abuso de autoridade (Lei 13.869/19)?", v:"Conduta funcional abusiva de agente público, dolosa, que prejudique interesses individuais: submeter pessoa a constrangimento ilegal, violar domicílio sem motivo legal, etc." },
+  { cat:"Penal", f:"O que é crime de resistência (Art. 329 CP)?", v:"Opor-se à execução de ato legal, mediante violência ou ameaça a funcionário competente para executá-lo ou a quem lhe esteja prestando auxílio. Pena: detenção 2 meses a 2 anos." },
+  { cat:"Penal", f:"O que é desacato (Art. 331 CP)?", v:"Desacatar funcionário público no exercício da função ou em razão dela. Pena: detenção 6 meses a 2 anos ou multa." },
+  { cat:"Penal", f:"O que é flagrante delito e quais as espécies?", v:"É a prisão de quem está cometendo ou acabou de cometer um crime. Espécies: Próprio (in fraganti), Impróprio (logo após), Presumido (encontrado com objetos do crime) e Preparado (agente provocado)." },
+
+  // ════════════════════════════════════════
+  //  DIREITO ADMINISTRATIVO
+  // ════════════════════════════════════════
+  { cat:"Administrativo", f:"O que é ato administrativo?", v:"Manifestação unilateral de vontade da Administração Pública que, agindo nessa qualidade, tenha por fim imediato adquirir, resguardar, transferir, modificar, extinguir e declarar direitos ou impor obrigações." },
+  { cat:"Administrativo", f:"Quais os atributos/atributos do ato administrativo?", v:"TIPPA: Tipicidade, Imperatividade (coercitividade), Presunção de legitimidade e veracidade, Autoexecutoriedade." },
+  { cat:"Administrativo", f:"O que é o poder discricionário?", v:"Margem de liberdade conferida pela lei ao agente público para que, diante do caso concreto, faça juízo de conveniência e oportunidade, escolhendo uma entre várias condutas lícitas." },
+  { cat:"Administrativo", f:"O que é licitação e qual sua finalidade?", v:"Procedimento administrativo pelo qual a Administração Pública seleciona a proposta mais vantajosa para contrato de seu interesse. Garante isonomia entre licitantes (Art. 37, XXI CF; Lei 14.133/21)." },
+  { cat:"Administrativo", f:"Quais as modalidades de licitação previstas na Lei 14.133/21?", v:"Concorrência, Concurso, Leilão, Pregão e Diálogo Competitivo. A antiga Tomada de Preços e Convite foram extintas pela nova lei." },
+  { cat:"Administrativo", f:"O que é improbidade administrativa?", v:"Ato que viola os princípios da Administração ou causa enriquecimento ilícito, dano ao erário ou violação de princípios, praticado por agente público (Lei 8.429/92)." },
+  { cat:"Administrativo", f:"Quais são os servidores públicos estáveis?", v:"Aqueles aprovados em concurso público que completaram 3 anos de efetivo exercício e passaram na avaliação especial de desempenho. Só perdem o cargo por sentença judicial transitada em julgado, processo administrativo ou avaliação de desempenho insuficiente." },
+  { cat:"Administrativo", f:"O que é o princípio da moralidade administrativa?", v:"A Administração deve atuar com honestidade, boa-fé e lealdade, vedando condutas antiéticas ou desonestas, ainda que formalmente legais." },
+
+  // ════════════════════════════════════════
+  //  DIREITO PROCESSUAL PENAL
+  // ════════════════════════════════════════
+  { cat:"Processual", f:"O que é o inquérito policial (IP)?", v:"Procedimento administrativo, inquisitorial e sigiloso, presidido pela autoridade policial, com o objetivo de apurar a autoria e materialidade das infrações penais. Não é obrigatório para a ação penal." },
+  { cat:"Processual", f:"Qual o prazo para conclusão do inquérito policial?", v:"Indiciado preso: 10 dias (30 com prorrogação). Indiciado solto: 30 dias (prorrogável com autorização judicial)." },
+  { cat:"Processual", f:"O que é a ação penal pública incondicionada?", v:"É proposta pelo Ministério Público independentemente da vontade da vítima. Aplica-se à maioria dos crimes (regra geral)." },
+  { cat:"Processual", f:"O que é a ação penal pública condicionada?", v:"O MP só pode oferecer denúncia mediante representação da vítima ou requisição do Ministro da Justiça (ex: crimes contra a honra praticados contra funcionário público)." },
+  { cat:"Processual", f:"Quais são as medidas cautelares diversas da prisão (Art. 319 CPP)?", v:"Comparecimento periódico; proibição de acesso a lugares; proibição de contato com pessoas; monitoração eletrônica; recolhimento domiciliar noturno; suspensão de função pública; fiança; entre outras." },
+  { cat:"Processual", f:"O que é a prisão preventiva?", v:"Medida cautelar privativa de liberdade decretada pelo juiz, antes ou durante o processo, quando presentes os requisitos: prova da existência do crime, indícios de autoria e um dos fundamentos (garantia da ordem pública, instrução criminal ou aplicação da lei penal)." },
+  { cat:"Processual", f:"O que é o princípio do contraditório?", v:"Às partes deve ser assegurada a possibilidade de conhecer e se manifestar sobre tudo o que é produzido nos autos, em igualdade de condições." },
+  { cat:"Processual", f:"O que é o in dubio pro reo?", v:"Na dúvida, decide-se em favor do réu. Decorrência da presunção de inocência: se não houver prova suficiente da culpa, o réu deve ser absolvido." },
+
+  // ════════════════════════════════════════
+  //  LÍNGUA PORTUGUESA
+  // ════════════════════════════════════════
+  { cat:"Português", f:"Quando ocorre crase obrigatória antes de indicações de horas?", v:"Sempre que indicar hora exata: 'Saí às 14h' (às = a + a). Não há crase com horas indeterminadas: 'Saí a horas incertas'." },
+  { cat:"Português", f:"Qual a diferença entre 'Mau' e 'Mal'?", v:"MAU: antônimo de BOM (adjetivo). MAL: antônimo de BEM (advérbio ou substantivo). Dica: 'mau / bom' têm a mesma terminação." },
+  { cat:"Português", f:"O que é a próclise?", v:"Posição do pronome oblíquo ANTES do verbo. Ocorre com palavras atrativas: negação, conjunções subordinativas, advérbios, pronomes relativos. Ex: 'Não me diga isso.'" },
+  { cat:"Português", f:"O que é a ênclise?", v:"Posição do pronome DEPOIS do verbo. Regra geral quando não há palavra atrativa. Ex: 'Diga-me a verdade.' Não se inicia oração com pronome oblíquo átono." },
+  { cat:"Português", f:"Qual a diferença entre 'há' e 'a' em indicações de tempo?", v:"'HÁ' (verbo haver) indica tempo decorrido (passado): 'Saiu há dois dias.' 'A' (preposição) indica tempo futuro ou distância: 'Voltará a dois dias.' / 'A 5 km daqui.'" },
+  { cat:"Português", f:"O que é colocação pronominal com verbo no infinitivo?", v:"Com infinitivo não flexionado, o pronome pode vir antes ou depois. Com infinitivo flexionado, o pronome fica antes: 'Para nos reunirmos.' Após preposição, fica depois: 'Ao dizê-lo.'" },
+  { cat:"Português", f:"O que é concordância verbal com sujeito composto?", v:"Sujeito composto antes do verbo: verbo no plural. Sujeito composto posposto: pode concordar com o mais próximo ou ficar no plural. Ex: 'O chefe e a diretora saíram.' / 'Saiu o chefe ou a diretora.'" },
+  { cat:"Português", f:"Qual a diferença entre 'porque', 'por que', 'por quê' e 'porquê'?", v:"PORQUE (junto, sem acento): explicação/causa. POR QUE (separado, sem acento): em perguntas/substituído por 'pelo qual'. POR QUÊ (final de frase): perguntas. PORQUÊ (substantivo): 'Não sei o porquê.'" },
+  { cat:"Português", f:"O que é a regência verbal de 'assistir'?", v:"Assistir (ver/presenciar) é TRANSITIVO INDIRETO: 'Assisti AO filme.' Assistir (ajudar) é TRANSITIVO DIRETO: 'O médico assistiu O paciente.'" },
+  { cat:"Português", f:"O que é denotação e conotação?", v:"DENOTAÇÃO: sentido literal/real da palavra. CONOTAÇÃO: sentido figurado, simbólico, subjetivo. Ex: 'Cabra' (animal) = denotação; 'Ele é uma cabra' (pessoa valente) = conotação." },
+
+  // ════════════════════════════════════════
+  //  MATEMÁTICA / RACIOCÍNIO LÓGICO
+  // ════════════════════════════════════════
+  { cat:"Matemática", f:"Qual a fórmula da área do círculo?", v:"A = π · r²  (onde r é o raio e π ≈ 3,14159)" },
+  { cat:"Matemática", f:"O que é o Teorema de Pitágoras?", v:"Em triângulo retângulo: a² = b² + c² (hipotenusa² = soma dos quadrados dos catetos)." },
+  { cat:"Matemática", f:"Como calcular porcentagem? (Ex: 15% de 200)", v:"Multiplica-se o valor pela taxa: 200 × 0,15 = 30. Ou: (200 × 15) ÷ 100 = 30." },
+  { cat:"Matemática", f:"O que é MMC (Mínimo Múltiplo Comum)?", v:"Menor número inteiro positivo que é múltiplo de dois ou mais números dados. Usado para somar frações com denominadores diferentes." },
+  { cat:"Matemática", f:"O que é MDC (Máximo Divisor Comum)?", v:"Maior número inteiro que divide simultaneamente dois ou mais números dados. Usado para simplificar frações." },
+  { cat:"Matemática", f:"Como calcular a média aritmética simples?", v:"Soma de todos os valores dividida pela quantidade de valores. Ex: média de 4, 6 e 8: (4+6+8)/3 = 18/3 = 6." },
+  { cat:"Matemática", f:"O que é juros simples?", v:"J = C · i · t  (Capital × taxa × tempo). O capital não sofre capitalização: os juros incidem sempre sobre o capital inicial." },
+  { cat:"Matemática", f:"O que é a regra de três simples direta?", v:"Quando as grandezas são diretamente proporcionais: se uma aumenta, a outra aumenta na mesma proporção. Monta-se proporção: a/b = c/x → x = (b·c)/a." },
+  { cat:"Matemática", f:"O que é proposição lógica?", v:"Sentença declarativa que pode ser classificada como verdadeira ou falsa, nunca ambas ao mesmo tempo. Ex: 'O Sol é uma estrela.' (V)" },
+  { cat:"Matemática", f:"Tabela-verdade: quando a condicional (P → Q) é FALSA?", v:"Somente quando P é VERDADEIRA e Q é FALSA. Nas demais combinações (VV, FV, FF) a condicional é verdadeira." },
+  { cat:"Matemática", f:"Qual a fórmula da área do triângulo?", v:"A = (base × altura) / 2. Alternativamente, pela fórmula de Heron: A = √[s(s-a)(s-b)(s-c)], onde s é o semiperímetro." },
+  { cat:"Matemática", f:"O que é probabilidade simples?", v:"P(E) = nº de casos favoráveis / nº de casos possíveis. Sempre entre 0 e 1. Ex: probabilidade de sair cara: 1/2 = 0,5 = 50%." },
+
+  // ════════════════════════════════════════
+  //  INFORMÁTICA
+  // ════════════════════════════════════════
+  { cat:"Informática", f:"O que é Ransomware?", v:"Malware que criptografa os dados da vítima e exige pagamento de resgate (ransom) para fornecer a chave de descriptografia. Ex: WannaCry, REvil." },
+  { cat:"Informática", f:"O que é phishing?", v:"Técnica de engenharia social que usa e-mails, páginas falsas ou mensagens para enganar usuários e roubar dados pessoais, senhas ou informações financeiras." },
+  { cat:"Informática", f:"No LibreOffice Writer, qual o atalho para localizar e substituir texto?", v:"Ctrl + H (localizar e substituir). Ctrl + F apenas localiza." },
+  { cat:"Informática", f:"O que é um protocolo HTTPS?", v:"HTTP com camada de segurança TLS/SSL. Criptografa a comunicação entre cliente e servidor, garantindo confidencialidade e integridade dos dados. Identificado pelo cadeado no navegador." },
+  { cat:"Informática", f:"O que é backup e quais os tipos?", v:"Cópia de segurança dos dados. Tipos: Completo (todos os arquivos), Incremental (somente alterações desde o último backup), Diferencial (alterações desde o último backup completo)." },
+  { cat:"Informática", f:"O que é a Mala Direta no LibreOffice Writer?", v:"Recurso para criar documentos personalizados em massa (ex: cartas, envelopes) combinando um documento modelo com uma base de dados de destinatários." },
+  { cat:"Informática", f:"Qual a diferença entre vírus e worm?", v:"VÍRUS: precisa de um arquivo hospedeiro para se propagar e ser executado. WORM: auto-replicante, se propaga sozinho pela rede sem precisar de um arquivo hospedeiro." },
+  { cat:"Informática", f:"O que é cloud computing (computação em nuvem)?", v:"Fornecimento de serviços de TI (armazenamento, processamento, software) via internet, sob demanda. Modelos: IaaS, PaaS, SaaS. Exemplos: Google Drive, AWS, Azure." },
+  { cat:"Informática", f:"Qual a extensão padrão de planilha do LibreOffice Calc?", v:".ODS (Open Document Spreadsheet). Também pode salvar em .XLSX (formato Excel) para compatibilidade." },
+  { cat:"Informática", f:"O que é firewall?", v:"Sistema de segurança que monitora e controla o tráfego de rede com base em regras de segurança predefinidas. Pode ser hardware ou software. Cria barreira entre rede confiável e não confiável." },
+  { cat:"Informática", f:"O que são cookies de navegador?", v:"Pequenos arquivos de texto armazenados pelo navegador no dispositivo do usuário, usados para guardar preferências, sessões de login e rastrear o comportamento na web." },
+
+  // ════════════════════════════════════════
+  //  MARANHÃO / SÃO JOSÉ DE RIBAMAR
+  // ════════════════════════════════════════
+  { cat:"Maranhão", f:"Quem é o padroeiro do estado do Maranhão?", v:"São José de Ribamar. Sua festa é celebrada em setembro, sendo considerado um dos maiores eventos religiosos do Norte/Nordeste do Brasil." },
+  { cat:"Maranhão", f:"Qual a capital do Maranhão e sua fundação?", v:"São Luís, fundada em 8 de setembro de 1612 pelos franceses. É a única capital brasileira fundada por franceses e Patrimônio Cultural da Humanidade pela UNESCO." },
+  { cat:"Maranhão", f:"O que é o Bumba-meu-boi do Maranhão?", v:"Manifestação folclórica mais importante do Maranhão, festejada principalmente em junho (Festas Juninas). Possui diversos 'sotaques': Matraca, Orquestra, Zabumba, Costa-de-Mão e Baixada." },
+  { cat:"Maranhão", f:"O que são os Lençóis Maranhenses?", v:"Parque Nacional com extensas dunas de areia branca e lagoas de água doce e azul, localizadas no norte do Maranhão. Um dos principais atrativos turísticos do Brasil." },
+  { cat:"Maranhão", f:"Qual o principal bioma do interior do Maranhão?", v:"O Cerrado domina o centro-sul do estado (área chamada de 'Matopiba'). Na costa há Manguezais. O Maranhão está no limite entre Amazônia, Cerrado e Caatinga." },
+  { cat:"Maranhão", f:"O que é o Tambor de Crioula?", v:"Manifestação cultural afro-maranhense de dança circular feminina, com presença de tambores. É Patrimônio Cultural Imaterial do Brasil pelo IPHAN." },
+  { cat:"Maranhão", f:"Qual o maior município do Maranhão em extensão territorial?", v:"Carolina, no sul do estado, conhecido pelas cachoeiras da Chapada das Mesas." },
+  { cat:"Maranhão", f:"Quando foi criado o município de São José de Ribamar?", v:"São José de Ribamar foi desmembrado de São Luís em 1959 e elevado à categoria de município independente. É o 2º município mais populoso do Maranhão." },
+  { cat:"Maranhão", f:"Qual o principal rio do Maranhão?", v:"Rio Mearim é o principal rio totalmente maranhense. O Rio Parnaíba faz divisa com o Piauí. O Rio Tocantins banha o extremo sul do estado." },
+  { cat:"Maranhão", f:"O que é a Festa do Divino Espírito Santo no Maranhão?", v:"Uma das mais antigas tradições religiosas do Maranhão, com origens portuguesas, realizada em Alcântara e São Luís 50 dias após a Páscoa (Pentecostes). Inclui procissões e distribuição de alimentos." },
+  { cat:"Maranhão", f:"Quem foi Gonçalves Dias?", v:"Antonio Gonçalves Dias (1823-1864): maior poeta romântico do Maranhão e um dos maiores do Brasil. Autor de 'Canção do Exílio' ('Minha terra tem palmeiras...')." },
+  { cat:"Maranhão", f:"O que é o centro histórico de São Luís?", v:"Conjunto de edificações coloniais (séculos XVII-XIX) de estilo português com azulejos, reconhecido como Patrimônio Cultural da Humanidade pela UNESCO em 1997." },
+
+  // ════════════════════════════════════════
+  //  ECA – ESTATUTO DA CRIANÇA E ADOLESCENTE
+  // ════════════════════════════════════════
+  { cat:"ECA", f:"Quem é considerado criança e quem é adolescente segundo o ECA?", v:"CRIANÇA: pessoa até 12 anos de idade incompletos. ADOLESCENTE: de 12 a 18 anos de idade." },
+  { cat:"ECA", f:"Qual o princípio central que rege o ECA?", v:"Doutrina da Proteção Integral: crianças e adolescentes são sujeitos de direitos e devem ser protegidos integralmente pela família, sociedade e Estado." },
+  { cat:"ECA", f:"O que é ato infracional segundo o ECA?", v:"Conduta descrita como crime ou contravenção penal, praticada por criança ou adolescente. Criança: medidas protetivas. Adolescente: medidas socioeducativas." },
+  { cat:"ECA", f:"Quais são as medidas socioeducativas do ECA (Art. 112)?", v:"Advertência; Obrigação de reparar o dano; Prestação de serviços à comunidade; Liberdade Assistida; Inserção em regime de semiliberdade; Internação em estabelecimento educacional; Qualquer medida do Art. 101 I a VI." },
+  { cat:"ECA", f:"Qual o prazo máximo de internação de adolescente infrator?", v:"No máximo 3 anos. A internação deve ser reavaliada a cada 6 meses. O adolescente deve ser liberado ao completar 21 anos, independentemente do prazo." },
+  { cat:"ECA", f:"O que é o Conselho Tutelar?", v:"Órgão permanente e autônomo, não jurisdicional, encarregado de zelar pelo cumprimento dos direitos da criança e do adolescente. Eleito pela comunidade local para mandato de 4 anos." },
+  { cat:"ECA", f:"Em que casos o ECA permite internação de adolescente?", v:"I. Ato infracional mediante grave ameaça ou violência à pessoa; II. Reiteração de infrações graves; III. Descumprimento reiterado e injustificável de medida anteriormente imposta." },
+
+  // ════════════════════════════════════════
+  //  ATUALIDADES / CONHECIMENTOS GERAIS
+  // ════════════════════════════════════════
+  { cat:"Atualidades", f:"O que é a Lei de Acesso à Informação (LAI – Lei 12.527/11)?", v:"Regulamenta o direito constitucional de acesso à informação pública. Todo cidadão pode solicitar informações a órgãos públicos. Prazo para resposta: até 20 dias (prorrogáveis por mais 10)." },
+  { cat:"Atualidades", f:"O que é a Lei Geral de Proteção de Dados (LGPD – Lei 13.709/18)?", v:"Regulamenta o tratamento de dados pessoais por pessoas físicas e jurídicas públicas e privadas. Garante direitos ao titular dos dados como acesso, correção e exclusão." },
+  { cat:"Atualidades", f:"O que é a Lei Maria da Penha (Lei 11.340/06)?", v:"Cria mecanismos para coibir e prevenir a violência doméstica e familiar contra a mulher. Define violência física, psicológica, sexual, patrimonial e moral. Prevê medidas protetivas de urgência." },
+  { cat:"Atualidades", f:"O que é o Código de Trânsito Brasileiro (CTB – Lei 9.503/97) e as competências municipais?", v:"Regulamenta o trânsito. Municípios são responsáveis pela sinalização e fiscalização de trânsito. A GCM pode atuar no ordenamento do trânsito em vias urbanas." },
+  { cat:"Atualidades", f:"O que é o SAMU e qual sua abrangência?", v:"Serviço de Atendimento Móvel de Urgência. Presta socorro médico de emergência fora do ambiente hospitalar. Acionado pelo número 192. Integra a Rede de Atenção às Urgências do SUS." },
+  { cat:"Atualidades", f:"O que é o Estatuto do Idoso (Lei 10.741/03)?", v:"Dispõe sobre os direitos assegurados às pessoas com idade igual ou superior a 60 anos. Prioridade de atendimento em órgãos públicos, proteção contra violência e abandono, acesso à saúde e transporte gratuito." },
+  { cat:"Atualidades", f:"O que é a Lei de Drogas (Lei 11.343/06)?", v:"Institui o Sistema Nacional de Políticas Públicas sobre Drogas (SISNAD). Distingue usuário de traficante. Para usuário: medidas educativas (sem prisão). Para tráfico: reclusão de 5 a 15 anos." },
+];
+
+// ── STATE ──
+let deck = [];
+let idx = 0;
+let correct = 0;
+let wrong = 0;
+let answered = [];
+let shuffled = false;
+let currentCat = 'todos';
+
+function getFiltered(cat) {
+  if (cat === 'todos') return [...ALL_CARDS];
+  return ALL_CARDS.filter(c => c.cat === cat);
+}
+
+function initDeck() {
+  deck = getFiltered(currentCat);
+  if (shuffled) deck = shuffle(deck);
+  idx = 0; correct = 0; wrong = 0;
+  answered = new Array(deck.length).fill(null);
+  updateUI();
+  updateScores();
+}
+
+function shuffle(arr) {
+  const a = [...arr];
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+
+function updateUI() {
+  const complete = document.getElementById('completeCard');
+  const stage = document.getElementById('cardStage');
+  const actions = document.getElementById('actionArea');
+
+  if (deck.length === 0) {
+    document.getElementById('cardFront').textContent = 'Nenhuma carta nesta categoria.';
+    document.getElementById('cardBack').textContent = '—';
+    document.getElementById('cardCount').textContent = '';
+    return;
+  }
+
+  if (idx >= deck.length) {
+    stage.style.display = 'none';
+    actions.style.display = 'none';
+    complete.classList.add('show');
+    document.getElementById('finalCorrect').textContent = correct;
+    document.getElementById('finalWrong').textContent = wrong;
+    const total = correct + wrong;
+    const pct = total > 0 ? Math.round((correct / total) * 100) : 0;
+    document.getElementById('finalPct').textContent = pct + '%';
+    updateProgress();
+    return;
+  }
+
+  stage.style.display = '';
+  actions.style.display = '';
+  complete.classList.remove('show');
+
+  const card = deck[idx];
+  const inner = document.getElementById('cardInner');
+  inner.classList.remove('flipped');
+
+  document.getElementById('cardFront').textContent = card.f;
+  document.getElementById('cardBack').textContent = card.v;
+  document.getElementById('topicBadge').textContent = card.cat;
+  document.getElementById('cardCount').textContent = `${idx + 1} de ${deck.length}`;
+
+  updateProgress();
+  updateScores();
+}
+
+function updateProgress() {
+  const done = Math.min(idx, deck.length);
+  const pct = deck.length > 0 ? Math.round((done / deck.length) * 100) : 0;
+  document.getElementById('progFill').style.width = pct + '%';
+  document.getElementById('progPct').textContent = pct + '%';
+}
+
+function updateScores() {
+  const remain = Math.max(0, deck.length - idx);
+  document.getElementById('scoreCorrect').textContent = correct;
+  document.getElementById('scoreWrong').textContent = wrong;
+  document.getElementById('scoreRemain').textContent = remain;
+  document.getElementById('hCorrect').textContent = correct;
+  document.getElementById('hWrong').textContent = wrong;
+}
+
+function flipCard() {
+  const inner = document.getElementById('cardInner');
+  inner.classList.toggle('flipped');
+}
+
+function nextCard() {
+  if (idx >= deck.length) return;
+  idx++;
+  updateUI();
+}
+
+function prevCard() {
+  if (idx <= 0) return;
+  idx--;
+  updateUI();
+}
+
+function answer(isCorrect) {
+  if (idx >= deck.length) return;
+  const inner = document.getElementById('cardInner');
+  if (!inner.classList.contains('flipped')) inner.classList.add('flipped');
+  if (isCorrect) correct++; else wrong++;
+  answered[idx] = isCorrect;
+  setTimeout(() => { idx++; updateUI(); }, 400);
+}
+
+function toggleShuffle() {
+  shuffled = !shuffled;
+  document.getElementById('shuffleBtn').classList.toggle('active', shuffled);
+  initDeck();
+}
+
+function restartDeck() { initDeck(); }
+
+function setCategory(btn) {
+  document.querySelectorAll('.cat-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  currentCat = btn.dataset.cat;
+  document.getElementById('topicBadge').textContent = currentCat === 'todos' ? 'Todos' : currentCat;
+  initDeck();
+}
+
+// Fill counts
+function fillCounts() {
+  const cats = ['todos','Legislação','Constitucional','Penal','Administrativo','Processual','Português','Matemática','Informática','Maranhão','Atualidades','ECA'];
+  cats.forEach(c => {
+    const el = document.getElementById('cnt-' + c);
+    if (el) el.textContent = c === 'todos' ? ALL_CARDS.length : ALL_CARDS.filter(x => x.cat === c).length;
+  });
+}
+
+// Keyboard shortcuts
+document.addEventListener('keydown', e => {
+  if (e.code === 'Space') { e.preventDefault(); flipCard(); }
+  else if (e.code === 'ArrowRight') nextCard();
+  else if (e.code === 'ArrowLeft') prevCard();
+  else if (e.key === 's' || e.key === 'S') answer(true);
+  else if (e.key === 'n' || e.key === 'N') answer(false);
+});
+
+fillCounts();
+initDeck();
+</script>
+</body>
+</html>
