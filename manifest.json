@@ -1,14 +1,14 @@
 {
   "name": "GCM São José de Ribamar — Estudos",
   "short_name": "GCM Ribamar",
-  "description": "App de estudos para o concurso GCM São José de Ribamar com simulados, treino IA e plano automático",
+  "description": "App de estudos para o concurso GCM São José de Ribamar 2026 com simulados, treino IA, flashcards e plano automático",
   "start_url": "./index.html",
   "display": "standalone",
   "background_color": "#0a0d14",
   "theme_color": "#f0b429",
   "orientation": "portrait-primary",
   "lang": "pt-BR",
-  "categories": ["education", "utilities"],
+  "categories": ["education"],
   "icons": [
     {
       "src": "icon-192.png",
@@ -23,10 +23,20 @@
       "purpose": "any maskable"
     }
   ],
-  "screenshots": [
+  "shortcuts": [
     {
-      "label": "Tela inicial do App GCM",
-      "sizes": "390x844"
+      "name": "Simulado",
+      "short_name": "Simulado",
+      "description": "Iniciar um simulado",
+      "url": "./index.html#simulado",
+      "icons": [{ "src": "icon-192.png", "sizes": "192x192" }]
+    },
+    {
+      "name": "Flashcards",
+      "short_name": "Flashcards",
+      "description": "Estudar com flashcards",
+      "url": "./index.html#flashcards",
+      "icons": [{ "src": "icon-192.png", "sizes": "192x192" }]
     }
   ]
 }
