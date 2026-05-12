@@ -9,16 +9,16 @@
 <meta name="apple-mobile-web-app-title" content="GCM Ribamar">
 <meta name="application-name" content="GCM Ribamar">
 <meta name="theme-color" content="#f0b429">
-<meta name="description" content="App de estudos para o concurso GCM São José de Ribamar com simulados, treino IA e plano automático">
-<meta name="msapplication-TileColor" content="#0a0d14">
-<meta name="msapplication-TileImage" content="icon-192.png">
+<meta name="description" content="App de estudos para o concurso GCM São José de Ribamar com simulados, treino IA, flashcards e plano automático">
 <link rel="manifest" href="manifest.json">
 <link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
-<link rel="icon" type="image/png" sizes="512x512" href="icon-512.png">
 <link rel="apple-touch-icon" href="icon-192.png">
 <title>GCM São José de Ribamar — App de Estudos</title>
-<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Rajdhani:wght@400;500;600;700&family=Source+Sans+3:wght@300;400;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Rajdhani:wght@400;500;600;700&family=Syne:wght@600;700;800&family=Source+Sans+3:wght@300;400;600&display=swap" rel="stylesheet">
 <style>
+/* ════════════════════════════════════════
+   DESIGN TOKENS
+════════════════════════════════════════ */
 :root {
   --bg: #0a0d14;
   --surface: #111622;
@@ -26,11 +26,13 @@
   --border: #243050;
   --gold: #f0b429;
   --gold2: #e09a10;
+  --gold-pale: #fef3c7;
   --blue: #2d6be4;
   --blue2: #1a4db5;
   --green: #22c55e;
   --red: #ef4444;
   --orange: #f97316;
+  --purple: #a78bfa;
   --text: #e2e8f0;
   --text2: #94a3b8;
   --text3: #475569;
@@ -48,11 +50,11 @@ body::before {
   content: '';
   position: fixed;
   top: 0; left: 0; right: 0; height: 3px;
-  background: linear-gradient(90deg, var(--gold), var(--blue), var(--gold));
+  background: linear-gradient(90deg, var(--gold), var(--blue), var(--purple), var(--gold));
   z-index: 999;
 }
 
-/* HEADER */
+/* ── HEADER ── */
 header {
   background: var(--surface);
   border-bottom: 1px solid var(--border);
@@ -96,23 +98,26 @@ header {
 }
 .stat-pill span { color: var(--gold); }
 
-/* NAV */
+/* ── NAV ── */
 nav {
   background: var(--surface);
   border-bottom: 1px solid var(--border);
   display: flex;
   overflow-x: auto;
   scrollbar-width: none;
+  position: sticky;
+  top: 60px;
+  z-index: 99;
 }
 nav::-webkit-scrollbar { display: none; }
 .nav-btn {
   background: none;
   border: none;
   color: var(--text2);
-  padding: 12px 20px;
+  padding: 12px 18px;
   cursor: pointer;
   font-family: 'Rajdhani', sans-serif;
-  font-size: 14px;
+  font-size: 13px;
   font-weight: 600;
   letter-spacing: 1px;
   text-transform: uppercase;
@@ -124,19 +129,19 @@ nav::-webkit-scrollbar { display: none; }
 .nav-btn:hover { color: var(--text); }
 .nav-btn.active { color: var(--gold); border-bottom-color: var(--gold); }
 
-/* MAIN */
-main { padding: 20px; max-width: 860px; margin: 0 auto; }
+/* ── MAIN ── */
+main { padding: 20px; max-width: 980px; margin: 0 auto; }
 
-/* SCREENS */
+/* ── SCREENS ── */
 .screen { display: none; animation: fadeIn 0.3s ease; }
 .screen.active { display: block; }
 @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
 
-/* HOME */
+/* ── HOME ── */
 .home-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-  gap: 16px;
+  grid-template-columns: repeat(auto-fit, minmax(165px, 1fr));
+  gap: 14px;
   margin-bottom: 24px;
 }
 .home-card {
@@ -156,13 +161,13 @@ main { padding: 20px; max-width: 860px; margin: 0 auto; }
   background: var(--card-accent, var(--gold));
 }
 .home-card:hover { border-color: var(--card-accent, var(--gold)); transform: translateY(-2px); }
-.home-card .icon { font-size: 32px; margin-bottom: 10px; }
-.home-card h3 { font-family: 'Bebas Neue'; font-size: 20px; letter-spacing: 2px; color: var(--card-accent, var(--gold)); }
-.home-card p { font-size: 13px; color: var(--text2); margin-top: 4px; }
+.home-card .icon { font-size: 30px; margin-bottom: 10px; }
+.home-card h3 { font-family: 'Bebas Neue'; font-size: 18px; letter-spacing: 2px; color: var(--card-accent, var(--gold)); }
+.home-card p { font-size: 12px; color: var(--text2); margin-top: 4px; }
 
 .section-title {
   font-family: 'Bebas Neue';
-  font-size: 22px;
+  font-size: 20px;
   letter-spacing: 3px;
   color: var(--text2);
   margin: 24px 0 12px;
@@ -174,7 +179,7 @@ main { padding: 20px; max-width: 860px; margin: 0 auto; }
   background: var(--border);
 }
 
-/* PROGRESS BARS */
+/* ── PROGRESS BARS (HOME) ── */
 .materia-list { display: flex; flex-direction: column; gap: 10px; }
 .materia-item {
   background: var(--surface);
@@ -204,7 +209,7 @@ main { padding: 20px; max-width: 860px; margin: 0 auto; }
   background: var(--bar-color, var(--gold));
 }
 
-/* QUESTION CARD */
+/* ── QUESTION CARD ── */
 .q-header {
   background: var(--surface);
   border: 1px solid var(--border);
@@ -308,7 +313,7 @@ main { padding: 20px; max-width: 860px; margin: 0 auto; }
 .btn-green { background: var(--green); color: #000; }
 .btn-red { background: var(--red); color: #fff; }
 
-/* RESULTADO */
+/* ── RESULTADO ── */
 .resultado-card {
   background: var(--surface);
   border: 1px solid var(--border);
@@ -345,7 +350,7 @@ main { padding: 20px; max-width: 860px; margin: 0 auto; }
 .res-stat.gold { border-top: 3px solid var(--gold); }
 .res-stat.gold .res-stat-num { color: var(--gold); }
 
-/* REVISÃO */
+/* ── REVISÃO ── */
 .revisao-item {
   background: var(--surface);
   border: 1px solid var(--border);
@@ -367,7 +372,7 @@ main { padding: 20px; max-width: 860px; margin: 0 auto; }
 .tag-correta { background: rgba(34,197,94,0.15); color: var(--green); }
 .tag-materia { background: rgba(240,180,41,0.15); color: var(--gold); }
 
-/* PLANO IA */
+/* ── PLANO IA ── */
 .plano-card {
   background: var(--surface);
   border: 1px solid var(--border);
@@ -394,7 +399,7 @@ main { padding: 20px; max-width: 860px; margin: 0 auto; }
 .pri-media { background: rgba(240,180,41,0.2); color: var(--gold); border: 1px solid var(--gold); }
 .pri-baixa { background: rgba(34,197,94,0.2); color: var(--green); border: 1px solid var(--green); }
 
-/* EMPTY STATE */
+/* ── EMPTY STATE ── */
 .empty-state {
   text-align: center;
   padding: 48px 20px;
@@ -403,53 +408,10 @@ main { padding: 20px; max-width: 860px; margin: 0 auto; }
 .empty-state .icon { font-size: 48px; margin-bottom: 12px; }
 .empty-state p { font-size: 15px; }
 
-/* TOAST */
-.toast {
-  position: fixed;
-  bottom: 20px; right: 20px;
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: 10px;
-  padding: 14px 20px;
-  font-size: 14px;
-  z-index: 999;
-  display: flex; align-items: center; gap: 10px;
-  animation: slideUp 0.3s ease;
-  max-width: 320px;
-}
-@keyframes slideUp {
-  from { transform: translateY(20px); opacity: 0; }
-  to { transform: translateY(0); opacity: 1; }
-}
-
-/* MODAL OVERLAY */
-.modal-overlay {
-  display: none;
-  position: fixed;
-  inset: 0;
-  background: rgba(0,0,0,0.7);
-  z-index: 200;
-  align-items: center;
-  justify-content: center;
-  padding: 20px;
-}
-.modal-overlay.open { display: flex; }
-.modal-box {
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-  padding: 28px;
-  max-width: 500px;
-  width: 100%;
-  animation: fadeIn 0.25s ease;
-}
-.modal-box h2 { font-family: 'Bebas Neue'; font-size: 24px; letter-spacing: 2px; color: var(--gold); margin-bottom: 12px; }
-.modal-box p { font-size: 14px; color: var(--text2); line-height: 1.7; margin-bottom: 20px; }
-
-/* SELETOR MATÉRIA */
+/* ── SELETOR MATÉRIA ── */
 .materia-select-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(155px, 1fr));
   gap: 10px;
   margin-bottom: 20px;
 }
@@ -469,7 +431,7 @@ main { padding: 20px; max-width: 860px; margin: 0 auto; }
 .mat-select-btn .icon { font-size: 24px; margin-bottom: 6px; }
 .mat-select-btn .lbl { font-family: 'Rajdhani'; font-weight: 600; font-size: 13px; text-transform: uppercase; letter-spacing: 0.5px; }
 
-/* CRONÔMETRO */
+/* ── CRONÔMETRO ── */
 .cronometro {
   font-family: 'Bebas Neue';
   font-size: 18px;
@@ -477,15 +439,413 @@ main { padding: 20px; max-width: 860px; margin: 0 auto; }
   letter-spacing: 2px;
 }
 
-/* SCROLLBAR */
+/* ══════════════════════════════════════════
+   FLASHCARDS — SCREEN STYLES
+══════════════════════════════════════════ */
+#screen-flashcards {
+  padding: 0;
+  max-width: 100%;
+}
+.fc-layout {
+  display: flex;
+  min-height: calc(100vh - 120px);
+}
+
+/* SIDEBAR */
+.fc-sidebar {
+  width: 220px;
+  min-width: 220px;
+  border-right: 1px solid var(--border);
+  padding: 20px 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  background: rgba(17,22,34,0.6);
+  position: sticky;
+  top: 120px;
+  height: calc(100vh - 120px);
+  overflow-y: auto;
+}
+.fc-aside-title {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--text3);
+  padding: 0 6px;
+  margin-bottom: 4px;
+  margin-top: 8px;
+}
+.fc-cat-btn {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 10px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 13px;
+  color: var(--text2);
+  background: transparent;
+  border: none;
+  text-align: left;
+  transition: all 0.15s;
+  gap: 6px;
+  width: 100%;
+}
+.fc-cat-btn:hover { background: rgba(240,180,41,0.08); color: var(--text); }
+.fc-cat-btn.active {
+  background: rgba(240,180,41,0.12);
+  color: var(--gold);
+  font-weight: 600;
+}
+.fc-cat-count {
+  background: var(--surface2);
+  border-radius: 12px;
+  padding: 1px 7px;
+  font-size: 11px;
+  color: var(--text3);
+  min-width: 22px;
+  text-align: center;
+  font-family: 'Rajdhani'; font-weight: 600;
+}
+.fc-cat-btn.active .fc-cat-count { background: rgba(240,180,41,0.2); color: var(--gold); }
+.fc-sep { height: 1px; background: var(--border); margin: 6px 0; }
+
+/* FC CONTENT */
+.fc-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 24px 20px 40px;
+  gap: 16px;
+  overflow-y: auto;
+}
+
+/* TOOLBAR */
+.fc-toolbar {
+  width: 100%;
+  max-width: 640px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+.fc-toolbar-left { display: flex; align-items: center; gap: 10px; }
+.fc-toolbar-right { display: flex; gap: 8px; }
+.fc-topic-badge {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--gold);
+  background: rgba(240,180,41,0.1);
+  border: 1px solid rgba(240,180,41,0.25);
+  padding: 4px 12px;
+  border-radius: 20px;
+}
+.fc-card-count { font-size: 13px; color: var(--text2); font-family: 'Rajdhani'; font-weight: 600; }
+.fc-icon-btn {
+  width: 34px; height: 34px;
+  display: flex; align-items: center; justify-content: center;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  background: var(--surface2);
+  cursor: pointer;
+  color: var(--text2);
+  font-size: 14px;
+  transition: all 0.15s;
+}
+.fc-icon-btn:hover { border-color: var(--gold); color: var(--gold); }
+.fc-icon-btn.active { background: rgba(240,180,41,0.12); border-color: var(--gold); color: var(--gold); }
+
+/* FC PROGRESS */
+.fc-progress-wrap { width: 100%; max-width: 640px; }
+.fc-progress-info { display: flex; justify-content: space-between; margin-bottom: 6px; }
+.fc-progress-label { font-size: 12px; color: var(--text2); }
+.fc-progress-pct { font-size: 12px; color: var(--gold); font-weight: 600; }
+.fc-progress-track {
+  width: 100%; height: 4px;
+  background: var(--surface2);
+  border-radius: 99px;
+  overflow: hidden;
+}
+.fc-progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--gold), #fbbf24);
+  border-radius: 99px;
+  transition: width 0.4s ease;
+}
+
+/* CARD FLIP */
+.fc-stage {
+  width: 100%;
+  max-width: 640px;
+  perspective: 1200px;
+}
+.fc-inner {
+  position: relative;
+  width: 100%;
+  height: 320px;
+  transform-style: preserve-3d;
+  transition: transform 0.55s cubic-bezier(0.4, 0.2, 0.2, 1);
+  cursor: pointer;
+}
+.fc-inner.flipped { transform: rotateY(180deg); }
+.fc-face {
+  position: absolute;
+  inset: 0;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  border-radius: var(--radius);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 32px;
+  text-align: center;
+}
+.fc-front {
+  background: var(--surface);
+  border: 1px solid var(--border);
+}
+.fc-front::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: var(--radius);
+  background: linear-gradient(135deg, rgba(240,180,41,0.04) 0%, transparent 60%);
+  pointer-events: none;
+}
+.fc-back {
+  background: var(--surface2);
+  border: 1px solid rgba(240,180,41,0.35);
+  transform: rotateY(180deg);
+}
+.fc-back::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: var(--radius);
+  background: linear-gradient(135deg, rgba(240,180,41,0.07) 0%, transparent 60%);
+  pointer-events: none;
+}
+.fc-face-label {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--text3);
+  margin-bottom: 16px;
+}
+.fc-back .fc-face-label { color: rgba(240,180,41,0.5); }
+.fc-face-text {
+  font-family: 'Syne', sans-serif;
+  font-size: 1.25rem;
+  font-weight: 600;
+  line-height: 1.5;
+  color: var(--text);
+  max-width: 500px;
+}
+.fc-back .fc-face-text {
+  font-family: 'Source Sans 3', sans-serif;
+  font-size: 1rem;
+  font-weight: 400;
+  color: var(--gold-pale);
+  line-height: 1.65;
+}
+.fc-flip-hint {
+  position: absolute;
+  bottom: 14px;
+  font-size: 11px;
+  color: var(--text3);
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+/* FC ACTIONS */
+.fc-actions {
+  width: 100%;
+  max-width: 640px;
+  display: flex;
+  gap: 10px;
+}
+.fc-btn {
+  flex: 1;
+  padding: 13px 12px;
+  border-radius: 10px;
+  border: none;
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all 0.15s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+}
+.fc-btn-wrong {
+  background: rgba(239,68,68,0.12);
+  border: 1px solid rgba(239,68,68,0.3);
+  color: #fca5a5;
+}
+.fc-btn-wrong:hover { background: rgba(239,68,68,0.2); border-color: rgba(239,68,68,0.5); }
+.fc-btn-skip {
+  flex: 0.4;
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  color: var(--text2);
+}
+.fc-btn-skip:hover { background: var(--border); color: var(--text); }
+.fc-btn-correct {
+  background: rgba(34,197,94,0.12);
+  border: 1px solid rgba(34,197,94,0.3);
+  color: #86efac;
+}
+.fc-btn-correct:hover { background: rgba(34,197,94,0.2); border-color: rgba(34,197,94,0.5); }
+.fc-btn:active { transform: scale(0.97); }
+
+/* FC SCORE BAR */
+.fc-score-bar {
+  width: 100%;
+  max-width: 640px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 14px 20px;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+.fc-score-item { text-align: center; }
+.fc-score-item .val {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 28px;
+  display: block;
+}
+.fc-score-item .lbl { font-size: 11px; color: var(--text2); display: block; margin-top: 2px; font-family: 'Rajdhani'; font-weight: 600; letter-spacing: 1px; text-transform: uppercase; }
+.fc-s-correct .val { color: var(--green); }
+.fc-s-wrong .val { color: var(--red); }
+.fc-s-remain .val { color: var(--gold); }
+.fc-score-divider { width: 1px; height: 36px; background: var(--border); }
+
+/* FC COMPLETE */
+.fc-complete-card {
+  width: 100%;
+  max-width: 640px;
+  background: var(--surface);
+  border: 1px solid rgba(240,180,41,0.3);
+  border-radius: var(--radius);
+  padding: 40px 24px;
+  text-align: center;
+  display: none;
+}
+.fc-complete-card.show { display: block; animation: fadeIn 0.4s ease; }
+.fc-complete-icon { font-size: 3rem; margin-bottom: 12px; }
+.fc-complete-title {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 32px;
+  letter-spacing: 3px;
+  color: var(--gold);
+  margin-bottom: 8px;
+}
+.fc-complete-subtitle { color: var(--text2); margin-bottom: 20px; font-size: 14px; }
+.fc-complete-stats {
+  display: flex;
+  justify-content: center;
+  gap: 32px;
+  margin-bottom: 24px;
+}
+.fc-complete-stat-val {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 40px;
+  display: block;
+}
+.fc-complete-stat-lbl { font-size: 11px; color: var(--text2); font-family: 'Rajdhani'; font-weight: 600; letter-spacing: 1px; text-transform: uppercase; }
+.fc-btn-restart {
+  background: var(--gold);
+  color: #000;
+  padding: 12px 28px;
+  border-radius: 8px;
+  border: none;
+  font-family: 'Rajdhani', sans-serif;
+  font-weight: 700;
+  font-size: 14px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.fc-btn-restart:hover { background: var(--gold2); }
+
+/* FC KEYBOARD HINTS */
+.fc-kbd-hints {
+  display: flex;
+  gap: 16px;
+  justify-content: center;
+  flex-wrap: wrap;
+  width: 100%;
+  max-width: 640px;
+}
+.fc-kbd { font-size: 11px; color: var(--text3); display: flex; align-items: center; gap: 4px; }
+.fc-kbd kbd {
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 1px 6px;
+  font-size: 10px;
+  font-family: 'Source Sans 3', sans-serif;
+  color: var(--text2);
+}
+
+/* ── TOAST ── */
+.toast {
+  position: fixed;
+  bottom: 20px; right: 20px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 14px 20px;
+  font-size: 14px;
+  z-index: 999;
+  display: flex; align-items: center; gap: 10px;
+  animation: slideUp 0.3s ease;
+  max-width: 320px;
+}
+@keyframes slideUp {
+  from { transform: translateY(20px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+/* ── SCROLLBAR ── */
 ::-webkit-scrollbar { width: 6px; }
 ::-webkit-scrollbar-track { background: var(--surface); }
 ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
 
-@media (max-width: 600px) {
+/* ── RESPONSIVE ── */
+@media (max-width: 700px) {
   .header-stats { display: none; }
   .resultado-grid { grid-template-columns: repeat(2, 1fr); }
   .home-grid { grid-template-columns: 1fr 1fr; }
+  .fc-sidebar { display: none; }
+  .fc-content { padding: 16px 12px 40px; }
+  .fc-face-text { font-size: 1rem; }
+  .fc-inner { height: 260px; }
+  .fc-mobile-cats {
+    display: flex;
+    overflow-x: auto;
+    gap: 8px;
+    padding-bottom: 4px;
+    scrollbar-width: none;
+  }
+  .fc-mobile-cats::-webkit-scrollbar { display: none; }
+}
+@media (min-width: 701px) {
+  .fc-mobile-cats { display: none; }
 }
 </style>
 </head>
@@ -495,12 +855,12 @@ main { padding: 20px; max-width: 860px; margin: 0 auto; }
   <div class="logo-shield">🛡️</div>
   <div class="logo-text">
     <h1>GCM RIBAMAR</h1>
-    <p>App de Estudos — Concurso Público</p>
+    <p>App de Estudos — Concurso Público 2026</p>
   </div>
   <div class="header-stats">
     <div class="stat-pill">🎯 Total: <span id="hdr-total">0</span></div>
     <div class="stat-pill">✅ Acertos: <span id="hdr-acertos">0</span></div>
-    <div class="stat-pill" id="hdr-pct-wrap">📊 <span id="hdr-pct">—</span></div>
+    <div class="stat-pill">📊 <span id="hdr-pct">—</span></div>
   </div>
 </header>
 
@@ -508,13 +868,16 @@ main { padding: 20px; max-width: 860px; margin: 0 auto; }
   <button class="nav-btn active" onclick="showScreen('home')" id="nav-home">🏠 Início</button>
   <button class="nav-btn" onclick="showScreen('simulado-sel')" id="nav-simulado">📝 Simulado</button>
   <button class="nav-btn" onclick="showScreen('treino-sel')" id="nav-treino">🧠 Treino IA</button>
-  <button class="nav-btn" onclick="showScreen('revisao')" id="nav-revisao">🔁 Revisar Erros</button>
+  <button class="nav-btn" onclick="showScreen('revisao')" id="nav-revisao">🔁 Revisão</button>
   <button class="nav-btn" onclick="showScreen('plano')" id="nav-plano">📋 Plano IA</button>
+  <button class="nav-btn" onclick="showScreen('flashcards')" id="nav-flashcards">🃏 Flashcards</button>
 </nav>
 
 <main>
 
-<!-- HOME -->
+<!-- ══════════════════════════════════════
+     HOME
+══════════════════════════════════════ -->
 <div class="screen active" id="screen-home">
   <div class="home-grid" style="margin-top:8px;">
     <div class="home-card" style="--card-accent:#f0b429" onclick="showScreen('simulado-sel')">
@@ -535,7 +898,12 @@ main { padding: 20px; max-width: 860px; margin: 0 auto; }
     <div class="home-card" style="--card-accent:#22c55e" onclick="showScreen('plano')">
       <div class="icon">📋</div>
       <h3>Plano IA</h3>
-      <p>Plano automático baseado no seu desempenho</p>
+      <p>Plano automático por desempenho</p>
+    </div>
+    <div class="home-card" style="--card-accent:#a78bfa" onclick="showScreen('flashcards')">
+      <div class="icon">🃏</div>
+      <h3>Flashcards</h3>
+      <p>Memorização rápida por categoria</p>
     </div>
   </div>
 
@@ -543,7 +911,9 @@ main { padding: 20px; max-width: 860px; margin: 0 auto; }
   <div class="materia-list" id="home-materias"></div>
 </div>
 
-<!-- SIMULADO SELEÇÃO -->
+<!-- ══════════════════════════════════════
+     SIMULADO SELEÇÃO
+══════════════════════════════════════ -->
 <div class="screen" id="screen-simulado-sel">
   <div class="section-title">📝 Configurar Simulado</div>
   <div class="q-card">
@@ -563,7 +933,9 @@ main { padding: 20px; max-width: 860px; margin: 0 auto; }
   </div>
 </div>
 
-<!-- TREINO SELEÇÃO -->
+<!-- ══════════════════════════════════════
+     TREINO SELEÇÃO
+══════════════════════════════════════ -->
 <div class="screen" id="screen-treino-sel">
   <div class="section-title">🧠 Treino Inteligente</div>
   <div class="q-card">
@@ -573,7 +945,9 @@ main { padding: 20px; max-width: 860px; margin: 0 auto; }
   </div>
 </div>
 
-<!-- QUESTÃO (Simulado / Treino) -->
+<!-- ══════════════════════════════════════
+     QUESTÃO (Simulado / Treino)
+══════════════════════════════════════ -->
 <div class="screen" id="screen-questao">
   <div class="q-header">
     <div class="q-badge" id="q-materia-badge">—</div>
@@ -593,7 +967,9 @@ main { padding: 20px; max-width: 860px; margin: 0 auto; }
   </div>
 </div>
 
-<!-- RESULTADO -->
+<!-- ══════════════════════════════════════
+     RESULTADO
+══════════════════════════════════════ -->
 <div class="screen" id="screen-resultado">
   <div class="resultado-card">
     <div class="resultado-label">Resultado Final</div>
@@ -622,23 +998,207 @@ main { padding: 20px; max-width: 860px; margin: 0 auto; }
   </div>
 </div>
 
-<!-- REVISÃO -->
+<!-- ══════════════════════════════════════
+     REVISÃO
+══════════════════════════════════════ -->
 <div class="screen" id="screen-revisao">
   <div class="section-title">🔁 Revisão de Erros</div>
   <div id="revisao-content"></div>
 </div>
 
-<!-- PLANO IA -->
+<!-- ══════════════════════════════════════
+     PLANO IA
+══════════════════════════════════════ -->
 <div class="screen" id="screen-plano">
   <div class="section-title">📋 Plano de Estudos — IA</div>
   <div id="plano-content"></div>
 </div>
 
+<!-- ══════════════════════════════════════
+     FLASHCARDS
+══════════════════════════════════════ -->
+<div class="screen" id="screen-flashcards">
+  <div class="fc-layout">
+
+    <!-- SIDEBAR (desktop) -->
+    <aside class="fc-sidebar">
+      <div class="fc-aside-title">Todas</div>
+      <button class="fc-cat-btn active" data-cat="todos" onclick="fcSetCat(this)">
+        📚 Todos os Temas
+        <span class="fc-cat-count" id="fc-cnt-todos">0</span>
+      </button>
+      <div class="fc-sep"></div>
+      <div class="fc-aside-title">Espec. / Direito</div>
+      <button class="fc-cat-btn" data-cat="Legislação" onclick="fcSetCat(this)">
+        ⚖️ Legislação GCM
+        <span class="fc-cat-count" id="fc-cnt-Legislação">0</span>
+      </button>
+      <button class="fc-cat-btn" data-cat="Constitucional" onclick="fcSetCat(this)">
+        📜 Dir. Constitucional
+        <span class="fc-cat-count" id="fc-cnt-Constitucional">0</span>
+      </button>
+      <button class="fc-cat-btn" data-cat="Penal" onclick="fcSetCat(this)">
+        🔒 Dir. Penal
+        <span class="fc-cat-count" id="fc-cnt-Penal">0</span>
+      </button>
+      <button class="fc-cat-btn" data-cat="Administrativo" onclick="fcSetCat(this)">
+        🏛️ Dir. Administrativo
+        <span class="fc-cat-count" id="fc-cnt-Administrativo">0</span>
+      </button>
+      <button class="fc-cat-btn" data-cat="Processual" onclick="fcSetCat(this)">
+        📋 Dir. Processual
+        <span class="fc-cat-count" id="fc-cnt-Processual">0</span>
+      </button>
+      <button class="fc-cat-btn" data-cat="ECA" onclick="fcSetCat(this)">
+        👶 ECA
+        <span class="fc-cat-count" id="fc-cnt-ECA">0</span>
+      </button>
+      <div class="fc-sep"></div>
+      <div class="fc-aside-title">Outras Matérias</div>
+      <button class="fc-cat-btn" data-cat="Português" onclick="fcSetCat(this)">
+        🗣️ Língua Portuguesa
+        <span class="fc-cat-count" id="fc-cnt-Português">0</span>
+      </button>
+      <button class="fc-cat-btn" data-cat="Matemática" onclick="fcSetCat(this)">
+        🔢 Matemática / RL
+        <span class="fc-cat-count" id="fc-cnt-Matemática">0</span>
+      </button>
+      <button class="fc-cat-btn" data-cat="Informática" onclick="fcSetCat(this)">
+        💻 Informática
+        <span class="fc-cat-count" id="fc-cnt-Informática">0</span>
+      </button>
+      <button class="fc-cat-btn" data-cat="Maranhão" onclick="fcSetCat(this)">
+        🌴 Maranhão / SJR
+        <span class="fc-cat-count" id="fc-cnt-Maranhão">0</span>
+      </button>
+      <button class="fc-cat-btn" data-cat="Atualidades" onclick="fcSetCat(this)">
+        🌐 Atualidades / Leis
+        <span class="fc-cat-count" id="fc-cnt-Atualidades">0</span>
+      </button>
+    </aside>
+
+    <!-- CONTENT -->
+    <div class="fc-content">
+
+      <!-- Mobile category chips -->
+      <div class="fc-mobile-cats" id="fc-mobile-chips"></div>
+
+      <!-- TOOLBAR -->
+      <div class="fc-toolbar">
+        <div class="fc-toolbar-left">
+          <span class="fc-topic-badge" id="fc-topic-badge">Todos</span>
+          <span class="fc-card-count" id="fc-card-count"></span>
+        </div>
+        <div class="fc-toolbar-right">
+          <button class="fc-icon-btn" id="fc-shuffle-btn" title="Embaralhar" onclick="fcToggleShuffle()">🔀</button>
+          <button class="fc-icon-btn" title="Reiniciar" onclick="fcRestart()">↺</button>
+        </div>
+      </div>
+
+      <!-- PROGRESS -->
+      <div class="fc-progress-wrap">
+        <div class="fc-progress-info">
+          <span class="fc-progress-label">Progresso do baralho</span>
+          <span class="fc-progress-pct" id="fc-prog-pct">0%</span>
+        </div>
+        <div class="fc-progress-track">
+          <div class="fc-progress-fill" id="fc-prog-fill" style="width:0%"></div>
+        </div>
+      </div>
+
+      <!-- CARD STAGE -->
+      <div class="fc-stage" id="fc-stage">
+        <div class="fc-inner" id="fc-inner" onclick="fcFlip()">
+          <div class="fc-face fc-front">
+            <div class="fc-face-label">Pergunta</div>
+            <div class="fc-face-text" id="fc-front-text">Carregando...</div>
+            <div class="fc-flip-hint">↕ clique para revelar</div>
+          </div>
+          <div class="fc-face fc-back">
+            <div class="fc-face-label">Resposta</div>
+            <div class="fc-face-text" id="fc-back-text">—</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- COMPLETE -->
+      <div class="fc-complete-card" id="fc-complete">
+        <div class="fc-complete-icon">🏅</div>
+        <div class="fc-complete-title">Baralho Concluído!</div>
+        <div class="fc-complete-subtitle">Você finalizou todas as cartas desta sessão.</div>
+        <div class="fc-complete-stats">
+          <div>
+            <span class="fc-complete-stat-val" id="fc-final-correct" style="color:var(--green)">0</span>
+            <span class="fc-complete-stat-lbl">Acertos</span>
+          </div>
+          <div>
+            <span class="fc-complete-stat-val" id="fc-final-wrong" style="color:var(--red)">0</span>
+            <span class="fc-complete-stat-lbl">Erros</span>
+          </div>
+          <div>
+            <span class="fc-complete-stat-val" id="fc-final-pct" style="color:var(--gold)">0%</span>
+            <span class="fc-complete-stat-lbl">Aproveitamento</span>
+          </div>
+        </div>
+        <button class="fc-btn-restart" onclick="fcRestart()">Estudar Novamente</button>
+      </div>
+
+      <!-- ACTIONS -->
+      <div class="fc-actions" id="fc-action-area">
+        <button class="fc-btn fc-btn-wrong" onclick="fcAnswer(false)">✗ Não Sabia</button>
+        <button class="fc-btn fc-btn-skip" onclick="fcNext()">→ Pular</button>
+        <button class="fc-btn fc-btn-correct" onclick="fcAnswer(true)">✓ Sabia!</button>
+      </div>
+
+      <!-- SCORE BAR -->
+      <div class="fc-score-bar">
+        <div class="fc-score-item fc-s-correct">
+          <span class="val" id="fc-score-correct">0</span>
+          <span class="lbl">Acertos</span>
+        </div>
+        <div class="fc-score-divider"></div>
+        <div class="fc-score-item fc-s-wrong">
+          <span class="val" id="fc-score-wrong">0</span>
+          <span class="lbl">Erros</span>
+        </div>
+        <div class="fc-score-divider"></div>
+        <div class="fc-score-item fc-s-remain">
+          <span class="val" id="fc-score-remain">0</span>
+          <span class="lbl">Restantes</span>
+        </div>
+      </div>
+
+      <!-- KEYBOARD HINTS -->
+      <div class="fc-kbd-hints">
+        <div class="fc-kbd"><kbd>Espaço</kbd> Virar</div>
+        <div class="fc-kbd"><kbd>→</kbd> Próxima</div>
+        <div class="fc-kbd"><kbd>←</kbd> Anterior</div>
+        <div class="fc-kbd"><kbd>S</kbd> Sabia</div>
+        <div class="fc-kbd"><kbd>N</kbd> Não sabia</div>
+      </div>
+    </div>
+  </div>
+</div>
+
 </main>
+
+<!-- ══════════════════════════════════════
+     PWA INSTALL BANNER
+══════════════════════════════════════ -->
+<div id="pwa-banner" style="display:none;position:fixed;bottom:0;left:0;right:0;background:var(--surface);border-top:2px solid var(--gold);padding:14px 20px;z-index:500;align-items:center;gap:12px;animation:slideUp 0.4s ease;">
+  <div style="font-size:28px">🛡️</div>
+  <div style="flex:1">
+    <div style="font-family:'Bebas Neue';font-size:16px;letter-spacing:1px;color:var(--gold)">Instalar App GCM</div>
+    <div style="font-size:12px;color:var(--text2)">Use offline · acesso rápido na tela inicial</div>
+  </div>
+  <button onclick="installPWA()" style="background:var(--gold);color:#000;border:none;border-radius:8px;padding:8px 16px;font-family:'Rajdhani';font-weight:700;font-size:13px;cursor:pointer;white-space:nowrap;">📲 Instalar</button>
+  <button onclick="document.getElementById('pwa-banner').style.display='none'" style="background:none;border:none;color:var(--text3);font-size:20px;cursor:pointer;padding:4px;">✕</button>
+</div>
+<div id="offline-toast" style="display:none" class="toast">📴 Você está offline — o app continua funcionando!</div>
 
 <script>
 // ============================================================
-// BANCO DE QUESTÕES
+// ████ BANCO DE QUESTÕES ████
 // ============================================================
 const QUESTOES = [
 // ---- CONHECIMENTOS ESPECÍFICOS: LEI 13.022/2014 ----
@@ -646,387 +1206,490 @@ const QUESTOES = [
 pergunta:"De acordo com o Art. 1º da Lei 13.022/2014 (Estatuto Geral das Guardas Municipais), qual é a natureza jurídica da Guarda Municipal?",
 alternativas:["A) Órgão de segurança pública federal com competência estadual","B) Instituição de caráter civil, uniformizada e armada que zela pelos bens, serviços e instalações do município","C) Força auxiliar das Polícias Militares estaduais","D) Corpo de segurança vinculado ao Ministério da Justiça"],
 resposta:"B",
-comentario:"<strong>Art. 1º da Lei 13.022/2014:</strong> A Guarda Municipal é instituída no âmbito dos municípios, possui caráter <em>civil, uniformizado e armado</em>. Seu objetivo principal é a proteção dos bens, serviços e instalações municipais. Não é força auxiliar da PM nem vinculada ao Governo Federal."},
+comentario:"<strong>Art. 1º da Lei 13.022/2014:</strong> A Guarda Municipal é instituída no âmbito dos municípios, possui caráter <em>civil, uniformizado e armado</em>. Seu objetivo principal é a proteção dos bens, serviços e instalações municipais."},
 
 {id:2,materia:"Conhecimentos Específicos",sub:"Lei 13.022/2014",dif:"medio",
-pergunta:"O Art. 3º da Lei 13.022/2014 elenca as atribuições específicas da Guarda Municipal. Qual das alternativas descreve CORRETAMENTE uma dessas atribuições?",
-alternativas:["A) Realizar investigação criminal por iniciativa própria","B) Proteger o patrimônio ecológico, histórico, cultural, arquitetônico e ambiental do município","C) Prender em flagrante qualquer pessoa sem necessidade de comunicação ao Delegado","D) Substituir a Polícia Militar no policiamento ostensivo"],
+pergunta:"O Art. 3º da Lei 13.022/2014 elenca as atribuições específicas da Guarda Municipal. Qual alternativa descreve CORRETAMENTE uma dessas atribuições?",
+alternativas:["A) Realizar investigação criminal por iniciativa própria","B) Proteger o patrimônio ecológico, histórico, cultural, arquitetônico e ambiental do município","C) Prender em flagrante qualquer pessoa sem comunicação ao Delegado","D) Substituir a Polícia Militar no policiamento ostensivo"],
 resposta:"B",
-comentario:"<strong>Art. 3º, Lei 13.022/2014:</strong> Entre as atribuições da GCM está proteger o patrimônio ecológico, histórico, cultural, arquitetônico e ambiental do município, impedindo atos de depredação. A GCM NÃO realiza investigação por conta própria, não substitui a PM e deve comunicar prisões em flagrante à autoridade competente."},
+comentario:"<strong>Art. 3º, Lei 13.022/2014:</strong> Entre as atribuições da GCM está proteger o patrimônio ecológico, histórico, cultural, arquitetônico e ambiental do município. A GCM NÃO realiza investigação por conta própria nem substitui a PM."},
 
 {id:3,materia:"Conhecimentos Específicos",sub:"Lei 13.022/2014",dif:"dificil",
 pergunta:"Segundo o Art. 4º da Lei 13.022/2014, são deveres do Guarda Municipal, EXCETO:",
 alternativas:["A) Exercer suas atribuições com exclusividade no interesse da coletividade","B) Tratar as pessoas com urbanidade e respeitar os direitos fundamentais","C) Zelar pelo patrimônio público municipal","D) Realizar atividades de policiamento ostensivo nos bairros conforme demanda da comunidade"],
 resposta:"D",
-comentario:"<strong>Art. 4º da Lei 13.022/2014</strong> lista deveres do GCM, como tratar com urbanidade, zelar pelo patrimônio e exercer atribuições em interesse da coletividade. O policiamento ostensivo é competência da Polícia Militar (CF/88, art. 144, §5º), e não da GCM. A GCM tem foco na proteção municipal, não no policiamento ostensivo de bairros."},
+comentario:"<strong>Art. 4º da Lei 13.022/2014</strong>: Policiamento ostensivo é competência da Polícia Militar (CF/88, art. 144, §5º), e não da GCM. A GCM tem foco na proteção municipal."},
 
 {id:4,materia:"Conhecimentos Específicos",sub:"Lei 13.022/2014",dif:"medio",
 pergunta:"O Art. 9º da Lei 13.022/2014 trata do uso da força pela Guarda Municipal. Assinale a alternativa CORRETA:",
-alternativas:["A) O uso da força é permitido sempre que o guarda se sentir ameaçado, mesmo sem necessidade real","B) O uso da força deve ser proporcional ao risco ou ameaça existente, sendo admitido o uso de armamento letal apenas em último caso","C) A GCM pode usar força letal sempre que houver resistência à abordagem","D) O uso de armamento letal é proibido à GCM em qualquer situação"],
+alternativas:["A) O uso da força é permitido sempre que o guarda se sentir ameaçado","B) O uso da força deve ser proporcional ao risco ou ameaça existente, sendo admitido o armamento letal apenas em último caso","C) A GCM pode usar força letal sempre que houver resistência à abordagem","D) O uso de armamento letal é absolutamente proibido à GCM"],
 resposta:"B",
-comentario:"<strong>Art. 9º da Lei 13.022/2014:</strong> O uso da força obedece aos princípios da <strong>necessidade e proporcionalidade</strong>. O armamento letal só pode ser usado em último caso, quando os meios não letais forem insuficientes. A lei não proíbe armamento letal, mas condiciona seu uso a situações extremas e proporcionais."},
+comentario:"<strong>Art. 9º da Lei 13.022/2014:</strong> O uso da força obedece aos princípios da <strong>necessidade e proporcionalidade</strong>. O armamento letal só pode ser usado em último caso."},
 
-// ---- CF/88 ----
 {id:5,materia:"Conhecimentos Específicos",sub:"CF/88",dif:"facil",
-pergunta:"O Art. 37 da CF/88 estabelece que a Administração Pública direta e indireta deve obedecer aos princípios da sigla LIMPE. O que representa cada letra?",
+pergunta:"O Art. 37 da CF/88 estabelece que a Administração Pública deve obedecer aos princípios da sigla LIMPE. O que representa cada letra?",
 alternativas:["A) Legalidade, Impessoalidade, Moralidade, Publicidade, Eficiência","B) Legalidade, Igualdade, Moralidade, Probidade, Efetividade","C) Liberdade, Impessoalidade, Moralidade, Publicidade, Eficiência","D) Legalidade, Integridade, Moralidade, Publicidade, Economia"],
 resposta:"A",
-comentario:"<strong>Art. 37, CF/88</strong>: Os princípios da Administração Pública são: <strong>L</strong>egalidade, <strong>I</strong>mpessoalidade, <strong>M</strong>oralidade, <strong>P</strong>ublicidade e <strong>E</strong>ficiência (incluída pela EC 19/1998). Mnemônico: LIMPE. A letra A é a única alternativa correta e completa."},
+comentario:"<strong>Art. 37, CF/88</strong>: Os princípios da Administração Pública são: <strong>L</strong>egalidade, <strong>I</strong>mpessoalidade, <strong>M</strong>oralidade, <strong>P</strong>ublicidade e <strong>E</strong>ficiência (incluída pela EC 19/1998). Mnemônico: LIMPE."},
 
 {id:6,materia:"Conhecimentos Específicos",sub:"CF/88",dif:"medio",
-pergunta:"De acordo com o Art. 144 da CF/88, a segurança pública é dever do Estado e exercida pelos seguintes órgãos EXCETO:",
+pergunta:"De acordo com o Art. 144 da CF/88, a segurança pública é exercida pelos seguintes órgãos EXCETO:",
 alternativas:["A) Polícia Federal","B) Polícia Militar","C) Guarda Municipal","D) Polícia Rodoviária Federal"],
 resposta:"C",
-comentario:"<strong>Art. 144, CF/88</strong> lista os órgãos de segurança pública: PF, PRF, PFF, PC e PM. A <strong>Guarda Municipal NÃO consta</strong> no rol do art. 144 como órgão de segurança pública — ela é tratada no art. 144, §8º, que autoriza os municípios a constituírem guardas para proteção dos bens, serviços e instalações municipais, com função diversa."},
+comentario:"<strong>Art. 144, CF/88</strong> lista os órgãos de segurança pública: PF, PRF, PFF, PC e PM. A <strong>Guarda Municipal NÃO consta</strong> no rol do art. 144 — ela é tratada no §8º como guarda de proteção municipal."},
 
 {id:7,materia:"Conhecimentos Específicos",sub:"CF/88",dif:"dificil",
-pergunta:"O inciso LXI do Art. 5º da CF/88 trata da prisão de indivíduo. Qual é a regra geral estabelecida?",
-alternativas:["A) Ninguém pode ser preso, exceto em caso de crime de homicídio","B) Ninguém será preso senão em flagrante delito ou por ordem escrita e fundamentada de autoridade judiciária competente","C) A prisão pode ser realizada por qualquer servidor público quando houver suspeita fundamentada","D) Toda prisão depende de mandado judicial, sem exceção, inclusive em flagrante"],
+pergunta:"O inciso LXI do Art. 5º da CF/88 estabelece que ninguém será preso, salvo:",
+alternativas:["A) Em qualquer crime considerado grave pela autoridade policial","B) Em flagrante delito ou por ordem escrita e fundamentada de autoridade judiciária competente","C) Por ordem verbal de qualquer servidor público com suspeita fundamentada","D) Toda prisão depende de mandado judicial, sem exceção"],
 resposta:"B",
-comentario:"<strong>Art. 5º, LXI, CF/88:</strong> 'Ninguém será preso senão em <strong>flagrante delito</strong> ou por <strong>ordem escrita e fundamentada de autoridade judiciária competente</strong>, salvo nos casos de transgressão militar ou crime propriamente militar.' A prisão em flagrante é a exceção que permite detenção sem mandado judicial prévio."},
+comentario:"<strong>Art. 5º, LXI, CF/88:</strong> 'Ninguém será preso senão em <strong>flagrante delito</strong> ou por <strong>ordem escrita e fundamentada de autoridade judiciária competente</strong>, salvo nos casos de transgressão militar.'"},
 
 {id:8,materia:"Conhecimentos Específicos",sub:"CF/88",dif:"medio",
 pergunta:"Quais são os fundamentos da República Federativa do Brasil, conforme Art. 1º da CF/88?",
 alternativas:["A) Soberania, cidadania, dignidade da pessoa humana, valores sociais do trabalho e da livre iniciativa, pluralismo político","B) Soberania, liberdade, igualdade, fraternidade e bem-estar social","C) Democracia, igualdade, legalidade, moralidade e eficiência","D) Soberania nacional, separação de poderes, sufrágio universal e independência do judiciário"],
 resposta:"A",
-comentario:"<strong>Art. 1º, CF/88:</strong> São fundamentos da República: <strong>I - soberania; II - cidadania; III - dignidade da pessoa humana; IV - valores sociais do trabalho e da livre iniciativa; V - pluralismo político.</strong> Esses cinco fundamentos formam a base constitucional do Estado Democrático de Direito brasileiro."},
+comentario:"<strong>Art. 1º, CF/88:</strong> Fundamentos: <strong>I - soberania; II - cidadania; III - dignidade da pessoa humana; IV - valores sociais do trabalho e da livre iniciativa; V - pluralismo político.</strong>"},
 
-// ---- CÓDIGO PENAL ----
 {id:9,materia:"Conhecimentos Específicos",sub:"Código Penal",dif:"medio",
 pergunta:"Segundo o Art. 14 do Código Penal, diz-se o crime TENTADO quando:",
-alternativas:["A) O agente inicia a execução mas não consuma o crime por circunstâncias alheias à sua vontade","B) O agente desiste voluntariamente de prosseguir na execução","C) O crime é impossível por ineficácia absoluta do meio","D) O agente consuma o crime mas não obtém o resultado pretendido"],
+alternativas:["A) O agente inicia a execução mas não consuma o crime por circunstâncias alheias à sua vontade","B) O agente desiste voluntariamente de prosseguir","C) O crime é impossível por ineficácia absoluta do meio","D) O agente consuma o crime mas não obtém o resultado pretendido"],
 resposta:"A",
-comentario:"<strong>Art. 14, II, CP:</strong> O crime é tentado quando, <strong>iniciada a execução</strong>, não se consuma por <strong>circunstâncias alheias à vontade do agente</strong>. Atenção: se o agente para voluntariamente, é desistência voluntária (art. 15); se o meio é absolutamente ineficaz, é crime impossível (art. 17)."},
+comentario:"<strong>Art. 14, II, CP:</strong> O crime é tentado quando, <strong>iniciada a execução</strong>, não se consuma por <strong>circunstâncias alheias à vontade do agente</strong>. Pena reduzida de 1 a 2/3."},
 
 {id:10,materia:"Conhecimentos Específicos",sub:"Código Penal",dif:"dificil",
 pergunta:"Quanto às excludentes de ilicitude previstas no Art. 23 do CP, assinale a alternativa INCORRETA:",
 alternativas:["A) Não há crime quando o agente pratica o fato em estado de necessidade","B) Não há crime quando o agente age em legítima defesa","C) Não há crime quando o agente age em estrito cumprimento de dever legal","D) O excesso doloso ou culposo na legítima defesa NÃO é punível"],
 resposta:"D",
-comentario:"<strong>Art. 23, parágrafo único do CP:</strong> O agente responde pelo excesso doloso ou culposo nas excludentes de ilicitude. O excesso, seja doloso (intencional) ou culposo (imprudente), <strong>é punível</strong>. As demais alternativas descrevem corretamente as excludentes: estado de necessidade, legítima defesa e estrito cumprimento de dever legal."},
+comentario:"<strong>Art. 23, parágrafo único do CP:</strong> O agente responde pelo excesso doloso ou culposo. O excesso, seja doloso ou culposo, <strong>é punível</strong>."},
 
 {id:11,materia:"Conhecimentos Específicos",sub:"Código Penal",dif:"medio",
 pergunta:"O Art. 25 do CP define legítima defesa. São requisitos da legítima defesa, EXCETO:",
 alternativas:["A) Agressão injusta, atual ou iminente","B) Uso moderado dos meios necessários","C) Defesa de direito próprio ou alheio","D) Autorização prévia de autoridade judicial"],
 resposta:"D",
-comentario:"<strong>Art. 25, CP:</strong> A legítima defesa exige: agressão injusta (atual ou iminente), uso moderado dos meios necessários, e defesa de direito próprio ou alheio. <strong>Não há necessidade de autorização judicial</strong> — é uma reação imediata a uma agressão. A autorização prévia tornaria a legítima defesa inviável na prática."},
+comentario:"<strong>Art. 25, CP:</strong> A legítima defesa exige: agressão injusta, uso moderado dos meios necessários, e defesa de direito próprio ou alheio. <strong>Não há necessidade de autorização judicial</strong>."},
 
 {id:12,materia:"Conhecimentos Específicos",sub:"Código Penal",dif:"dificil",
 pergunta:"Quanto ao crime de furto (Art. 155, CP), é CORRETO afirmar que:",
-alternativas:["A) O furto qualificado ocorre quando há violência ou grave ameaça à vítima","B) O furto noturno aumenta a pena em 1/3 quando praticado durante o repouso noturno","C) O furto de coisa de pequeno valor é sempre considerado furto qualificado","D) A receptação e o furto são crimes idênticos para fins penais"],
+alternativas:["A) O furto qualificado ocorre quando há violência ou grave ameaça à vítima","B) O furto noturno aumenta a pena em 1/3 quando praticado durante o repouso noturno","C) O furto de coisa de pequeno valor é sempre qualificado","D) Receptação e furto são crimes idênticos"],
 resposta:"B",
-comentario:"<strong>Art. 155, §1º, CP:</strong> A pena é aumentada em 1/3 quando o furto é praticado durante o <strong>repouso noturno</strong>. Violência ou grave ameaça caracteriza roubo (art. 157), não furto. O furto privilegiado (pequeno valor + réu primário) pode ter pena reduzida, não qualificada. Receptação (art. 180) é crime distinto."},
+comentario:"<strong>Art. 155, §1º, CP:</strong> A pena é aumentada em 1/3 quando praticado durante o <strong>repouso noturno</strong>. Violência ou grave ameaça caracteriza roubo (art. 157), não furto."},
 
 {id:13,materia:"Conhecimentos Específicos",sub:"Código Penal",dif:"medio",
 pergunta:"Qual é a diferença entre peculato (Art. 312) e concussão (Art. 316)?",
-alternativas:["A) No peculato o funcionário exige vantagem; na concussão se apropria de dinheiro público","B) No peculato o funcionário se apropria ou desvia dinheiro público; na concussão exige vantagem indevida para si ou outrem","C) Ambos os crimes são idênticos, com penas diferentes apenas pela condição do agente","D) Peculato só ocorre com dinheiro; concussão abrange bens imóveis"],
+alternativas:["A) No peculato o funcionário exige vantagem; na concussão se apropria de dinheiro","B) No peculato o funcionário se apropria ou desvia dinheiro público; na concussão exige vantagem indevida","C) Ambos são crimes idênticos com penas diferentes","D) Peculato só ocorre com dinheiro; concussão abrange imóveis"],
 resposta:"B",
-comentario:"<strong>Art. 312 (Peculato):</strong> Funcionário público que <strong>se apropria ou desvia</strong> dinheiro, valor ou qualquer bem móvel, público ou particular em razão do cargo. <strong>Art. 316 (Concussão):</strong> Funcionário público que <strong>exige vantagem indevida</strong> em razão da função. São crimes distintos: peculato envolve subtração/desvio; concussão, exigência (extorsão por funcionário)."},
+comentario:"<strong>Art. 312 (Peculato):</strong> funcionário <strong>se apropria ou desvia</strong> dinheiro ou bem. <strong>Art. 316 (Concussão):</strong> funcionário <strong>exige vantagem indevida</strong>. São crimes distintos."},
 
 {id:14,materia:"Conhecimentos Específicos",sub:"Código Penal",dif:"dificil",
 pergunta:"O Art. 317 do CP trata da corrupção passiva. Qual alternativa a descreve CORRETAMENTE?",
-alternativas:["A) É a conduta do particular que oferece vantagem ao funcionário público","B) É a conduta do funcionário público que solicita ou aceita vantagem indevida","C) É a conduta de qualquer pessoa que se corrompe para evitar punição","D) É exclusivamente o recebimento de propina em dinheiro pelo funcionário"],
+alternativas:["A) É a conduta do particular que oferece vantagem ao funcionário","B) É a conduta do funcionário público que solicita ou aceita vantagem indevida","C) É a conduta de qualquer pessoa que se corrompe para evitar punição","D) É exclusivamente o recebimento de propina em dinheiro"],
 resposta:"B",
-comentario:"<strong>Art. 317, CP — Corrupção Passiva:</strong> 'Solicitar ou aceitar, para si ou para outrem, direta ou indiretamente, ainda que fora da função ou antes de assumi-la, mas em razão dela, vantagem indevida, ou aceitar promessa de tal vantagem.' O sujeito ativo é o <strong>funcionário público</strong>. O particular que oferece é corruptor ativo (art. 333)."},
+comentario:"<strong>Art. 317, CP:</strong> Solicitar ou aceitar, para si ou para outrem, vantagem indevida. O sujeito ativo é o <strong>funcionário público</strong>. O particular que oferece é corruptor ativo (art. 333)."},
 
-// ---- ECA ----
 {id:15,materia:"Conhecimentos Específicos",sub:"ECA",dif:"facil",
 pergunta:"Segundo o Art. 103 do ECA (Lei 8.069/90), considera-se ato infracional:",
 alternativas:["A) Apenas crimes dolosos praticados por maiores de 14 anos","B) A conduta descrita como crime ou contravenção penal praticada por criança ou adolescente","C) Exclusivamente homicídio e roubo praticados por adolescentes","D) Qualquer comportamento considerado imoral pela sociedade"],
 resposta:"B",
-comentario:"<strong>Art. 103, ECA:</strong> 'Considera-se ato infracional a <strong>conduta descrita como crime ou contravenção penal</strong>.' O ato infracional espelha a legislação penal, mas quem o pratica é criança (até 12 anos incompletos) ou adolescente (12 a 18 anos). As medidas socioeducativas substituem a pena criminal."},
+comentario:"<strong>Art. 103, ECA:</strong> 'Considera-se ato infracional a <strong>conduta descrita como crime ou contravenção penal</strong>.' Crianças e adolescentes que praticam tais condutas recebem medidas socioeducativas."},
 
 {id:16,materia:"Conhecimentos Específicos",sub:"ECA",dif:"medio",
 pergunta:"Sobre o Conselho Tutelar (Arts. 131-137 do ECA), é CORRETO afirmar:",
-alternativas:["A) O Conselho Tutelar é órgão jurisdicional que aplica penas a adolescentes infratores","B) É órgão permanente e autônomo, não jurisdicional, encarregado de zelar pelo cumprimento dos direitos da criança e do adolescente","C) É composto por 3 membros eleitos pela câmara municipal para mandato de 4 anos","D) Pode decretar prisão de responsáveis que violem direitos de crianças"],
+alternativas:["A) É órgão jurisdicional que aplica penas a adolescentes","B) É órgão permanente e autônomo, não jurisdicional, encarregado de zelar pelo cumprimento dos direitos da criança e do adolescente","C) É composto por 3 membros eleitos pela câmara municipal","D) Pode decretar prisão de responsáveis que violem direitos de crianças"],
 resposta:"B",
-comentario:"<strong>Art. 131, ECA:</strong> O Conselho Tutelar é <strong>órgão permanente e autônomo, não jurisdicional</strong>, encarregado de zelar pelo cumprimento dos direitos da criança e do adolescente. É composto por <strong>5 membros</strong> (não 3), escolhidos pela comunidade local para mandato de 4 anos. Não tem poder jurisdicional — não prende nem julga."},
+comentario:"<strong>Art. 131, ECA:</strong> O Conselho Tutelar é <strong>órgão permanente e autônomo, não jurisdicional</strong>. Composto por <strong>5 membros</strong>, eleitos pela comunidade para mandato de 4 anos."},
 
-// ---- LEIS ESPECIAIS ----
 {id:17,materia:"Conhecimentos Específicos",sub:"Lei Maria da Penha",dif:"medio",
-pergunta:"A Lei Maria da Penha (Lei 11.340/06) define violência doméstica e familiar contra a mulher. São formas de violência previstas na lei, EXCETO:",
+pergunta:"A Lei Maria da Penha (Lei 11.340/06) prevê cinco formas de violência doméstica. São elas, EXCETO:",
 alternativas:["A) Violência física e psicológica","B) Violência sexual","C) Violência patrimonial","D) Violência política partidária"],
 resposta:"D",
-comentario:"<strong>Art. 7º da Lei 11.340/06</strong> prevê cinco formas de violência doméstica: <strong>I - física; II - psicológica; III - sexual; IV - patrimonial; V - moral.</strong> A violência política partidária não é prevista nessa lei específica. A Lei Maria da Penha foca em violência no âmbito doméstico, familiar ou de relação íntima de afeto."},
+comentario:"<strong>Art. 7º da Lei 11.340/06</strong>: I - física; II - psicológica; III - sexual; IV - patrimonial; V - moral. A violência política partidária não está prevista nessa lei."},
 
 {id:18,materia:"Conhecimentos Específicos",sub:"Estatuto do Idoso",dif:"facil",
 pergunta:"O Estatuto do Idoso (Lei 10.741/03) define como idoso a pessoa com idade igual ou superior a:",
 alternativas:["A) 55 anos","B) 60 anos","C) 65 anos","D) 70 anos"],
 resposta:"B",
-comentario:"<strong>Art. 1º, Lei 10.741/03:</strong> 'É instituído o Estatuto do Idoso, destinado a regular os direitos assegurados às pessoas com <strong>idade igual ou superior a 60 (sessenta) anos</strong>.' Não confundir com o benefício de transporte gratuito (65 anos, art. 39) que tem requisito etário diferente para fins específicos."},
+comentario:"<strong>Art. 1º, Lei 10.741/03:</strong> 'É instituído o Estatuto do Idoso, destinado a regular os direitos assegurados às pessoas com <strong>idade igual ou superior a 60 (sessenta) anos</strong>.'"},
 
-// ---- ADMINISTRAÇÃO PÚBLICA ----
 {id:19,materia:"Conhecimentos Específicos",sub:"Administração Pública",dif:"medio",
 pergunta:"O poder de polícia da Administração Pública possui atributos próprios. Qual das alternativas NÃO é um atributo do poder de polícia?",
 alternativas:["A) Discricionariedade","B) Autoexecutoriedade","C) Coercibilidade","D) Definitividade"],
 resposta:"D",
-comentario:"Os atributos do poder de polícia são: <strong>Discricionariedade</strong> (margem de escolha), <strong>Autoexecutoriedade</strong> (execução direta sem autorização judicial prévia) e <strong>Coercibilidade</strong> (imposição coercitiva). A 'definitividade' não é atributo clássico do poder de polícia — é conceito ligado a atos administrativos, como imperatividade ou presunção de legitimidade."},
+comentario:"Os atributos clássicos do poder de polícia são: <strong>Discricionariedade</strong>, <strong>Autoexecutoriedade</strong> e <strong>Coercibilidade</strong>. 'Definitividade' não é atributo do poder de polícia."},
 
 {id:20,materia:"Conhecimentos Específicos",sub:"Administração Pública",dif:"dificil",
 pergunta:"Quanto à diferença entre poder vinculado e discricionário, é CORRETO afirmar:",
-alternativas:["A) No poder vinculado, a lei não deixa margem de escolha ao administrador; no discricionário, há juízo de oportunidade e conveniência","B) No poder discricionário, o administrador pode agir contra a lei se entender mais conveniente","C) Poder vinculado é aplicado apenas em penalidades disciplinares","D) No poder discricionário, o administrador tem liberdade total, sem qualquer controle judicial"],
+alternativas:["A) No poder vinculado, a lei não deixa margem de escolha ao administrador; no discricionário, há juízo de oportunidade e conveniência","B) No poder discricionário, o administrador pode agir contra a lei","C) Poder vinculado é aplicado apenas em penalidades disciplinares","D) No poder discricionário, o administrador tem liberdade total, sem controle judicial"],
 resposta:"A",
-comentario:"<strong>Poder Vinculado:</strong> A lei define todos os elementos do ato — não há escolha. <strong>Poder Discricionário:</strong> A lei deixa margem de <strong>oportunidade e conveniência</strong> ao administrador dentro dos limites legais. O ato discricionário ainda é controlável judicialmente quanto à legalidade. O administrador nunca pode agir contra a lei."},
+comentario:"<strong>Poder Vinculado:</strong> todos os elementos do ato fixados em lei. <strong>Poder Discricionário:</strong> margem de <strong>oportunidade e conveniência</strong> dentro dos limites legais. O ato discricionário é controlável judicialmente quanto à legalidade."},
 
 // ---- LÍNGUA PORTUGUESA ----
 {id:21,materia:"Língua Portuguesa",sub:"Gramática",dif:"facil",
 pergunta:"Assinale a alternativa com o emprego correto do acento grave indicativo de crase:",
 alternativas:["A) Entreguei o relatório à ele mesmo","B) Fomos à reunião da GCM na tarde","C) Refiro-me à questão principal do edital","D) O guarda dirigiu-se à carro estacionado"],
 resposta:"C",
-comentario:"A crase ocorre antes de palavras femininas que aceitam o artigo 'a'. <strong>C) 'à questão'</strong> é correto: preposição 'a' + artigo 'a' = à. Em A e D, 'ele' e 'carro' são masculinos, não aceitam crase. Em B, apesar de parecer correta, a forma mais natural sem crase também seria aceita — mas a questão exige identificar o caso mais claro."},
+comentario:"A crase ocorre antes de palavras femininas que aceitam o artigo 'a'. <strong>C) 'à questão'</strong> é correto: preposição 'a' + artigo 'a' = à. Em A e D, 'ele' e 'carro' são masculinos."},
 
 {id:22,materia:"Língua Portuguesa",sub:"Gramática",dif:"medio",
 pergunta:"Identifique a alternativa em que a concordância verbal está CORRETA:",
 alternativas:["A) Fazem três anos que me formei no curso da GCM","B) Houveram muitas ocorrências neste mês","C) A maioria dos guardas chegaram cedo","D) Os direitos e deveres do guarda estão previstos em lei"],
 resposta:"D",
-comentario:"<strong>D)</strong> 'Os direitos e deveres... estão' — sujeito composto com verbo no plural: correto. A) 'Faz' (não 'fazem') — verbos no sentido de tempo decorrido são impessoais. B) 'Houve' (não 'houveram') — 'haver' com sentido de existir é impessoal. C) Com 'maioria', o verbo pode ir ao singular ou plural, mas 'chegaram' depois de 'a maioria dos guardas' é aceitável — porém D é inequivocamente correto."},
+comentario:"<strong>D)</strong> 'Os direitos e deveres... estão' — sujeito composto com verbo no plural: correto. A) 'Faz' (impessoal). B) 'Houve' (impessoal). D é inequivocamente correto."},
 
 {id:23,materia:"Língua Portuguesa",sub:"Interpretação",dif:"medio",
-pergunta:"Leia o trecho: 'A Guarda Civil Municipal não apenas protege o patrimônio público, mas também atua como elo entre a comunidade e o poder público municipal.' O conectivo 'mas também' indica relação de:",
+pergunta:"Leia: 'A GCM não apenas protege o patrimônio público, mas também atua como elo entre a comunidade e o poder público.' O conectivo 'mas também' indica relação de:",
 alternativas:["A) Oposição entre as ideias","B) Adição com ênfase em elemento acrescentado","C) Conclusão lógica","D) Condição para a ação principal"],
 resposta:"B",
-comentario:"A locução 'não apenas... mas também' (ou 'não só... mas também') é uma conjunção <strong>aditiva com valor de adição enfática</strong>. Ela não opõe ideias — ao contrário, acrescenta uma informação e a enfatiza. 'Mas' aqui não tem valor adversativo, pois combina com 'também' para reforçar a adição."},
+comentario:"A locução 'não apenas... mas também' é uma conjunção <strong>aditiva com valor de adição enfática</strong>. Não opõe ideias — acrescenta e enfatiza."},
 
 {id:24,materia:"Língua Portuguesa",sub:"Ortografia",dif:"facil",
-pergunta:"Qual das alternativas está grafada corretamente, segundo o Acordo Ortográfico?",
+pergunta:"Qual das alternativas está grafada corretamente, segundo o Acordo Ortográfico de 2009?",
 alternativas:["A) exceção, idéia, vôo, pára (verbo)","B) exceção, ideia, voo, para (verbo)","C) excessão, ideia, voo, para","D) exceção, idéia, voo, para (verbo)"],
 resposta:"B",
-comentario:"Pelo <strong>Acordo Ortográfico de 2009</strong>, eliminaram-se acentos em ditongos abertos e em palavras como 'ideia' (antes: idéia), 'voo' (antes: vôo), 'para' verbo (antes: pára). 'Exceção' mantém cedilha. Alternativa B é a única completamente correta: exceção, ideia, voo, para."},
+comentario:"Pelo <strong>Acordo Ortográfico de 2009</strong>: 'ideia' (não idéia), 'voo' (não vôo), 'para' verbo (não pára). Alternativa B é a única completamente correta."},
 
 {id:25,materia:"Língua Portuguesa",sub:"Sintaxe",dif:"dificil",
 pergunta:"Em 'O agente de segurança, que estava de plantão, foi acionado imediatamente', a oração 'que estava de plantão' é:",
 alternativas:["A) Oração subordinada adjetiva restritiva","B) Oração subordinada adjetiva explicativa","C) Oração subordinada substantiva subjetiva","D) Oração coordenada sindética aditiva"],
 resposta:"B",
-comentario:"A oração 'que estava de plantão' é <strong>subordinada adjetiva explicativa</strong>, pois: (1) modifica o substantivo 'agente'; (2) vem separada por vírgulas; (3) acrescenta informação não essencial — mesmo sem ela, sabemos de quem se fala. Restritiva (sem vírgulas) limitaria o sentido: 'o agente que estava de plantão' (entre vários agentes)."},
+comentario:"A oração 'que estava de plantão' é <strong>subordinada adjetiva explicativa</strong>: vem entre vírgulas e acrescenta informação não essencial ao substantivo."},
 
 {id:26,materia:"Língua Portuguesa",sub:"Gramática",dif:"medio",
 pergunta:"Assinale a alternativa em que 'mau' e 'mal' estão empregados CORRETAMENTE:",
 alternativas:["A) O guarda estava mal humorado e tomou uma mau decisão","B) O guarda estava mal-humorado e tomou uma má decisão","C) O guarda estava mau humorado e tomou uma mal decisão","D) O guarda estava mal humorado e tomou uma mal decisão"],
 resposta:"B",
-comentario:"<strong>'Mal'</strong> é advérbio/substantivo — modifica verbo, adjetivo ou outro advérbio: 'mal-humorado' (mal modifica humorado, requerendo hífen). <strong>'Mau'</strong> é adjetivo, antônimo de bom. 'Má' é o feminino de 'mau'. Logo: 'mal-humorado' (correto com hífen, pois mal+adjetivo) e 'má decisão' (adjetivo feminino)."},
+comentario:"<strong>'Mal'</strong> é advérbio: 'mal-humorado' (requer hífen). <strong>'Mau'</strong> é adjetivo antônimo de bom; feminino: 'má'. Logo: 'mal-humorado' e 'má decisão'."},
 
 // ---- MATEMÁTICA ----
 {id:27,materia:"Matemática",sub:"Porcentagem",dif:"facil",
 pergunta:"Em um simulado com 40 questões, um candidato acertou 30. Qual é o percentual de acertos?",
 alternativas:["A) 65%","B) 70%","C) 75%","D) 80%"],
 resposta:"C",
-comentario:"Percentual = (acertos / total) × 100 = (30 / 40) × 100 = 0,75 × 100 = <strong>75%</strong>. Dica rápida: 30/40 = 3/4 = 0,75. Para converter em porcentagem, multiplica por 100: 75%."},
+comentario:"Percentual = (30 / 40) × 100 = 0,75 × 100 = <strong>75%</strong>."},
 
 {id:28,materia:"Matemática",sub:"Regra de Três",dif:"facil",
-pergunta:"Se 8 guardas municipais patrulham uma área em 6 horas, quantas horas seriam necessárias se fossem apenas 4 guardas (mantendo o mesmo serviço)?",
+pergunta:"Se 8 guardas patrulham uma área em 6 horas, quantas horas seriam necessárias com apenas 4 guardas?",
 alternativas:["A) 3 horas","B) 8 horas","C) 12 horas","D) 10 horas"],
 resposta:"C",
-comentario:"Regra de três <strong>inversamente proporcional</strong> (mais guardas = menos horas). 8 guardas → 6h; 4 guardas → x. 8 × 6 = 4 × x → x = 48/4 = <strong>12 horas</strong>. Com menos guardas, o trabalho demora mais: metade dos guardas, o dobro do tempo."},
+comentario:"Regra de três <strong>inversamente proporcional</strong>: 8 × 6 = 4 × x → x = 48/4 = <strong>12 horas</strong>."},
 
 {id:29,materia:"Matemática",sub:"Juros Simples",dif:"medio",
 pergunta:"Um capital de R$ 5.000,00 é aplicado a juros simples de 2% ao mês durante 6 meses. Qual o montante ao final?",
 alternativas:["A) R$ 5.500,00","B) R$ 5.600,00","C) R$ 6.000,00","D) R$ 5.060,00"],
 resposta:"B",
-comentario:"<strong>Juros Simples: J = C × i × t</strong>. J = 5.000 × 0,02 × 6 = 5.000 × 0,12 = R$ 600,00. Montante M = C + J = 5.000 + 600 = <strong>R$ 5.600,00</strong>. Atenção: i = 2% = 0,02; t = 6 meses."},
+comentario:"J = C × i × t = 5.000 × 0,02 × 6 = R$ 600,00. Montante M = 5.000 + 600 = <strong>R$ 5.600,00</strong>."},
 
 {id:30,materia:"Matemática",sub:"Álgebra",dif:"facil",
 pergunta:"Resolva a equação: 3x + 9 = 24",
 alternativas:["A) x = 3","B) x = 5","C) x = 11","D) x = 7"],
 resposta:"B",
-comentario:"3x + 9 = 24 → 3x = 24 - 9 → 3x = 15 → x = 15/3 → <strong>x = 5</strong>. Verificação: 3(5) + 9 = 15 + 9 = 24. ✓"},
+comentario:"3x = 24 - 9 = 15 → x = 15/3 → <strong>x = 5</strong>. Verificação: 3(5) + 9 = 24. ✓"},
 
 {id:31,materia:"Matemática",sub:"Geometria",dif:"medio",
-pergunta:"Uma praça retangular tem 80m de comprimento e 50m de largura. Qual é a área total da praça?",
+pergunta:"Uma praça retangular tem 80m de comprimento e 50m de largura. Qual é a área total?",
 alternativas:["A) 130 m²","B) 260 m²","C) 4.000 m²","D) 400 m²"],
 resposta:"C",
-comentario:"<strong>Área do retângulo = base × altura</strong>. A = 80 × 50 = <strong>4.000 m²</strong>. O perímetro (distância total ao redor) seria 2×(80+50) = 260m — não confunda área com perímetro."},
+comentario:"Área do retângulo = base × altura = 80 × 50 = <strong>4.000 m²</strong>. Não confunda área com perímetro (260m)."},
 
 {id:32,materia:"Matemática",sub:"Estatística",dif:"medio",
-pergunta:"As notas de 5 candidatos em uma prova foram: 6, 8, 7, 9, 5. Qual é a média aritmética?",
+pergunta:"As notas de 5 candidatos foram: 6, 8, 7, 9, 5. Qual é a média aritmética?",
 alternativas:["A) 6,5","B) 7,0","C) 7,5","D) 8,0"],
 resposta:"B",
-comentario:"Média = soma dos valores / quantidade. Soma = 6+8+7+9+5 = 35. Média = 35/5 = <strong>7,0</strong>. A moda é o valor que mais aparece (não há); a mediana (valor central após ordenar: 5,6,7,8,9) é 7 também."},
+comentario:"Soma = 6+8+7+9+5 = 35. Média = 35/5 = <strong>7,0</strong>."},
 
 {id:33,materia:"Matemática",sub:"Probabilidade",dif:"dificil",
-pergunta:"Uma urna contém 5 bolas vermelhas e 3 azuis. Retira-se uma bola ao acaso. Qual a probabilidade de ser vermelha?",
+pergunta:"Uma urna contém 5 bolas vermelhas e 3 azuis. Qual a probabilidade de retirar uma bola vermelha?",
 alternativas:["A) 3/8","B) 5/8","C) 1/2","D) 5/3"],
 resposta:"B",
-comentario:"<strong>Probabilidade = casos favoráveis / casos possíveis</strong>. Casos favoráveis (bola vermelha): 5. Total de bolas: 5+3 = 8. P = 5/8. Em porcentagem: 5/8 = 0,625 = 62,5%."},
+comentario:"P = casos favoráveis / casos possíveis = 5 / (5+3) = <strong>5/8</strong> ≈ 62,5%."},
 
 {id:34,materia:"Matemática",sub:"MMC e MDC",dif:"medio",
 pergunta:"Qual é o MMC (Mínimo Múltiplo Comum) de 6 e 9?",
 alternativas:["A) 3","B) 18","C) 54","D) 6"],
 resposta:"B",
-comentario:"Fatoração: 6 = 2×3; 9 = 3². <strong>MMC = produto dos fatores com maior expoente</strong> = 2¹ × 3² = 2 × 9 = <strong>18</strong>. Múltiplos de 6: 6,12,18... Múltiplos de 9: 9,18... O primeiro comum é 18. O MDC (Máximo Divisor Comum) seria 3."},
+comentario:"6 = 2×3; 9 = 3². MMC = 2¹ × 3² = 2 × 9 = <strong>18</strong>. Múltiplos: 6→6,12,18... / 9→9,18..."},
 
 // ---- NOÇÕES DE INFORMÁTICA ----
 {id:35,materia:"Noções de Informática",sub:"Hardware",dif:"facil",
-pergunta:"Qual componente de hardware é responsável por processar as instruções e dados em um computador?",
-alternativas:["A) HD (Hard Disk)","B) RAM (Random Access Memory)","C) CPU (Unidade Central de Processamento)","D) GPU (Unidade de Processamento Gráfico)"],
+pergunta:"Qual componente de hardware é responsável por processar as instruções em um computador?",
+alternativas:["A) HD (Hard Disk)","B) RAM (Memória RAM)","C) CPU (Unidade Central de Processamento)","D) GPU (Unidade de Processamento Gráfico)"],
 resposta:"C",
-comentario:"A <strong>CPU (Central Processing Unit)</strong> é o 'cérebro' do computador, responsável por executar as instruções dos programas. O HD armazena dados permanentemente; a RAM é memória temporária de acesso rápido; a GPU processa gráficos. Para concursos: CPU = processador principal."},
+comentario:"A <strong>CPU</strong> é o 'cérebro' do computador, responsável por executar as instruções dos programas."},
 
 {id:36,materia:"Noções de Informática",sub:"Segurança",dif:"medio",
-pergunta:"O ataque cibernético onde o criminoso envia e-mails falsos simulando ser uma instituição confiável para obter dados pessoais é denominado:",
+pergunta:"O ataque onde criminosos enviam e-mails falsos simulando uma instituição confiável para obter dados é denominado:",
 alternativas:["A) Ransomware","B) Phishing","C) Trojan","D) Worm"],
 resposta:"B",
-comentario:"<strong>Phishing</strong> é a técnica de 'pescar' dados por meio de e-mails, mensagens ou sites falsos que imitam instituições legítimas (bancos, Correios, etc.). Ransomware sequestra dados pedindo resgate; Trojan se disfarça de programa útil; Worm se replica automaticamente pela rede."},
+comentario:"<strong>Phishing</strong> é a técnica de 'pescar' dados por e-mails ou sites falsos. Ransomware sequestra dados por resgate; Trojan se disfarça; Worm se replica pela rede."},
 
 {id:37,materia:"Noções de Informática",sub:"LibreOffice",dif:"medio",
 pergunta:"No LibreOffice Calc, qual fórmula calcula a média dos valores nas células A1 até A10?",
 alternativas:["A) =SOMA(A1:A10)/10","B) =MÉDIA(A1:A10)","C) =AVG(A1:A10)","D) =CALCMEDIA(A1:A10)"],
 resposta:"B",
-comentario:"No <strong>LibreOffice Calc</strong> (versão em português), a função para média é <strong>=MÉDIA(intervalo)</strong>. A função AVG é da versão em inglês. =SOMA(A1:A10)/10 daria o resultado correto matematicamente, mas =MÉDIA é a fórmula específica e elegante. O edital cita LibreOffice especificamente."},
+comentario:"No <strong>LibreOffice Calc</strong> (versão PT-BR), a função para média é <strong>=MÉDIA(intervalo)</strong>. O edital cita LibreOffice especificamente."},
 
 {id:38,materia:"Noções de Informática",sub:"Redes",dif:"facil",
 pergunta:"Qual protocolo é a base de comunicação da Internet, responsável pelo endereçamento e roteamento de pacotes?",
 alternativas:["A) HTTP","B) FTP","C) TCP/IP","D) SMTP"],
 resposta:"C",
-comentario:"O <strong>TCP/IP</strong> (Transmission Control Protocol/Internet Protocol) é o conjunto de protocolos base da Internet. HTTP é protocolo de páginas web; FTP é de transferência de arquivos; SMTP é de e-mail. TCP/IP define como os dados são empacotados, endereçados e roteados na rede."},
+comentario:"O <strong>TCP/IP</strong> é o conjunto de protocolos base da Internet. HTTP é para páginas web; FTP para arquivos; SMTP para e-mail."},
 
 {id:39,materia:"Noções de Informática",sub:"Windows",dif:"medio",
-pergunta:"No Windows 10, qual atalho de teclado é usado para abrir o Explorador de Arquivos?",
+pergunta:"No Windows 10, qual atalho de teclado abre o Explorador de Arquivos?",
 alternativas:["A) Ctrl + E","B) Win + E","C) Alt + E","D) Ctrl + Alt + E"],
 resposta:"B",
-comentario:"No <strong>Windows 10</strong>, o atalho <strong>Win + E</strong> (tecla Windows + E) abre o Explorador de Arquivos diretamente. Outros atalhos úteis: Win+D (área de trabalho), Win+L (bloquear), Alt+F4 (fechar janela), Ctrl+C/V (copiar/colar)."},
+comentario:"<strong>Win + E</strong> abre o Explorador de Arquivos. Outros: Win+D (área de trabalho), Win+L (bloquear)."},
 
 {id:40,materia:"Noções de Informática",sub:"Backup",dif:"dificil",
-pergunta:"Qual tipo de backup copia apenas os arquivos alterados desde o ÚLTIMO BACKUP COMPLETO, independentemente de outros backups diferenciais?",
+pergunta:"Qual tipo de backup copia apenas os arquivos alterados desde o ÚLTIMO BACKUP COMPLETO?",
 alternativas:["A) Backup Completo","B) Backup Diferencial","C) Backup Incremental","D) Backup Espelhado"],
 resposta:"B",
-comentario:"<strong>Backup Diferencial:</strong> copia tudo que mudou desde o <em>último backup completo</em>. Cresce com o tempo, mas restauração é simples (completo + último diferencial). <strong>Backup Incremental:</strong> copia apenas o que mudou desde o <em>último backup qualquer</em> — menor, mas restauração é mais complexa. Completo: copia tudo."},
+comentario:"<strong>Backup Diferencial:</strong> copia tudo que mudou desde o <em>último backup completo</em>. Incremental: desde o <em>último backup qualquer</em>."},
 
 // ---- CONHECIMENTOS GERAIS ----
 {id:41,materia:"Conhecimentos Gerais",sub:"São José de Ribamar",dif:"facil",
-pergunta:"São José de Ribamar é um município localizado no estado do Maranhão. A cidade é conhecida principalmente por ser:",
-alternativas:["A) Capital do estado e maior polo industrial da região","B) Segundo município mais populoso do Maranhão e santuário do padroeiro do estado","C) Pioneira na exploração de petróleo no Nordeste","D) Sede administrativa da mesorregião dos Lençóis Maranhenses"],
+pergunta:"São José de Ribamar é principalmente conhecida por ser:",
+alternativas:["A) Capital do estado e maior polo industrial","B) Segundo município mais populoso do Maranhão e santuário do padroeiro do estado","C) Pioneira na exploração de petróleo no Nordeste","D) Sede dos Lençóis Maranhenses"],
 resposta:"B",
-comentario:"São José de Ribamar é o <strong>segundo município mais populoso do Maranhão</strong> (após São Luís) e abriga o Santuário de <strong>São José de Ribamar</strong>, padroeiro do estado do Maranhão. A cidade recebe milhares de peregrinos, especialmente em setembro, durante as festas do padroeiro."},
+comentario:"São José de Ribamar é o <strong>segundo município mais populoso do Maranhão</strong> e abriga o Santuário de <strong>São José de Ribamar</strong>, padroeiro do estado."},
 
 {id:42,materia:"Conhecimentos Gerais",sub:"São José de Ribamar",dif:"medio",
-pergunta:"A festa do padroeiro São José de Ribamar é celebrada anualmente. Em qual mês ocorre a principal festividade religiosa?",
+pergunta:"A principal festividade religiosa de São José de Ribamar ocorre em qual mês?",
 alternativas:["A) Março","B) Junho","C) Setembro","D) Dezembro"],
 resposta:"C",
-comentario:"A <strong>Festa do Padroeiro São José de Ribamar</strong> ocorre em <strong>setembro</strong>, com o dia 19 de setembro sendo o dia do padroeiro. O Santuário recebe romeiros de todo o Maranhão e estados vizinhos. Não confundir com São José (dia 19 de março), que é o dia do santo no calendário católico universal."},
+comentario:"A <strong>Festa do Padroeiro São José de Ribamar</strong> ocorre em <strong>setembro</strong>, com o dia 19 de setembro como dia do padroeiro."},
 
 {id:43,materia:"Conhecimentos Gerais",sub:"São José de Ribamar",dif:"medio",
-pergunta:"São José de Ribamar faz limite com qual capital estadual brasileira?",
+pergunta:"São José de Ribamar faz limite com qual capital estadual?",
 alternativas:["A) Teresina (PI)","B) São Luís (MA)","C) Fortaleza (CE)","D) Belém (PA)"],
 resposta:"B",
-comentario:"São José de Ribamar está localizado na <strong>Ilha do Maranhão</strong> e faz divisa com <strong>São Luís</strong>, a capital do estado. O município faz parte da Região Metropolitana de São Luís. Geograficamente, integra a microrregião de São Luís."},
+comentario:"São José de Ribamar está na <strong>Ilha do Maranhão</strong> e faz divisa com <strong>São Luís</strong>, integrando a Região Metropolitana de São Luís."},
 
 {id:44,materia:"Conhecimentos Gerais",sub:"Maranhão",dif:"facil",
-pergunta:"O Bumba-meu-boi é a principal manifestação cultural do Maranhão. Qual é o período tradicional de apresentação dessa festa?",
-alternativas:["A) Janeiro a março (período de Carnaval)","B) Junho a julho (período junino/Festa de São João)","C) Outubro a novembro","D) Dezembro a janeiro"],
+pergunta:"O Bumba-meu-boi é apresentado principalmente em qual período?",
+alternativas:["A) Janeiro a março","B) Junho a julho (período junino)","C) Outubro a novembro","D) Dezembro a janeiro"],
 resposta:"B",
-comentario:"O <strong>Bumba-meu-boi do Maranhão</strong> é celebrado principalmente no período <strong>junino (junho/julho)</strong>, durante as festas de Santo Antônio, São João e São Pedro. É Patrimônio Cultural Imaterial do Brasil. O boi maranhense tem sotaques regionais distintos: zabumba, orquestra, matraca, entre outros."},
+comentario:"O <strong>Bumba-meu-boi do Maranhão</strong> é celebrado no período <strong>junino (junho/julho)</strong>. É Patrimônio Cultural Imaterial do Brasil."},
 
 {id:45,materia:"Conhecimentos Gerais",sub:"Maranhão",dif:"medio",
-pergunta:"Os Lençóis Maranhenses são um dos principais atrativos turísticos do Maranhão. Qual é a característica que os torna únicos?",
-alternativas:["A) São uma floresta tropical úmida com grande biodiversidade amazônica","B) São dunas de areia branca entremeadas por lagoas de água doce formadas no período chuvoso","C) São chapadas com cachoeiras de água turquesa ao longo do ano todo","D) São formações rochosas com pinturas rupestres de povos pré-históricos"],
+pergunta:"Os Lençóis Maranhenses são únicos porque:",
+alternativas:["A) São floresta tropical com grande biodiversidade","B) São dunas de areia branca entremeadas por lagoas de água doce formadas no período chuvoso","C) São chapadas com cachoeiras de água turquesa","D) São formações rochosas com pinturas rupestres"],
 resposta:"B",
-comentario:"Os <strong>Lençóis Maranhenses</strong> são compostos por <strong>dunas de areia branca</strong> e <strong>lagoas de água doce</strong> formadas pela chuva entre os meses de janeiro e julho. O fenômeno é único porque ocorre um deserto (dunas) em área de alto índice pluviométrico. Estão localizados principalmente no município de Barreirinhas."},
+comentario:"Os <strong>Lençóis Maranhenses</strong>: <strong>dunas de areia branca</strong> + <strong>lagoas de água doce</strong> formadas pelas chuvas. Um deserto em área de alto índice pluviométrico."},
 
 {id:46,materia:"Conhecimentos Gerais",sub:"Maranhão",dif:"medio",
-pergunta:"São Luís, capital do Maranhão, recebeu o título de Patrimônio Cultural da Humanidade pela UNESCO em 1997. Qual aspecto justifica essa distinção?",
-alternativas:["A) Seu porto moderno e exportações de minério de ferro","B) O conjunto arquitetônico histórico com azulejos portugueses do centro histórico","C) As reservas naturais e parques ecológicos ao redor da capital","D) A tradição culinária e gastronomia única no Nordeste"],
+pergunta:"Por que São Luís é Patrimônio Cultural da Humanidade pela UNESCO (1997)?",
+alternativas:["A) Seu porto moderno e exportações de minério","B) O conjunto arquitetônico histórico com azulejos portugueses do centro histórico","C) Suas reservas naturais","D) A tradição culinária única"],
 resposta:"B",
-comentario:"São Luís é reconhecida pela UNESCO pelo seu <strong>centro histórico</strong>, especialmente pela <strong>arquitetura colonial com azulejos portugueses</strong> que revestem fachadas dos casarões históricos. É uma das maiores coleções de azulejaria portuguesa fora de Portugal. O tombamento preserva edificações dos séculos XVIII e XIX."},
+comentario:"São Luís é reconhecida pelo <strong>centro histórico</strong> com <strong>arquitetura colonial e azulejos portugueses</strong>. Uma das maiores coleções de azulejaria portuguesa fora de Portugal."},
 
 {id:47,materia:"Conhecimentos Gerais",sub:"Maranhão",dif:"dificil",
-pergunta:"O Porto do Itaqui, localizado em São Luís, é considerado estratégico para a economia do Maranhão. Qual é sua principal importância?",
-alternativas:["A) É o maior porto pesqueiro do Brasil","B) É um dos maiores portos de águas profundas do mundo e principal escoador de grãos e minério de ferro do Norte/Nordeste","C) É exclusivamente utilizado para turismo e cruzeiros internacionais","D) É o principal porto de petróleo do Brasil, superando Santos e Paranaguá"],
+pergunta:"O Porto do Itaqui é estratégico porque:",
+alternativas:["A) É o maior porto pesqueiro do Brasil","B) É um dos maiores portos de águas profundas do mundo e principal escoador de grãos e minério do Norte/Nordeste","C) É exclusivamente para turismo e cruzeiros","D) É o principal porto de petróleo do Brasil"],
 resposta:"B",
-comentario:"O <strong>Porto do Itaqui</strong> é um dos maiores portos de <strong>águas profundas</strong> do mundo, estratégico para o escoamento da produção do agronegócio (soja, milho) e do minério de ferro do Pará e Maranhão. Opera junto ao <strong>Corredor Ferroviário Norte</strong> e é vital para o comércio exterior da região."},
+comentario:"O <strong>Porto do Itaqui</strong> é um dos maiores portos de <strong>águas profundas</strong> do mundo, estratégico para escoamento do agronegócio e minério de ferro."},
 
 {id:48,materia:"Conhecimentos Gerais",sub:"Maranhão",dif:"facil",
-pergunta:"Gonçalves Dias é um dos maiores poetas brasileiros e nasceu no Maranhão. Qual de suas obras é a mais famosa?",
+pergunta:"Qual a obra mais famosa do poeta maranhense Gonçalves Dias?",
 alternativas:["A) O Guarani","B) Canção do Exílio","C) Iracema","D) Dom Casmurro"],
 resposta:"B",
-comentario:"<strong>Antônio Gonçalves Dias</strong> (1823–1864), nascido em Caxias-MA, é famoso pela <strong>'Canção do Exílio'</strong> ('Minha terra tem palmeiras / Onde canta o Sabiá...'). O Guarani é de José de Alencar; Iracema também é de Alencar; Dom Casmurro é de Machado de Assis. Gonçalves Dias é o principal poeta romântico maranhense."},
+comentario:"<strong>Gonçalves Dias</strong> (1823–1864), nascido em Caxias-MA, é famoso pela <strong>'Canção do Exílio'</strong> ('Minha terra tem palmeiras / Onde canta o Sabiá...')."},
 
-// MAIS ESPECÍFICOS
 {id:49,materia:"Conhecimentos Específicos",sub:"Código Penal",dif:"medio",
-pergunta:"O crime de roubo (Art. 157, CP) se distingue do furto (Art. 155) pela presença de:",
+pergunta:"O crime de roubo (Art. 157) se distingue do furto (Art. 155) pela presença de:",
 alternativas:["A) Subtração de coisa móvel","B) Violência à pessoa ou grave ameaça","C) Valor elevado do bem subtraído","D) Pluralidade de agentes"],
 resposta:"B",
-comentario:"<strong>Furto (art. 155):</strong> subtração sem violência ou ameaça. <strong>Roubo (art. 157):</strong> subtração com <strong>violência à pessoa ou grave ameaça</strong>, ou redução da capacidade de resistência da vítima. A violência/ameaça é o elemento diferenciador fundamental. Roubo é mais grave pois além do patrimônio atinge a integridade pessoal."},
+comentario:"<strong>Furto (art. 155):</strong> sem violência. <strong>Roubo (art. 157):</strong> com <strong>violência à pessoa ou grave ameaça</strong>. A violência é o elemento diferenciador fundamental."},
 
 {id:50,materia:"Conhecimentos Específicos",sub:"Código Penal",dif:"dificil",
 pergunta:"Conforme o Art. 327 do CP, para fins penais, equipara-se a funcionário público:",
-alternativas:["A) Apenas servidores concursados da União, Estados e Municípios","B) Quem exerce cargo, emprego ou função pública, mesmo que transitoriamente, sem remuneração","C) Apenas cargos em comissão de livre nomeação","D) Somente empregados de empresas privadas que prestam serviço público"],
+alternativas:["A) Apenas servidores concursados da União, Estados e Municípios","B) Quem exerce cargo, emprego ou função pública, mesmo que transitoriamente, sem remuneração","C) Apenas cargos em comissão","D) Somente empregados de empresas privadas que prestam serviço público"],
 resposta:"B",
-comentario:"<strong>Art. 327, CP:</strong> Considera-se funcionário público, para fins penais, quem exerce, <em>ainda que transitoriamente ou sem remuneração</em>, cargo, emprego ou função pública. O §1º amplia o conceito para quem exerce função em empresa prestadora de serviço contratada pelo poder público. O conceito penal é mais amplo que o conceito administrativo."},
+comentario:"<strong>Art. 327, CP:</strong> Considera-se funcionário público quem exerce, <em>ainda que transitoriamente ou sem remuneração</em>, cargo, emprego ou função pública."},
 
 {id:51,materia:"Língua Portuguesa",sub:"Pontuação",dif:"medio",
 pergunta:"Assinale a alternativa em que o uso da vírgula está INCORRETO:",
 alternativas:["A) O guarda, cansado, voltou ao posto","B) Entramos, saímos, nada resolvemos","C) Fui ao quartel, e o comandante não estava","D) O Comandante Pedro, foi informado da ocorrência"],
 resposta:"D",
-comentario:"Em D, a vírgula entre o sujeito ('O Comandante Pedro') e o predicado ('foi informado') está <strong>incorreta</strong> — não se separa sujeito do predicado com vírgula. Nas demais: A) vírgula de aposto/adjunto; B) vírgulas separando termos em enumeração; C) antes de 'e' com sujeito diferente na segunda oração."},
+comentario:"Em D, a vírgula entre o sujeito ('O Comandante Pedro') e o predicado ('foi informado') está <strong>incorreta</strong> — não se separa sujeito do predicado com vírgula."},
 
 {id:52,materia:"Matemática",sub:"PA e PG",dif:"medio",
 pergunta:"Em uma progressão aritmética (PA), a razão é 3 e o primeiro termo é 2. Qual é o 5º termo?",
 alternativas:["A) 12","B) 14","C) 15","D) 17"],
 resposta:"B",
-comentario:"Fórmula do termo geral: <strong>aₙ = a₁ + (n-1) × r</strong>. a₅ = 2 + (5-1) × 3 = 2 + 4×3 = 2 + 12 = <strong>14</strong>. Os 5 termos são: 2, 5, 8, 11, 14. Cada termo é somado de 3 (razão)."},
+comentario:"aₙ = a₁ + (n-1) × r → a₅ = 2 + (5-1) × 3 = 2 + 12 = <strong>14</strong>. Sequência: 2, 5, 8, 11, 14."},
 
 {id:53,materia:"Noções de Informática",sub:"Software",dif:"facil",
 pergunta:"Qual das alternativas descreve corretamente o conceito de SOFTWARE LIVRE?",
-alternativas:["A) Software que pode ser usado gratuitamente mas não pode ser modificado","B) Software cujo código-fonte é aberto, podendo ser usado, estudado, modificado e distribuído livremente","C) Software gratuito desenvolvido por empresas privadas para uso comercial","D) Software de uso restrito a instituições governamentais"],
+alternativas:["A) Software gratuito que não pode ser modificado","B) Software cujo código-fonte é aberto, podendo ser usado, estudado, modificado e distribuído livremente","C) Software gratuito de empresas privadas","D) Software de uso restrito a instituições governamentais"],
 resposta:"B",
-comentario:"<strong>Software Livre</strong> (conceito da FSF — Free Software Foundation) garante 4 liberdades: usar, estudar (código aberto), modificar e distribuir. <strong>Freeware</strong> é gratuito mas não necessariamente livre para modificar. <strong>Open Source</strong> é similar ao software livre. Não confundir com software gratuito (que pode ser proprietário)."},
+comentario:"<strong>Software Livre</strong> garante 4 liberdades: usar, estudar, modificar e distribuir. Não confundir com freeware (gratuito mas proprietário)."},
 
 {id:54,materia:"Conhecimentos Gerais",sub:"São José de Ribamar",dif:"dificil",
-pergunta:"Em relação à economia de São José de Ribamar, qual atividade é historicamente a mais importante para a população local?",
-alternativas:["A) Mineração e extração de petróleo","B) Pesca artesanal e comércio local","C) Indústria têxtil e confecções","D) Agropecuária de larga escala"],
+pergunta:"Qual atividade é historicamente mais importante na economia de São José de Ribamar?",
+alternativas:["A) Mineração e petróleo","B) Pesca artesanal e comércio local","C) Indústria têxtil","D) Agropecuária de larga escala"],
 resposta:"B",
-comentario:"São José de Ribamar tem na <strong>pesca artesanal</strong> uma de suas principais atividades econômicas históricas, dada sua localização litorânea. O <strong>comércio local</strong> e o turismo religioso (decorrente do Santuário do padroeiro) também são pilares econômicos do município, que cresce como cidade-dormitório da Grande São Luís."},
+comentario:"São José de Ribamar tem na <strong>pesca artesanal</strong> e no <strong>comércio local</strong> seus pilares econômicos históricos, além do turismo religioso."},
 
 {id:55,materia:"Conhecimentos Específicos",sub:"Lei Abuso de Autoridade",dif:"dificil",
-pergunta:"A Lei de Abuso de Autoridade (Lei 13.869/2019) prevê que os crimes nela tipificados são praticados por agente público. Para a configuração do crime, é necessário que o agente atue:",
-alternativas:["A) Apenas em horário de serviço, dentro das dependências do órgão público","B) Com a finalidade específica de prejudicar outrem ou beneficiar a si mesmo ou a terceiro, ou por mero capricho ou satisfação pessoal","C) Somente quando há lesão corporal à vítima","D) Independentemente de qualquer elemento subjetivo especial"],
+pergunta:"Para configurar crime pela Lei de Abuso de Autoridade (Lei 13.869/2019), é necessário que o agente atue:",
+alternativas:["A) Apenas em horário de serviço","B) Com a finalidade específica de prejudicar outrem, beneficiar a si mesmo ou por mero capricho","C) Somente quando há lesão corporal à vítima","D) Independentemente de qualquer elemento subjetivo"],
 resposta:"B",
-comentario:"<strong>Art. 1º, §1º, Lei 13.869/2019:</strong> As condutas da lei são crimes apenas quando o agente pratica com <strong>finalidade específica</strong> de prejudicar outrem ou beneficiar a si mesmo/terceiro, ou por <strong>capricho ou satisfação pessoal</strong>. Esse elemento subjetivo especial diferencia o abuso de autoridade do mero erro funcional."},
+comentario:"<strong>Art. 1º, §1º, Lei 13.869/2019:</strong> Exige <strong>finalidade específica</strong> de prejudicar ou beneficiar, ou <strong>capricho/satisfação pessoal</strong>. Esse elemento distingue o abuso do simples erro funcional."},
 
 {id:56,materia:"Matemática",sub:"Potências",dif:"medio",
 pergunta:"Qual é o valor de 2⁵ + 3²?",
 alternativas:["A) 39","B) 41","C) 37","D) 43"],
 resposta:"B",
-comentario:"2⁵ = 2×2×2×2×2 = 32. 3² = 9. 32 + 9 = <strong>41</strong>."},
+comentario:"2⁵ = 32; 3² = 9; 32 + 9 = <strong>41</strong>."},
 
 {id:57,materia:"Língua Portuguesa",sub:"Gramática",dif:"dificil",
 pergunta:"Quanto ao emprego do pronome relativo, assinale a alternativa CORRETA:",
 alternativas:["A) O edital ao que me refiro foi publicado ontem","B) A lei cujo teor estudamos é fundamental para o concurso","C) O candidato que eu confiei foi aprovado","D) A prova em quem fui bem foi a de português"],
 resposta:"B",
-comentario:"<strong>B) 'cujo'</strong> é pronome relativo possessivo, usado para indicar posse: 'a lei' → 'cujo teor'. Está correto. A) deveria ser 'a que' ou 'ao qual'; C) deveria ser 'em quem confiei' ou 'de quem confiei'; D) 'em quem' refere-se a pessoa — o correto seria 'em que' (para coisa)."},
+comentario:"<strong>B) 'cujo'</strong> é pronome relativo possessivo: 'a lei' + 'cujo teor' indica posse. Correto. A) 'ao qual'; C) 'em quem/de quem'; D) 'em que' (para coisa)."},
 
 {id:58,materia:"Conhecimentos Gerais",sub:"Maranhão",dif:"medio",
-pergunta:"Qual é o principal rio que passa pela capital São Luís e pelo município de São José de Ribamar, importante para a região?",
+pergunta:"Qual o principal rio que banha a área metropolitana de São Luís incluindo São José de Ribamar?",
 alternativas:["A) Rio Mearim","B) Rio Itapecuru","C) Rio Bacanga","D) Rio Pindaré"],
 resposta:"C",
-comentario:"O <strong>Rio Bacanga</strong> é relevante para a área metropolitana de São Luís, incluindo a região de São José de Ribamar. O Rio Mearim é o principal do estado, deságua na Baía de São Marcos. O Rio Itapecuru passa por diversas cidades como Caxias e Itapecuru-Mirim. O Pindaré fica na região oeste do Maranhão."},
+comentario:"O <strong>Rio Bacanga</strong> é relevante para a área de São Luís e São José de Ribamar. O Rio Mearim é o principal rio totalmente maranhense."},
 
 {id:59,materia:"Noções de Informática",sub:"Internet",dif:"medio",
 pergunta:"A diferença entre CC e CCO em um e-mail é que:",
-alternativas:["A) CC envia para todos visíveis; CCO envia cópia oculta para destinatários que não se veem entre si","B) CC é o campo do remetente; CCO é o campo do destinatário principal","C) CC e CCO são sinônimos e funcionam da mesma forma","D) CCO envia e-mails apenas para endereços corporativos"],
+alternativas:["A) CC envia para todos visíveis; CCO envia cópia oculta","B) CC é o remetente; CCO é o destinatário principal","C) CC e CCO são sinônimos","D) CCO envia apenas para endereços corporativos"],
 resposta:"A",
-comentario:"<strong>CC (Com Cópia):</strong> todos os destinatários podem ver os e-mails uns dos outros. <strong>CCO (Com Cópia Oculta):</strong> os destinatários em CCO recebem o e-mail, mas seus endereços são ocultados dos demais. É usado para preservar privacidade dos destinatários ou enviar em massa sem expor os e-mails."},
+comentario:"<strong>CC:</strong> todos veem os endereços. <strong>CCO (Cópia Oculta):</strong> destinatários recebem, mas seus endereços ficam ocultos dos demais."},
 
 {id:60,materia:"Conhecimentos Específicos",sub:"CF/88",dif:"medio",
 pergunta:"O princípio da legalidade na Administração Pública (Art. 37, CF/88) significa que:",
-alternativas:["A) O administrador pode fazer tudo que a lei não proíba expressamente","B) O administrador só pode agir conforme o que a lei determina ou autoriza","C) A legalidade se aplica apenas aos atos administrativos punitivos","D) O princípio da legalidade é idêntico para particulares e para a Administração Pública"],
+alternativas:["A) O administrador pode fazer tudo que a lei não proíba","B) O administrador só pode agir conforme o que a lei determina ou autoriza","C) A legalidade aplica-se apenas a atos punitivos","D) É idêntico ao princípio geral de liberdade dos particulares"],
 resposta:"B",
-comentario:"Na Administração Pública, o princípio da legalidade é mais estrito que para os particulares. O administrador só pode fazer o que a <strong>lei determina ou autoriza</strong> (legalidade estrita). O particular pode fazer tudo que a lei não proíbe (princípio geral de liberdade). Essa distinção é fundamental e frequentemente cobrada em concursos."},
+comentario:"Na Administração Pública, o administrador só pode fazer o que a <strong>lei determina ou autoriza</strong> (legalidade estrita), ao contrário do particular que pode fazer o que a lei não proíbe."},
 ];
 
 // ============================================================
-// ESTADO DO APP
+// ████ BANCO DE FLASHCARDS ████
+// ============================================================
+const FC_CARDS = [
+  // LEGISLAÇÃO GCM
+  {cat:"Legislação",f:"Qual a natureza jurídica da GCM segundo a Lei 13.022/14?",v:"Instituição de caráter CIVIL, uniformizada e armada, preordenada à proteção dos bens, serviços e instalações do Município."},
+  {cat:"Legislação",f:"Quais os princípios mínimos de atuação da GCM (Art. 3º)?",v:"I. Proteção dos direitos fundamentais; II. Preservação da vida; III. Patrulhamento preventivo; IV. Compromisso com a evolução social; V. Uso progressivo da força."},
+  {cat:"Legislação",f:"A GCM pode fazer policiamento ostensivo ou investigações criminais?",v:"NÃO. A GCM tem caráter preventivo e municipal. Policiamento ostensivo e investigações são atribuições das PMs e Polícias Civis."},
+  {cat:"Legislação",f:"Quais as competências gerais da GCM (Art. 5º – Lei 13.022/14)?",v:"Proteger bens e prédios públicos municipais; colaborar com a segurança pública; atuar na fiscalização de posturas municipais; proteger o patrimônio histórico, artístico e ambiental."},
+  {cat:"Legislação",f:"O uso da força pela GCM deve seguir qual princípio?",v:"Uso PROGRESSIVO E PROPORCIONAL da força: somente quando necessário, na medida adequada ao nível de resistência encontrado."},
+  {cat:"Legislação",f:"A GCM pode usar armamento de fogo?",v:"SIM, desde que autorizado por lei específica e após formação adequada. A Lei 13.022/14 permite o porte, respeitando critérios de proporcionalidade."},
+  {cat:"Legislação",f:"O que é o PRONASCI e qual sua relação com as GCMs?",v:"Programa Nacional de Segurança Pública com Cidadania. Integra ações das GCMs com políticas sociais, culturais e educativas visando prevenir violência com foco na cidadania."},
+  {cat:"Legislação",f:"Qual a diferença entre GCM e Polícia Militar?",v:"A GCM é civil, municipal e preventiva. A PM é estadual, militarizada e tem funções de policiamento ostensivo e preservação da ordem pública."},
+  {cat:"Legislação",f:"Quais são as vedações expressas ao guarda municipal em serviço?",v:"Afastar-se da jurisdição sem autorização; descumprir legislação de trânsito; receber vantagens indevidas; praticar violência física ou psicológica; entre outras do Estatuto."},
+  {cat:"Legislação",f:"Qual o papel da GCM em relação ao ECA?",v:"Colaborar na proteção integral de crianças e adolescentes: rondas escolares, prevenção de atos infracionais e encaminhamento ao Conselho Tutelar."},
+  // CONSTITUCIONAL
+  {cat:"Constitucional",f:"Quais são os fundamentos da República (Art. 1º CF)?",v:"SO-CI-DI-VA-PLU: Soberania, Cidadania, Dignidade da pessoa humana, Valores sociais do trabalho e da livre iniciativa, Pluralismo político."},
+  {cat:"Constitucional",f:"Quais são os objetivos fundamentais da República (Art. 3º CF)?",v:"I. Construir sociedade livre, justa e solidária; II. Garantir desenvolvimento nacional; III. Erradicar pobreza e marginalização; IV. Promover o bem de todos sem preconceitos."},
+  {cat:"Constitucional",f:"O que é o princípio da legalidade para o particular (Art. 5º, II)?",v:"O particular pode fazer tudo que a lei NÃO proíbe. 'Ninguém será obrigado a fazer ou deixar de fazer alguma coisa senão em virtude de lei.'"},
+  {cat:"Constitucional",f:"O que significa o princípio da impessoalidade (LIMPE)?",v:"A Administração não pode privilegiar nem prejudicar pessoas específicas. Os atos são imputados ao órgão, não ao agente que os pratica."},
+  {cat:"Constitucional",f:"O que é habeas corpus?",v:"Remédio constitucional que protege a liberdade de locomoção quando alguém sofre ou ameaça sofrer violência ou coação em sua liberdade de ir e vir."},
+  {cat:"Constitucional",f:"O que é mandado de segurança?",v:"Remédio que protege direito líquido e certo, não amparado por HC, contra ato ilegal ou abusivo de autoridade pública. Prazo: 120 dias."},
+  {cat:"Constitucional",f:"O que é a inviolabilidade domiciliar (Art. 5º, XI)?",v:"A casa é asilo inviolável. Só pode ser penetrada por determinação judicial ou durante o dia em flagrante delito, desastre, socorro ou com consentimento do morador."},
+  {cat:"Constitucional",f:"O que é a presunção de inocência (Art. 5º, LVII)?",v:"Ninguém será considerado culpado até o trânsito em julgado de sentença penal condenatória. Fundamento do Estado Democrático de Direito."},
+  {cat:"Constitucional",f:"Quais os princípios LIMPE (Art. 37)?",v:"Legalidade, Impessoalidade, Moralidade, Publicidade e Eficiência."},
+  {cat:"Constitucional",f:"O que diz o Art. 144, §8º CF sobre as Guardas Municipais?",v:"Os Municípios podem constituir guardas municipais destinadas à proteção de seus bens, serviços e instalações, conforme dispuser a lei."},
+  // PENAL
+  {cat:"Penal",f:"O que é o Crime Tentado (Art. 14, II CP)?",v:"Quando, iniciada a execução, o crime não se consuma por circunstâncias alheias à vontade do agente. Pena reduzida de 1 a 2/3."},
+  {cat:"Penal",f:"Qual a diferença entre Concussão e Corrupção Passiva?",v:"Concussão (Art. 316): EXIGIR vantagem. Corrupção Passiva (Art. 317): SOLICITAR ou RECEBER vantagem ou aceitar promessa."},
+  {cat:"Penal",f:"O que é Arrependimento Eficaz (Art. 15)?",v:"Agente concluiu a execução mas age para impedir o resultado. Responde apenas pelos atos já praticados."},
+  {cat:"Penal",f:"O que é Desistência Voluntária (Art. 15)?",v:"O agente interrompe voluntariamente a execução antes de completá-la. Responde pelos atos praticados até então."},
+  {cat:"Penal",f:"Diferença entre crime doloso e culposo?",v:"Doloso: agente quis o resultado OU assumiu o risco. Culposo: não quis o resultado, mas agiu com imprudência, negligência ou imperícia."},
+  {cat:"Penal",f:"O que é legítima defesa (Art. 25)?",v:"Usar moderadamente os meios necessários para repelir injusta agressão, atual ou iminente, a direito próprio ou alheio. Excludente de ilicitude."},
+  {cat:"Penal",f:"O que é estado de necessidade (Art. 24)?",v:"Prática de fato para salvar de perigo atual, que não provocou, direito próprio ou alheio, quando não podia agir de outra forma. Excludente de ilicitude."},
+  {cat:"Penal",f:"O que é peculato (Art. 312)?",v:"Apropriar-se o funcionário público de dinheiro ou bem de que tem a posse em razão do cargo. Pena: reclusão 2 a 12 anos."},
+  {cat:"Penal",f:"O que é o crime de resistência (Art. 329)?",v:"Opor-se à execução de ato legal mediante violência ou ameaça a funcionário competente. Pena: detenção 2 meses a 2 anos."},
+  {cat:"Penal",f:"O que é desacato (Art. 331)?",v:"Desacatar funcionário público no exercício da função ou em razão dela. Pena: detenção 6 meses a 2 anos ou multa."},
+  {cat:"Penal",f:"Quais as espécies de flagrante delito?",v:"Próprio (in fraganti), Impróprio (logo após), Presumido (encontrado com objetos do crime) e Preparado (agente provocado)."},
+  {cat:"Penal",f:"O que é prevaricação (Art. 319)?",v:"Retardar ou deixar de praticar ato de ofício, ou praticá-lo contra disposição expressa de lei, para satisfazer interesse ou sentimento pessoal."},
+  // ADMINISTRATIVO
+  {cat:"Administrativo",f:"O que é ato administrativo?",v:"Manifestação unilateral de vontade da Administração Pública que, agindo nessa qualidade, adquire, resguarda, modifica, extingue ou declara direitos ou impõe obrigações."},
+  {cat:"Administrativo",f:"Quais os atributos do ato administrativo?",v:"TIPPA: Tipicidade, Imperatividade, Presunção de legitimidade/veracidade e Autoexecutoriedade."},
+  {cat:"Administrativo",f:"O que é o poder discricionário?",v:"Margem de liberdade conferida pela lei ao agente público para fazer juízo de conveniência e oportunidade, escolhendo uma entre várias condutas lícitas."},
+  {cat:"Administrativo",f:"O que é improbidade administrativa?",v:"Ato que causa enriquecimento ilícito, dano ao erário ou viola princípios da Administração, praticado por agente público (Lei 8.429/92)."},
+  {cat:"Administrativo",f:"O que é o princípio da moralidade?",v:"A Administração deve atuar com honestidade, boa-fé e lealdade, vedando condutas antiéticas ou desonestas, ainda que formalmente legais."},
+  {cat:"Administrativo",f:"O que é poder de polícia?",v:"Atividade da Administração que limita ou disciplina direito, interesse ou liberdade em razão do interesse público. Atributos: discricionariedade, autoexecutoriedade e coercibilidade."},
+  {cat:"Administrativo",f:"Quais os servidores públicos estáveis?",v:"Aprovados em concurso público que completaram 3 anos de efetivo exercício e passaram na avaliação especial. Perdem cargo apenas por sentença, PAD ou avaliação negativa."},
+  // PROCESSUAL
+  {cat:"Processual",f:"O que é o inquérito policial (IP)?",v:"Procedimento administrativo, inquisitorial e sigiloso, presidido pela autoridade policial, para apurar autoria e materialidade de infrações penais. Não é obrigatório."},
+  {cat:"Processual",f:"Qual o prazo para conclusão do inquérito policial?",v:"Indiciado preso: 10 dias (30 com prorrogação). Indiciado solto: 30 dias (prorrogável com autorização judicial)."},
+  {cat:"Processual",f:"O que é a ação penal pública incondicionada?",v:"Proposta pelo MP independentemente da vontade da vítima. É a regra geral para a maioria dos crimes."},
+  {cat:"Processual",f:"O que é prisão preventiva?",v:"Medida cautelar decretada pelo juiz quando presentes: prova do crime, indícios de autoria e fundamento (garantia da ordem pública, instrução criminal ou aplicação da lei penal)."},
+  {cat:"Processual",f:"O que é o princípio do contraditório?",v:"Às partes deve ser assegurada a possibilidade de conhecer e se manifestar sobre tudo que é produzido nos autos, em igualdade de condições."},
+  {cat:"Processual",f:"O que é o in dubio pro reo?",v:"Na dúvida, decide-se em favor do réu. Se não houver prova suficiente da culpa, o réu deve ser absolvido."},
+  {cat:"Processual",f:"Quais medidas cautelares diversas da prisão (Art. 319 CPP)?",v:"Comparecimento periódico; proibição de acesso a lugares; proibição de contato; monitoração eletrônica; recolhimento domiciliar noturno; fiança; entre outras."},
+  // ECA
+  {cat:"ECA",f:"Quem é criança e quem é adolescente segundo o ECA?",v:"CRIANÇA: pessoa até 12 anos incompletos. ADOLESCENTE: de 12 a 18 anos."},
+  {cat:"ECA",f:"Qual o princípio central do ECA?",v:"Doutrina da Proteção Integral: crianças e adolescentes são sujeitos de direitos e devem ser protegidos integralmente pela família, sociedade e Estado."},
+  {cat:"ECA",f:"O que é ato infracional?",v:"Conduta descrita como crime ou contravenção penal praticada por criança ou adolescente. Criança: medidas protetivas. Adolescente: medidas socioeducativas."},
+  {cat:"ECA",f:"Quais as medidas socioeducativas do ECA (Art. 112)?",v:"Advertência; Reparação do dano; Prestação de serviços; Liberdade Assistida; Semiliberdade; Internação. Prazo máximo de internação: 3 anos."},
+  {cat:"ECA",f:"Em quais casos o ECA permite internação?",v:"I. Ato com grave ameaça ou violência; II. Reiteração de infrações graves; III. Descumprimento reiterado de medida anterior."},
+  {cat:"ECA",f:"O que é o Conselho Tutelar?",v:"Órgão permanente e autônomo, não jurisdicional, eleito pela comunidade para mandato de 4 anos. 5 membros. Zela pelos direitos de crianças e adolescentes."},
+  // PORTUGUÊS
+  {cat:"Português",f:"Quando ocorre crase obrigatória com horas?",v:"Sempre com hora exata: 'Saí às 14h' (às = a + a). Sem crase com horas indeterminadas: 'Saí a horas incertas.'"},
+  {cat:"Português",f:"Qual a diferença entre 'Mau' e 'Mal'?",v:"MAU: antônimo de BOM (adjetivo). MAL: antônimo de BEM (advérbio/substantivo). Dica: 'mau/bom' têm mesma terminação."},
+  {cat:"Português",f:"O que é próclise?",v:"Pronome ANTES do verbo. Ocorre com palavras atrativas: negação, conjunções subordinativas, advérbios, pronomes relativos. Ex: 'Não me diga isso.'"},
+  {cat:"Português",f:"O que é ênclise?",v:"Pronome DEPOIS do verbo. Regra geral sem palavra atrativa. Ex: 'Diga-me a verdade.' Não se inicia oração com pronome oblíquo átono."},
+  {cat:"Português",f:"Diferença entre 'há' e 'a' no tempo?",v:"'HÁ' (verbo haver) = tempo decorrido: 'Saiu há dois dias.' 'A' (preposição) = tempo futuro/distância: 'Voltará a dois dias.'"},
+  {cat:"Português",f:"Quando usar 'porque', 'por que', 'por quê' e 'porquê'?",v:"PORQUE: causa/explicação. POR QUE: perguntas/'pelo qual'. POR QUÊ: final de frase. PORQUÊ (substantivo): 'Não sei o porquê.'"},
+  {cat:"Português",f:"Regência verbal de 'assistir'?",v:"Assistir (ver/presenciar): TRANSITIVO INDIRETO — 'Assisti AO filme.' Assistir (ajudar): TRANSITIVO DIRETO — 'O médico assistiu O paciente.'"},
+  {cat:"Português",f:"O que é denotação e conotação?",v:"DENOTAÇÃO: sentido literal. CONOTAÇÃO: sentido figurado/simbólico. Ex: 'Cabra' (animal) = denotação; 'É uma cabra' (pessoa valente) = conotação."},
+  {cat:"Português",f:"O que é concordância nominal?",v:"Os determinantes (artigo, adjetivo, pronome, numeral) concordam em gênero e número com o substantivo a que se referem."},
+  {cat:"Português",f:"O que é sujeito oculto ou desinencial?",v:"Quando o sujeito não está expresso na oração mas é identificado pela desinência verbal. Ex: 'Chegamos cedo.' (sujeito = nós)."},
+  // MATEMÁTICA
+  {cat:"Matemática",f:"Qual a fórmula da área do círculo?",v:"A = π · r² (onde r = raio e π ≈ 3,14159)"},
+  {cat:"Matemática",f:"Teorema de Pitágoras?",v:"a² = b² + c² (hipotenusa² = soma dos quadrados dos catetos). Em todo triângulo retângulo."},
+  {cat:"Matemática",f:"Como calcular porcentagem? (Ex: 15% de 200)",v:"200 × 0,15 = 30. Ou: (200 × 15) ÷ 100 = 30."},
+  {cat:"Matemática",f:"O que é MMC?",v:"Mínimo Múltiplo Comum: menor número inteiro positivo múltiplo de dois ou mais números dados. Usado para somar frações."},
+  {cat:"Matemática",f:"O que é MDC?",v:"Máximo Divisor Comum: maior número inteiro que divide simultaneamente dois ou mais números. Usado para simplificar frações."},
+  {cat:"Matemática",f:"Fórmula dos juros simples?",v:"J = C · i · t (Capital × taxa × tempo). O capital não é capitalizado: juros sempre sobre o principal."},
+  {cat:"Matemática",f:"O que é probabilidade simples?",v:"P(E) = nº casos favoráveis / nº casos possíveis. Sempre entre 0 e 1. Ex: cara em moeda: 1/2 = 50%."},
+  {cat:"Matemática",f:"Tabela-verdade: quando P → Q é FALSA?",v:"Somente quando P é VERDADEIRA e Q é FALSA. Nas demais combinações (VV, FV, FF) a condicional é verdadeira."},
+  {cat:"Matemática",f:"Fórmula do termo geral de uma PA?",v:"aₙ = a₁ + (n-1) · r. Onde a₁ = primeiro termo, n = posição, r = razão."},
+  {cat:"Matemática",f:"Fórmula da área do triângulo?",v:"A = (base × altura) / 2."},
+  // INFORMÁTICA
+  {cat:"Informática",f:"O que é Ransomware?",v:"Malware que criptografa os dados da vítima e exige resgate para fornecer a chave. Ex: WannaCry."},
+  {cat:"Informática",f:"O que é phishing?",v:"Técnica que usa e-mails ou páginas falsas para enganar usuários e roubar dados pessoais, senhas ou informações financeiras."},
+  {cat:"Informática",f:"Atalho para localizar e substituir no LibreOffice Writer?",v:"Ctrl + H (localizar e substituir). Ctrl + F apenas localiza."},
+  {cat:"Informática",f:"O que é HTTPS?",v:"HTTP com camada TLS/SSL. Criptografa a comunicação, garantindo confidencialidade e integridade. Identificado pelo cadeado no navegador."},
+  {cat:"Informática",f:"Tipos de backup?",v:"Completo (todos os arquivos), Incremental (desde o último backup qualquer) e Diferencial (desde o último backup completo)."},
+  {cat:"Informática",f:"O que é Mala Direta no LibreOffice Writer?",v:"Recurso para criar documentos personalizados em massa combinando um modelo com uma base de dados de destinatários."},
+  {cat:"Informática",f:"Diferença entre vírus e worm?",v:"VÍRUS: precisa de arquivo hospedeiro. WORM: auto-replicante, propaga-se sozinho pela rede sem necessidade de hospedeiro."},
+  {cat:"Informática",f:"O que é firewall?",v:"Sistema que monitora e controla o tráfego de rede com base em regras de segurança. Cria barreira entre rede confiável e não confiável."},
+  {cat:"Informática",f:"Extensão padrão de planilha do LibreOffice Calc?",v:".ODS (Open Document Spreadsheet). Também salva em .XLSX para compatibilidade com Excel."},
+  {cat:"Informática",f:"O que é cloud computing?",v:"Fornecimento de serviços de TI via internet sob demanda. Modelos: IaaS, PaaS, SaaS. Ex: Google Drive, AWS, Azure."},
+  {cat:"Informática",f:"O que é cookies de navegador?",v:"Pequenos arquivos armazenados pelo navegador para guardar preferências, sessões de login e rastrear comportamento na web."},
+  // MARANHÃO
+  {cat:"Maranhão",f:"Quem é o padroeiro do Maranhão?",v:"São José de Ribamar. Festa em setembro — um dos maiores eventos religiosos do Norte/Nordeste do Brasil."},
+  {cat:"Maranhão",f:"Capital do Maranhão e sua fundação?",v:"São Luís, fundada em 8 de setembro de 1612 pelos franceses. Única capital brasileira fundada por franceses. Patrimônio UNESCO."},
+  {cat:"Maranhão",f:"O que é o Bumba-meu-boi do Maranhão?",v:"Manifestação folclórica mais importante do Maranhão, festejada em junho/julho. Sotaques: Matraca, Orquestra, Zabumba, Costa-de-Mão e Baixada."},
+  {cat:"Maranhão",f:"O que são os Lençóis Maranhenses?",v:"Parque Nacional com dunas de areia branca e lagoas de água doce azul. Um dos principais atrativos turísticos do Brasil."},
+  {cat:"Maranhão",f:"O que é o Tambor de Crioula?",v:"Manifestação afro-maranhense de dança circular feminina com tambores. Patrimônio Cultural Imaterial do Brasil pelo IPHAN."},
+  {cat:"Maranhão",f:"Quando foi criado o município de São José de Ribamar?",v:"Desmembrado de São Luís em 1959. Hoje é o 2º município mais populoso do Maranhão."},
+  {cat:"Maranhão",f:"Qual o principal rio totalmente maranhense?",v:"Rio Mearim. O Parnaíba faz divisa com o Piauí. O Tocantins banha o extremo sul."},
+  {cat:"Maranhão",f:"Gonçalves Dias — quem foi?",v:"Antonio Gonçalves Dias (1823-1864): maior poeta romântico do Maranhão. Autor de 'Canção do Exílio': 'Minha terra tem palmeiras...'"},
+  {cat:"Maranhão",f:"Por que São Luís é Patrimônio UNESCO?",v:"Conjunto de edificações coloniais (séc. XVII-XIX) com azulejos portugueses. Uma das maiores coleções de azulejaria fora de Portugal."},
+  {cat:"Maranhão",f:"O que é a Festa do Divino Espírito Santo no Maranhão?",v:"Tradição religiosa de origem portuguesa, realizada em Alcântara e São Luís, 50 dias após a Páscoa (Pentecostes). Inclui procissões e distribuição de alimentos."},
+  // ATUALIDADES
+  {cat:"Atualidades",f:"O que é a Lei de Acesso à Informação (LAI – 12.527/11)?",v:"Regulamenta o direito de acesso à informação pública. Prazo de resposta: até 20 dias (prorrogáveis por mais 10)."},
+  {cat:"Atualidades",f:"O que é a LGPD (Lei 13.709/18)?",v:"Regulamenta o tratamento de dados pessoais. Garante ao titular direitos como acesso, correção e exclusão de seus dados."},
+  {cat:"Atualidades",f:"O que é o CTB (Lei 9.503/97) e competências municipais?",v:"Código de Trânsito Brasileiro. Municípios responsáveis por sinalização e fiscalização. A GCM pode atuar no ordenamento do trânsito urbano."},
+  {cat:"Atualidades",f:"O que é o SAMU?",v:"Serviço de Atendimento Móvel de Urgência. Número: 192. Presta socorro médico fora do hospital. Integra a Rede de Urgências do SUS."},
+  {cat:"Atualidades",f:"O que é a Lei de Drogas (Lei 11.343/06)?",v:"Institui o SISNAD. Distingue usuário de traficante: usuário recebe medidas educativas; tráfico tem reclusão de 5 a 15 anos."},
+  {cat:"Atualidades",f:"O que é a Lei do Abuso de Autoridade (13.869/19)?",v:"Define crimes quando agente público age com finalidade de prejudicar, beneficiar ou por capricho. Exige elemento subjetivo especial."},
+];
+
+// ============================================================
+// ████ ESTADO DO APP ████
 // ============================================================
 let STATE = {
-  historico: [], // {id, materia, acertou, timestamp}
-  erros: [],     // ids das questões erradas
-  sessao: {      // sessão atual
-    questoes: [],
-    indice: 0,
-    acertos: 0,
-    modo: '', // 'simulado' | 'treino'
-    inicio: null,
-    respondidas: [] // {id, acertou, resposta}
-  }
+  historico: [],
+  erros: [],
+  sessao: { questoes:[], indice:0, acertos:0, modo:'', inicio:null, respondidas:[] }
 };
 let cronometroInterval = null;
 let segundosDecorridos = 0;
@@ -1034,25 +1697,28 @@ let respondeuAtual = false;
 let simMatSelecionada = 'TODAS';
 
 function carregarState() {
-  const s = localStorage.getItem('gcm_state');
+  const s = localStorage.getItem('gcm_state_v2');
   if (s) STATE = JSON.parse(s);
 }
 function salvarState() {
-  localStorage.setItem('gcm_state', JSON.stringify(STATE));
+  localStorage.setItem('gcm_state_v2', JSON.stringify(STATE));
 }
 
 // ============================================================
-// NAVEGAÇÃO
+// ████ NAVEGAÇÃO ████
 // ============================================================
 function showScreen(id) {
   document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
   document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
   const map = {
     'home':'screen-home','simulado-sel':'screen-simulado-sel','treino-sel':'screen-treino-sel',
-    'questao':'screen-questao','resultado':'screen-resultado','revisao':'screen-revisao','plano':'screen-plano'
+    'questao':'screen-questao','resultado':'screen-resultado','revisao':'screen-revisao',
+    'plano':'screen-plano','flashcards':'screen-flashcards'
   };
-  const nav = {'home':'nav-home','simulado-sel':'nav-simulado','treino-sel':'nav-treino',
-    'revisao':'nav-revisao','plano':'nav-plano'};
+  const nav = {
+    'home':'nav-home','simulado-sel':'nav-simulado','treino-sel':'nav-treino',
+    'revisao':'nav-revisao','plano':'nav-plano','flashcards':'nav-flashcards'
+  };
   document.getElementById(map[id]).classList.add('active');
   if (nav[id]) document.getElementById(nav[id]).classList.add('active');
   if (id === 'home') renderHome();
@@ -1060,101 +1726,87 @@ function showScreen(id) {
   if (id === 'treino-sel') renderTreinoDiagnostico();
   if (id === 'revisao') renderRevisao();
   if (id === 'plano') renderPlano();
+  if (id === 'flashcards') fcInit();
   window.scrollTo(0,0);
 }
 
 // ============================================================
-// HOME
+// ████ HOME ████
 // ============================================================
 function renderHome() {
   atualizarHeader();
   const materias = getMaterias();
   const cont = document.getElementById('home-materias');
   cont.innerHTML = '';
-  const cores = {'Conhecimentos Específicos':'#f0b429','Língua Portuguesa':'#2d6be4',
-    'Matemática':'#22c55e','Noções de Informática':'#f97316','Conhecimentos Gerais':'#a78bfa'};
-  const icons = {'Conhecimentos Específicos':'⚖️','Língua Portuguesa':'📖',
-    'Matemática':'➕','Noções de Informática':'💻','Conhecimentos Gerais':'🌎'};
+  const cores = {'Conhecimentos Específicos':'#f0b429','Língua Portuguesa':'#2d6be4','Matemática':'#22c55e','Noções de Informática':'#f97316','Conhecimentos Gerais':'#a78bfa'};
+  const icons = {'Conhecimentos Específicos':'⚖️','Língua Portuguesa':'📖','Matemática':'➕','Noções de Informática':'💻','Conhecimentos Gerais':'🌎'};
+  const pesos = {'Conhecimentos Específicos':'55pts · 20 questões','Língua Portuguesa':'15pts · 10 questões','Matemática':'15pts · 10 questões','Noções de Informática':'7,5pts · 5 questões','Conhecimentos Gerais':'7,5pts · 5 questões'};
   materias.forEach(m => {
     const perf = getDesempenho(m);
     const pct = perf.total > 0 ? Math.round((perf.acertos/perf.total)*100) : null;
     const cor = cores[m] || 'var(--gold)';
     const icon = icons[m] || '📚';
-    const barW = pct !== null ? pct+'%' : '0%';
-    const pctStr = pct !== null ? pct+'%' : '—';
+    const peso = pesos[m] || '';
     cont.innerHTML += `
     <div class="materia-item">
       <div class="materia-header">
-        <div class="materia-name">${icon} ${m}</div>
-        <div class="materia-pct" style="color:${cor}">${pctStr}</div>
+        <div class="materia-name">${icon} ${m} <span style="font-size:11px;color:var(--text3);font-family:'Rajdhani';">${peso}</span></div>
+        <div class="materia-pct" style="color:${cor}">${pct !== null ? pct+'%' : '—'}</div>
       </div>
-      <div class="bar-bg"><div class="bar-fill" style="width:${barW};background:${cor}"></div></div>
+      <div class="bar-bg"><div class="bar-fill" style="width:${pct??0}%;background:${cor}"></div></div>
       <div style="display:flex;justify-content:space-between;margin-top:4px;">
-        <span style="font-size:11px;color:var(--text3)">${perf.acertos}/${perf.total} questões</span>
+        <span style="font-size:11px;color:var(--text3)">${perf.acertos}/${perf.total} respondidas</span>
         <span style="font-size:11px;color:var(--text3)">${getQtdPorMateria(m)} no banco</span>
       </div>
     </div>`;
   });
 }
 
-function getQtdPorMateria(m) {
-  return QUESTOES.filter(q=>q.materia===m).length;
-}
-
-function getMaterias() {
-  return [...new Set(QUESTOES.map(q=>q.materia))];
-}
-
+function getQtdPorMateria(m) { return QUESTOES.filter(q=>q.materia===m).length; }
+function getMaterias() { return [...new Set(QUESTOES.map(q=>q.materia))]; }
 function getDesempenho(materia) {
   const hist = materia ? STATE.historico.filter(h=>h.materia===materia) : STATE.historico;
-  const acertos = hist.filter(h=>h.acertou).length;
-  return {acertos, total: hist.length};
+  return { acertos: hist.filter(h=>h.acertou).length, total: hist.length };
 }
-
 function atualizarHeader() {
   const d = getDesempenho(null);
   document.getElementById('hdr-total').textContent = d.total;
   document.getElementById('hdr-acertos').textContent = d.acertos;
-  const pct = d.total > 0 ? Math.round((d.acertos/d.total)*100)+'%' : '—';
-  document.getElementById('hdr-pct').textContent = pct;
+  document.getElementById('hdr-pct').textContent = d.total > 0 ? Math.round((d.acertos/d.total)*100)+'%' : '—';
 }
 
 // ============================================================
-// SIMULADO SELEÇÃO
+// ████ SIMULADO ████
 // ============================================================
 function renderSimuladoSel() {
   const grid = document.getElementById('sim-mat-grid');
-  const icons = {'Conhecimentos Específicos':'⚖️','Língua Portuguesa':'📖',
-    'Matemática':'➕','Noções de Informática':'💻','Conhecimentos Gerais':'🌎'};
+  const icons = {'Conhecimentos Específicos':'⚖️','Língua Portuguesa':'📖','Matemática':'➕','Noções de Informática':'💻','Conhecimentos Gerais':'🌎'};
   grid.innerHTML = `<div class="mat-select-btn selected" onclick="selMat('TODAS',this)"><div class="icon">📚</div><div class="lbl">Todas</div></div>`;
   getMaterias().forEach(m => {
     grid.innerHTML += `<div class="mat-select-btn" onclick="selMat('${m.replace(/'/g,"\\'")}',this)"><div class="icon">${icons[m]||'📚'}</div><div class="lbl">${m}</div></div>`;
   });
   simMatSelecionada = 'TODAS';
 }
-
 function selMat(m, el) {
   document.querySelectorAll('.mat-select-btn').forEach(b=>b.classList.remove('selected'));
   el.classList.add('selected');
   simMatSelecionada = m;
 }
-
 function iniciarSimulado() {
   const qtd = parseInt(document.getElementById('sim-qtd').value);
   let pool = simMatSelecionada === 'TODAS' ? [...QUESTOES] : QUESTOES.filter(q=>q.materia===simMatSelecionada);
-  if (pool.length === 0) { alert('Nenhuma questão disponível para esta seleção.'); return; }
+  if (!pool.length) { alert('Nenhuma questão disponível.'); return; }
   embaralhar(pool);
-  const qs = pool.slice(0, Math.min(qtd, pool.length));
-  iniciarSessao(qs, 'simulado');
+  iniciarSessao(pool.slice(0, Math.min(qtd, pool.length)), 'simulado');
 }
 
 // ============================================================
-// TREINO IA
+// ████ TREINO IA ████
 // ============================================================
 function renderTreinoDiagnostico() {
   const div = document.getElementById('treino-diagnostico');
   const materias = getMaterias();
-  let html = '<div style="font-family:Rajdhani;font-weight:600;font-size:13px;text-transform:uppercase;letter-spacing:1px;color:var(--text2);margin-bottom:10px;">Diagnóstico IA</div>';
+  let html = '<div style="font-family:Rajdhani;font-weight:700;font-size:12px;text-transform:uppercase;letter-spacing:1px;color:var(--text2);margin-bottom:10px;">🤖 Diagnóstico IA</div>';
   materias.forEach(m => {
     const d = getDesempenho(m);
     const pct = d.total > 0 ? Math.round((d.acertos/d.total)*100) : null;
@@ -1170,60 +1822,41 @@ function renderTreinoDiagnostico() {
   });
   div.innerHTML = html;
 }
-
 function getDificuldadeAdaptada(materia) {
   const d = getDesempenho(materia);
-  if (d.total === 0) return 'medio';
+  if (!d.total) return 'medio';
   const pct = (d.acertos/d.total)*100;
-  if (pct >= 80) return 'dificil';
-  if (pct >= 50) return 'medio';
-  return 'facil';
+  return pct >= 80 ? 'dificil' : pct >= 50 ? 'medio' : 'facil';
 }
-
 function getMateriaFraca() {
-  let piorPct = 101, piorMat = null;
+  let pior = 101, mat = null;
   getMaterias().forEach(m => {
     const d = getDesempenho(m);
-    if (d.total === 0) { if (piorMat === null) piorMat = m; return; }
-    const pct = (d.acertos/d.total)*100;
-    if (pct < piorPct) { piorPct = pct; piorMat = m; }
+    if (!d.total) { if (!mat) mat = m; return; }
+    const p = (d.acertos/d.total)*100;
+    if (p < pior) { pior = p; mat = m; }
   });
-  return piorMat;
+  return mat;
 }
-
 function iniciarTreino() {
   const mat = getMateriaFraca();
   const dif = getDificuldadeAdaptada(mat);
-  let pool = QUESTOES.filter(q => q.materia === mat);
-  
-  // Priorizar erros anteriores
-  const erroIds = STATE.erros;
-  const comErro = pool.filter(q => erroIds.includes(q.id));
-  const semErro = pool.filter(q => !erroIds.includes(q.id));
-  const filtDif = semErro.filter(q => q.dif === dif);
-  const resto = semErro.filter(q => q.dif !== dif);
-  
-  let final = [...comErro, ...filtDif, ...resto];
+  let pool = QUESTOES.filter(q=>q.materia===mat);
+  const comErro = pool.filter(q=>STATE.erros.includes(q.id));
+  const semErro = pool.filter(q=>!STATE.erros.includes(q.id));
+  let final = [...comErro, ...semErro.filter(q=>q.dif===dif), ...semErro.filter(q=>q.dif!==dif)];
   embaralhar(final);
-  final = final.slice(0, Math.min(15, final.length));
-  if (final.length === 0) { 
-    final = [...QUESTOES]; 
-    embaralhar(final);
-    final = final.slice(0,15);
-  }
-  iniciarSessao(final, 'treino');
+  if (!final.length) { final = [...QUESTOES]; embaralhar(final); }
+  iniciarSessao(final.slice(0, Math.min(15, final.length)), 'treino');
 }
 
 // ============================================================
-// SESSÃO DE QUESTÕES
+// ████ SESSÃO DE QUESTÕES ████
 // ============================================================
 function iniciarSessao(questoes, modo) {
   if (cronometroInterval) clearInterval(cronometroInterval);
   segundosDecorridos = 0;
-  STATE.sessao = {
-    questoes, indice: 0, acertos: 0, modo,
-    inicio: Date.now(), respondidas: []
-  };
+  STATE.sessao = { questoes, indice:0, acertos:0, modo, inicio:Date.now(), respondidas:[] };
   cronometroInterval = setInterval(() => {
     segundosDecorridos++;
     const m = String(Math.floor(segundosDecorridos/60)).padStart(2,'0');
@@ -1234,44 +1867,35 @@ function iniciarSessao(questoes, modo) {
   showScreen('questao');
   renderQuestaoAtual();
 }
-
 function renderQuestaoAtual() {
   respondeuAtual = false;
   const {questoes, indice} = STATE.sessao;
   if (indice >= questoes.length) { finalizarSessao(); return; }
   const q = questoes[indice];
-  
   document.getElementById('q-materia-badge').textContent = q.sub || q.materia;
   const difBadge = document.getElementById('q-dif-badge');
   difBadge.textContent = {facil:'Fácil',medio:'Médio',dificil:'Difícil'}[q.dif];
   difBadge.className = 'q-badge dif-'+q.dif;
   document.getElementById('q-progress-txt').textContent = `${indice+1} / ${questoes.length}`;
   document.getElementById('q-enunciado').textContent = q.pergunta;
-  
   const altDiv = document.getElementById('q-alternativas');
   altDiv.innerHTML = '';
   const letras = ['A','B','C','D'];
   q.alternativas.forEach((alt, i) => {
-    const letra = letras[i];
     const btn = document.createElement('button');
     btn.className = 'alt-btn';
-    btn.innerHTML = `<span class="alt-letter">${letra}</span><span>${alt.replace(/^[A-D]\)\s*/,'')}</span>`;
-    btn.onclick = () => responder(letra, q);
+    btn.innerHTML = `<span class="alt-letter">${letras[i]}</span><span>${alt.replace(/^[A-D]\)\s*/,'')}</span>`;
+    btn.onclick = () => responder(letras[i], q);
     altDiv.appendChild(btn);
   });
-  
   const com = document.getElementById('q-comentario');
-  com.className = 'comentario-box';
-  com.innerHTML = '';
+  com.className = 'comentario-box'; com.innerHTML = '';
   document.getElementById('btn-proxima').style.display = 'none';
 }
-
 function responder(letra, q) {
   if (respondeuAtual) return;
   respondeuAtual = true;
   const acertou = letra === q.resposta;
-  
-  // Desabilitar botões e marcar
   const btns = document.querySelectorAll('.alt-btn');
   const letras = ['A','B','C','D'];
   btns.forEach((btn, i) => {
@@ -1279,72 +1903,51 @@ function responder(letra, q) {
     if (letras[i] === q.resposta) btn.classList.add('correct');
     else if (letras[i] === letra && !acertou) btn.classList.add('wrong');
   });
-  
-  // Comentário
   const com = document.getElementById('q-comentario');
   com.innerHTML = `<strong>${acertou ? '✅ Correto!' : '❌ Incorreto!'}</strong><br><br>📝 ${q.comentario}`;
   com.classList.add('show');
-  
-  // Salvar no histórico
-  STATE.historico.push({id:q.id, materia:q.materia, acertou, timestamp: Date.now()});
-  if (acertou) {
-    STATE.sessao.acertos++;
-    STATE.erros = STATE.erros.filter(id=>id!==q.id);
-  } else {
-    if (!STATE.erros.includes(q.id)) STATE.erros.push(q.id);
-  }
+  STATE.historico.push({id:q.id, materia:q.materia, acertou, timestamp:Date.now()});
+  if (acertou) { STATE.sessao.acertos++; STATE.erros = STATE.erros.filter(id=>id!==q.id); }
+  else if (!STATE.erros.includes(q.id)) STATE.erros.push(q.id);
   STATE.sessao.respondidas.push({id:q.id, acertou, resposta:letra});
   salvarState();
-  
   document.getElementById('btn-proxima').style.display = 'inline-flex';
   atualizarHeader();
 }
-
 function proximaQuestao() {
   STATE.sessao.indice++;
-  if (STATE.sessao.indice >= STATE.sessao.questoes.length) {
-    finalizarSessao();
-  } else {
-    renderQuestaoAtual();
-    window.scrollTo(0,0);
-  }
+  if (STATE.sessao.indice >= STATE.sessao.questoes.length) finalizarSessao();
+  else { renderQuestaoAtual(); window.scrollTo(0,0); }
 }
-
 function encerrarSessao() {
-  if (STATE.sessao.respondidas.length === 0) {
-    if (!confirm('Nenhuma questão respondida. Deseja realmente sair?')) return;
+  if (!STATE.sessao.respondidas.length) {
+    if (!confirm('Nenhuma questão respondida. Deseja sair?')) return;
     if (cronometroInterval) clearInterval(cronometroInterval);
-    showScreen('home');
-    return;
+    showScreen('home'); return;
   }
   finalizarSessao();
 }
-
 function finalizarSessao() {
   if (cronometroInterval) clearInterval(cronometroInterval);
-  const {acertos, respondidas, questoes} = STATE.sessao;
+  const {acertos, respondidas} = STATE.sessao;
   const total = respondidas.length;
   const pct = total > 0 ? Math.round((acertos/total)*100) : 0;
-  
   document.getElementById('res-pct').textContent = pct+'%';
   document.getElementById('res-acertos').textContent = acertos;
   document.getElementById('res-erros').textContent = total-acertos;
   const m = String(Math.floor(segundosDecorridos/60)).padStart(2,'0');
   const s = String(segundosDecorridos%60).padStart(2,'0');
   document.getElementById('res-tempo').textContent = m+':'+s;
-  
   let msg = '', cor = 'var(--text)';
-  if (pct >= 80) { msg = '🏆 Excelente! Continue assim!'; cor = 'var(--green)'; }
-  else if (pct >= 60) { msg = '📈 Bom! Ainda há pontos a melhorar.'; cor = 'var(--gold)'; }
-  else if (pct >= 40) { msg = '⚠️ Atenção! Revise as matérias com mais erros.'; cor = 'var(--orange)'; }
-  else { msg = '🚨 Foco! Estude mais e tente novamente.'; cor = 'var(--red)'; }
+  if (pct>=80) { msg='🏆 Excelente! Continue assim!'; cor='var(--green)'; }
+  else if (pct>=60) { msg='📈 Bom! Revise os pontos fracos.'; cor='var(--gold)'; }
+  else if (pct>=40) { msg='⚠️ Atenção! Revise as matérias com mais erros.'; cor='var(--orange)'; }
+  else { msg='🚨 Intensifique os estudos e tente novamente!'; cor='var(--red)'; }
   document.getElementById('res-msg').innerHTML = `<span style="color:${cor}">${msg}</span>`;
-  
-  // Resultado por matéria
+  // Por matéria
   const porMat = {};
   respondidas.forEach(r => {
-    const q = QUESTOES.find(x=>x.id===r.id);
-    if (!q) return;
+    const q = QUESTOES.find(x=>x.id===r.id); if (!q) return;
     if (!porMat[q.materia]) porMat[q.materia]={acertos:0,total:0};
     porMat[q.materia].total++;
     if (r.acertou) porMat[q.materia].acertos++;
@@ -1355,29 +1958,26 @@ function finalizarSessao() {
     const cor = p>=80?'var(--green)':p>=60?'var(--gold)':'var(--red)';
     matHtml += `<div style="display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid var(--border);">
       <span style="font-size:14px;">${mat}</span>
-      <span style="font-family:Bebas Neue;font-size:20px;color:${cor}">${d.acertos}/${d.total} — ${p}%</span>
+      <span style="font-family:'Bebas Neue';font-size:20px;color:${cor}">${d.acertos}/${d.total} — ${p}%</span>
     </div>`;
   });
   document.getElementById('res-por-materia').innerHTML = matHtml;
-  
   showScreen('resultado');
 }
 
 // ============================================================
-// REVISÃO DE ERROS
+// ████ REVISÃO DE ERROS ████
 // ============================================================
 function renderRevisao() {
   const cont = document.getElementById('revisao-content');
-  const erroIds = STATE.erros;
-  if (erroIds.length === 0) {
+  if (!STATE.erros.length) {
     cont.innerHTML = `<div class="empty-state"><div class="icon">🎉</div><p>Nenhum erro registrado ainda!<br>Complete um simulado ou treino para ver seus erros aqui.</p></div>`;
     return;
   }
   const letras = ['A','B','C','D'];
-  let html = `<p style="color:var(--text2);font-size:14px;margin-bottom:16px;">${erroIds.length} questão(ões) para revisar</p>`;
-  erroIds.forEach(id => {
-    const q = QUESTOES.find(x=>x.id===id);
-    if (!q) return;
+  let html = `<p style="color:var(--text2);font-size:14px;margin-bottom:16px;">${STATE.erros.length} questão(ões) para revisar</p>`;
+  STATE.erros.forEach(id => {
+    const q = QUESTOES.find(x=>x.id===id); if (!q) return;
     const resIdx = letras.indexOf(q.resposta);
     html += `<div class="revisao-item errado">
       <div style="display:flex;gap:8px;margin-bottom:10px;flex-wrap:wrap;">
@@ -1386,25 +1986,20 @@ function renderRevisao() {
         <span class="tag ${q.dif==='facil'?'tag-correta':q.dif==='dificil'?'tag-errada':'tag-materia'}">${{facil:'Fácil',medio:'Médio',dificil:'Difícil'}[q.dif]}</span>
       </div>
       <div class="revisao-q">${q.pergunta}</div>
-      <div class="revisao-resp">
-        <span class="tag tag-correta">✅ Gabarito: ${q.resposta}) ${q.alternativas[resIdx].replace(/^[A-D]\)\s*/,'').substring(0,60)}...</span>
-      </div>
+      <div class="revisao-resp"><span class="tag tag-correta">✅ ${q.resposta}) ${q.alternativas[resIdx].replace(/^[A-D]\)\s*/,'').substring(0,70)}...</span></div>
       <div style="background:var(--surface2);border-left:3px solid var(--gold);padding:12px;border-radius:0 8px 8px 0;font-size:13px;color:var(--text2);line-height:1.6;">${q.comentario}</div>
     </div>`;
   });
   html += `<div style="margin-top:16px;"><button class="btn btn-red" onclick="limparErros()">🗑️ Limpar Erros</button></div>`;
   cont.innerHTML = html;
 }
-
 function limparErros() {
   if (!confirm('Deseja limpar todos os erros da revisão?')) return;
-  STATE.erros = [];
-  salvarState();
-  renderRevisao();
+  STATE.erros = []; salvarState(); renderRevisao();
 }
 
 // ============================================================
-// PLANO IA
+// ████ PLANO IA ████
 // ============================================================
 function renderPlano() {
   const cont = document.getElementById('plano-content');
@@ -1414,55 +2009,33 @@ function renderPlano() {
     const pct = d.total > 0 ? Math.round((d.acertos/d.total)*100) : null;
     return {materia:m, ...d, pct};
   }).sort((a,b) => {
-    if (a.pct === null && b.pct === null) return 0;
-    if (a.pct === null) return -1;
-    if (b.pct === null) return 1;
+    if (a.pct===null&&b.pct===null) return 0;
+    if (a.pct===null) return -1; if (b.pct===null) return 1;
     return a.pct - b.pct;
   });
-
   const total = getDesempenho(null);
   const geral = total.total > 0 ? Math.round((total.acertos/total.total)*100) : null;
-  
   const icons = {'Conhecimentos Específicos':'⚖️','Língua Portuguesa':'📖','Matemática':'➕','Noções de Informática':'💻','Conhecimentos Gerais':'🌎'};
+  const pesos = {'Conhecimentos Específicos':'55 pts','Língua Portuguesa':'15 pts','Matemática':'15 pts','Noções de Informática':'7,5 pts','Conhecimentos Gerais':'7,5 pts'};
 
   let html = `<div class="plano-card" style="border-left:3px solid var(--gold);">
-    <div class="plano-header">
-      <div class="plano-icon">🤖</div>
-      <div><div class="plano-titulo">Análise da IA</div></div>
-    </div>
+    <div class="plano-header"><div class="plano-icon">🤖</div><div><div class="plano-titulo">Análise Geral</div></div></div>
     <div class="plano-desc">`;
-  
-  if (geral === null) {
-    html += 'Você ainda não respondeu nenhuma questão. Faça um simulado ou treino para gerar seu plano personalizado!';
-  } else if (geral >= 80) {
-    html += `Seu desempenho geral está <strong style="color:var(--green)">excelente (${geral}%)</strong>! Mantenha a consistência e foque nas matérias abaixo de 80%.`;
-  } else if (geral >= 60) {
-    html += `Desempenho geral de <strong style="color:var(--gold)">${geral}%</strong>. Você está no caminho certo! Concentre-se nas matérias críticas listadas abaixo.`;
-  } else {
-    html += `Desempenho geral de <strong style="color:var(--red)">${geral}%</strong>. É necessário intensificar os estudos. Siga o plano abaixo priorizando as matérias críticas.`;
-  }
+  if (!geral) html += 'Faça um simulado ou treino para gerar seu plano personalizado!';
+  else if (geral>=80) html += `Desempenho <strong style="color:var(--green)">excelente (${geral}%)</strong>! Mantenha e foque nas matérias abaixo de 80%.`;
+  else if (geral>=60) html += `Desempenho <strong style="color:var(--gold)">${geral}%</strong>. No caminho certo! Concentre-se nas matérias críticas abaixo.`;
+  else html += `Desempenho <strong style="color:var(--red)">${geral}%</strong>. Intensifique os estudos. Siga o plano abaixo.`;
   html += '</div></div>';
-
   html += '<div class="section-title">🎯 Prioridades de Estudo</div>';
 
-  dados.forEach((d, i) => {
+  dados.forEach(d => {
     let pri, priClass, tempo, estrategia;
-    if (d.pct === null) {
-      pri = 'Não estudada'; priClass = 'pri-alta'; tempo = '3-4h/semana';
-      estrategia = 'Comece pelos tópicos básicos e faça questões de nível fácil para ganhar confiança.';
-    } else if (d.pct < 50) {
-      pri = 'CRÍTICA'; priClass = 'pri-critica'; tempo = '5-6h/semana';
-      estrategia = `Com ${d.pct}% de acerto, esta é sua maior dificuldade. Estude a teoria primeiro, releia as questões erradas e pratique diariamente.`;
-    } else if (d.pct < 70) {
-      pri = 'Alta'; priClass = 'pri-alta'; tempo = '3-4h/semana';
-      estrategia = `Com ${d.pct}% de acerto, há espaço para melhora significativa. Foque em questões de dificuldade média e revise os tópicos com mais erros.`;
-    } else if (d.pct < 85) {
-      pri = 'Média'; priClass = 'pri-media'; tempo = '2h/semana';
-      estrategia = `Com ${d.pct}% de acerto, você está bem! Mantenha com questões difíceis para consolidar o conhecimento.`;
-    } else {
-      pri = 'Manutenção'; priClass = 'pri-baixa'; tempo = '1h/semana';
-      estrategia = `Excelente! ${d.pct}% de acerto. Faça revisão periódica para não perder o que já conquistou.`;
-    }
+    if (d.pct===null) { pri='Não estudada';priClass='pri-alta';tempo='3-4h/sem';estrategia='Comece pelos tópicos básicos e questões fáceis para ganhar confiança.'; }
+    else if (d.pct<50) { pri='CRÍTICA';priClass='pri-critica';tempo='5-6h/sem';estrategia=`${d.pct}% — Estude a teoria primeiro, releia questões erradas e pratique diariamente.`; }
+    else if (d.pct<70) { pri='Alta';priClass='pri-alta';tempo='3-4h/sem';estrategia=`${d.pct}% — Foque em questões médias e revise os tópicos com mais erros.`; }
+    else if (d.pct<85) { pri='Média';priClass='pri-media';tempo='2h/sem';estrategia=`${d.pct}% — Bom! Mantenha com questões difíceis para consolidar.`; }
+    else { pri='Manutenção';priClass='pri-baixa';tempo='1h/sem';estrategia=`Excelente! ${d.pct}% — Revisão periódica para manter o nível.`; }
+
     html += `<div class="plano-card">
       <div class="plano-header">
         <div class="plano-icon">${icons[d.materia]||'📚'}</div>
@@ -1470,10 +2043,11 @@ function renderPlano() {
           <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
             <div class="plano-titulo">${d.materia}</div>
             <span class="prioridade-tag ${priClass}">${pri}</span>
+            <span style="font-size:11px;color:var(--text3);font-family:'Rajdhani'">${pesos[d.materia]||''}</span>
           </div>
           <div style="font-size:12px;color:var(--text2);margin-top:2px;">⏱️ ${tempo} · ${d.total>0?d.acertos+'/'+d.total+' respondidas':'Nenhuma respondida'}</div>
         </div>
-        ${d.pct!==null?`<div style="font-family:Bebas Neue;font-size:32px;color:${d.pct>=80?'var(--green)':d.pct>=50?'var(--gold)':'var(--red)'}">${d.pct}%</div>`:''}
+        ${d.pct!==null?`<div style="font-family:'Bebas Neue';font-size:32px;color:${d.pct>=80?'var(--green)':d.pct>=50?'var(--gold)':'var(--red)'}">${d.pct}%</div>`:''}
       </div>
       <div class="plano-desc">${estrategia}</div>
     </div>`;
@@ -1482,23 +2056,152 @@ function renderPlano() {
   html += `<div class="plano-card" style="border-left:3px solid var(--blue);">
     <div class="plano-header"><div class="plano-icon">📅</div><div class="plano-titulo">Rotina Sugerida</div></div>
     <div class="plano-desc">
-      <strong style="color:var(--gold)">Segunda e Terça:</strong> Conhecimentos Específicos (Lei GCM, CF/88, CP)<br>
+      <strong style="color:var(--gold)">Segunda e Terça:</strong> Conhecimentos Específicos (Lei GCM, CF/88, CP) — 55pts<br>
       <strong style="color:var(--gold)">Quarta:</strong> Língua Portuguesa<br>
       <strong style="color:var(--gold)">Quinta:</strong> Matemática<br>
       <strong style="color:var(--gold)">Sexta:</strong> Informática + Conhecimentos Gerais<br>
-      <strong style="color:var(--gold)">Sábado:</strong> Simulado completo + Revisão de erros<br>
+      <strong style="color:var(--gold)">Sábado:</strong> Simulado completo (🃏 Flashcards) + Revisão de erros<br>
       <strong style="color:var(--gold)">Domingo:</strong> Revisão dos tópicos mais difíceis
     </div>
   </div>`;
-  
   cont.innerHTML = html;
 }
 
 // ============================================================
-// UTILITÁRIOS
+// ████ FLASHCARDS ENGINE ████
+// ============================================================
+let fcDeck = [];
+let fcIdx = 0;
+let fcCorrect = 0;
+let fcWrong = 0;
+let fcShuffled = false;
+let fcCurrentCat = 'todos';
+let fcInited = false;
+
+function fcInit() {
+  if (!fcInited) {
+    fcFillCounts();
+    fcBuildMobileChips();
+    fcInited = true;
+  }
+  fcBuildDeck();
+}
+
+function fcFillCounts() {
+  const cats = ['todos','Legislação','Constitucional','Penal','Administrativo','Processual','Português','Matemática','Informática','Maranhão','Atualidades','ECA'];
+  cats.forEach(c => {
+    const el = document.getElementById('fc-cnt-'+c);
+    if (el) el.textContent = c==='todos' ? FC_CARDS.length : FC_CARDS.filter(x=>x.cat===c).length;
+  });
+}
+
+function fcBuildMobileChips() {
+  const cats = ['todos','Legislação','Constitucional','Penal','Administrativo','Processual','ECA','Português','Matemática','Informática','Maranhão','Atualidades'];
+  const labels = {'todos':'📚 Todos','Legislação':'⚖️ Legislação','Constitucional':'📜 Constitucional','Penal':'🔒 Penal','Administrativo':'🏛️ Administrativo','Processual':'📋 Processual','ECA':'👶 ECA','Português':'🗣️ Português','Matemática':'🔢 Matemática','Informática':'💻 Informática','Maranhão':'🌴 Maranhão','Atualidades':'🌐 Atualidades'};
+  const chips = document.getElementById('fc-mobile-chips');
+  chips.innerHTML = cats.map(c => `<button onclick="fcSetCatMobile('${c}')" id="fc-chip-${c}" class="fc-cat-btn ${c==='todos'?'active':''}" style="flex-shrink:0;padding:6px 12px;border-radius:20px;">${labels[c]||c}</button>`).join('');
+}
+
+function fcSetCat(btn) {
+  document.querySelectorAll('.fc-cat-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  fcCurrentCat = btn.dataset.cat;
+  fcBuildDeck();
+}
+
+function fcSetCatMobile(cat) {
+  fcCurrentCat = cat;
+  document.querySelectorAll('#fc-mobile-chips .fc-cat-btn').forEach(b=>b.classList.remove('active'));
+  const chip = document.getElementById('fc-chip-'+cat);
+  if (chip) chip.classList.add('active');
+  fcBuildDeck();
+}
+
+function fcBuildDeck() {
+  fcDeck = fcCurrentCat==='todos' ? [...FC_CARDS] : FC_CARDS.filter(c=>c.cat===fcCurrentCat);
+  if (fcShuffled) fcShuffle(fcDeck);
+  fcIdx=0; fcCorrect=0; fcWrong=0;
+  document.getElementById('fc-topic-badge').textContent = fcCurrentCat==='todos'?'Todos':fcCurrentCat;
+  fcUpdateUI();
+  fcUpdateScores();
+}
+
+function fcShuffle(arr) {
+  for (let i=arr.length-1; i>0; i--) {
+    const j = Math.floor(Math.random()*(i+1));
+    [arr[i],arr[j]] = [arr[j],arr[i]];
+  }
+}
+
+function fcUpdateUI() {
+  const complete = document.getElementById('fc-complete');
+  const stage = document.getElementById('fc-stage');
+  const actions = document.getElementById('fc-action-area');
+  if (!fcDeck.length) {
+    document.getElementById('fc-front-text').textContent = 'Nenhuma carta nesta categoria.';
+    document.getElementById('fc-back-text').textContent = '—';
+    document.getElementById('fc-card-count').textContent = '';
+    return;
+  }
+  if (fcIdx >= fcDeck.length) {
+    stage.style.display = 'none'; actions.style.display = 'none';
+    complete.classList.add('show');
+    document.getElementById('fc-final-correct').textContent = fcCorrect;
+    document.getElementById('fc-final-wrong').textContent = fcWrong;
+    const t = fcCorrect+fcWrong;
+    document.getElementById('fc-final-pct').textContent = t>0 ? Math.round(fcCorrect/t*100)+'%' : '0%';
+    fcUpdateProgress(); return;
+  }
+  stage.style.display = ''; actions.style.display = '';
+  complete.classList.remove('show');
+  const card = fcDeck[fcIdx];
+  const inner = document.getElementById('fc-inner');
+  inner.classList.remove('flipped');
+  document.getElementById('fc-front-text').textContent = card.f;
+  document.getElementById('fc-back-text').textContent = card.v;
+  document.getElementById('fc-card-count').textContent = `${fcIdx+1} de ${fcDeck.length}`;
+  fcUpdateProgress();
+  fcUpdateScores();
+}
+
+function fcUpdateProgress() {
+  const done = Math.min(fcIdx, fcDeck.length);
+  const pct = fcDeck.length>0 ? Math.round(done/fcDeck.length*100) : 0;
+  document.getElementById('fc-prog-fill').style.width = pct+'%';
+  document.getElementById('fc-prog-pct').textContent = pct+'%';
+}
+
+function fcUpdateScores() {
+  const remain = Math.max(0, fcDeck.length - fcIdx);
+  document.getElementById('fc-score-correct').textContent = fcCorrect;
+  document.getElementById('fc-score-wrong').textContent = fcWrong;
+  document.getElementById('fc-score-remain').textContent = remain;
+}
+
+function fcFlip() {
+  document.getElementById('fc-inner').classList.toggle('flipped');
+}
+function fcNext() { if (fcIdx<fcDeck.length) { fcIdx++; fcUpdateUI(); } }
+function fcPrev() { if (fcIdx>0) { fcIdx--; fcUpdateUI(); } }
+function fcAnswer(ok) {
+  if (fcIdx>=fcDeck.length) return;
+  const inner = document.getElementById('fc-inner');
+  if (!inner.classList.contains('flipped')) inner.classList.add('flipped');
+  if (ok) fcCorrect++; else fcWrong++;
+  setTimeout(() => { fcIdx++; fcUpdateUI(); }, 380);
+}
+function fcToggleShuffle() {
+  fcShuffled = !fcShuffled;
+  document.getElementById('fc-shuffle-btn').classList.toggle('active', fcShuffled);
+  fcBuildDeck();
+}
+function fcRestart() { fcBuildDeck(); }
+
+// ============================================================
+// ████ UTILITÁRIOS ████
 // ============================================================
 function embaralhar(arr) {
-  for (let i = arr.length-1; i > 0; i--) {
+  for (let i=arr.length-1; i>0; i--) {
     const j = Math.floor(Math.random()*(i+1));
     [arr[i],arr[j]] = [arr[j],arr[i]];
   }
@@ -1506,26 +2209,21 @@ function embaralhar(arr) {
 }
 
 // ============================================================
-// INIT
+// ████ TECLADO — FLASHCARDS ████
 // ============================================================
-carregarState();
-renderHome();
-</script>
+document.addEventListener('keydown', e => {
+  const fc = document.getElementById('screen-flashcards');
+  if (!fc || !fc.classList.contains('active')) return;
+  if (e.code==='Space') { e.preventDefault(); fcFlip(); }
+  else if (e.code==='ArrowRight') fcNext();
+  else if (e.code==='ArrowLeft') fcPrev();
+  else if (e.key==='s'||e.key==='S') fcAnswer(true);
+  else if (e.key==='n'||e.key==='N') fcAnswer(false);
+});
 
-<!-- PWA INSTALL BANNER -->
-<div id="pwa-banner" style="display:none;position:fixed;bottom:0;left:0;right:0;background:var(--surface);border-top:2px solid var(--gold);padding:14px 20px;z-index:500;align-items:center;gap:12px;animation:slideUp 0.4s ease;">
-  <div style="font-size:28px">🛡️</div>
-  <div style="flex:1">
-    <div style="font-family:'Bebas Neue';font-size:16px;letter-spacing:1px;color:var(--gold)">Instalar App GCM</div>
-    <div style="font-size:12px;color:var(--text2)">Use offline · acesso rápido na tela inicial</div>
-  </div>
-  <button onclick="installPWA()" style="background:var(--gold);color:#000;border:none;border-radius:8px;padding:8px 16px;font-family:'Rajdhani';font-weight:700;font-size:13px;cursor:pointer;white-space:nowrap;">📲 Instalar</button>
-  <button onclick="document.getElementById('pwa-banner').style.display='none'" style="background:none;border:none;color:var(--text3);font-size:20px;cursor:pointer;padding:4px;">✕</button>
-</div>
-
-<div id="offline-toast" style="display:none" class="toast">📴 Você está offline — o app continua funcionando!</div>
-
-<script>
+// ============================================================
+// ████ PWA ████
+// ============================================================
 if ('serviceWorker' in navigator) {
   window.addEventListener('load', () => {
     navigator.serviceWorker.register('./sw.js')
@@ -1537,21 +2235,20 @@ let deferredPrompt = null;
 window.addEventListener('beforeinstallprompt', e => {
   e.preventDefault();
   deferredPrompt = e;
-  setTimeout(() => { const b = document.getElementById('pwa-banner'); if(b) b.style.display='flex'; }, 3000);
+  setTimeout(() => {
+    const b = document.getElementById('pwa-banner');
+    if (b) b.style.display='flex';
+  }, 4000);
 });
 function installPWA() {
   if (!deferredPrompt) return;
   deferredPrompt.prompt();
   deferredPrompt.userChoice.then(c => {
-    if (c.outcome==='accepted') showToast('✅ App instalado! Acesse pela tela inicial.');
+    if (c.outcome==='accepted') showToast('✅ App instalado!');
     deferredPrompt = null;
     document.getElementById('pwa-banner').style.display='none';
   });
 }
-window.addEventListener('appinstalled', () => {
-  showToast('🎉 GCM Ribamar instalado com sucesso!');
-  document.getElementById('pwa-banner').style.display='none';
-});
 window.addEventListener('offline', () => {
   const t = document.getElementById('offline-toast');
   t.style.display='flex'; setTimeout(()=>t.style.display='none',4000);
@@ -1563,6 +2260,12 @@ function showToast(msg) {
   document.body.appendChild(t);
   setTimeout(()=>t.remove(),3500);
 }
+
+// ============================================================
+// ████ INIT ████
+// ============================================================
+carregarState();
+renderHome();
 </script>
 </body>
 </html>
